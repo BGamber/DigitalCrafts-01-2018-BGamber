@@ -10,7 +10,8 @@ phonebook = {}
 ## Look up an entry
 def lookUpEntry():
     os.system('clear')
-    print '==================='
+    print 'Electronic Phone Book'
+    print '====================='
     print "Look Up Entry"
     name = raw_input("Search for name: ")
     if name in phonebook:
@@ -23,7 +24,8 @@ def lookUpEntry():
 ## Create an entry
 def setEntry():
     os.system('clear')
-    print '==================='
+    print 'Electronic Phone Book'
+    print '====================='
     print "Create/Edit Entry"
     name = raw_input("Enter name: ")
     phone = raw_input("Enter phone number: ")
@@ -34,7 +36,8 @@ def setEntry():
 ## Delete an entry
 def deleteEntry():
     os.system('clear')
-    print '==================='
+    print 'Electronic Phone Book'
+    print '====================='
     print "Delete Entry"
     name = raw_input("Enter name: ")
     if name in phonebook:
@@ -48,15 +51,18 @@ def deleteEntry():
 ## List all entries
 def listEntries():
     os.system('clear')
-    print '==================='
+    print 'Electronic Phone Book'
+    print '====================='
     print "List Entries"
     for name,number in sorted(phonebook.iteritems()):
         print '%s: %s\n' % (name, number)
     raw_input("Press 'Enter' to continue...")
 
+## Clear screen and list options
 def printMenu():
     os.system('clear')
-    print '==================='
+    print 'Electronic Phone Book'
+    print '====================='
     print '1. Look up an entry'
     print '2. Create/Edit an entry'
     print '3. Delete an entry'
