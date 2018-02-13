@@ -1,0 +1,89 @@
+body {
+    text-align: center;
+    margin: 0;
+}
+
+#top {
+    height: 500px;
+    margin-top: 4px;
+}
+
+img {
+    height: 180px;
+    border-top: 3px solid gray;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+    border-left: 3px solid gray;
+}
+
+.bulletless {
+    list-style: none;
+}
+
+ul li {
+    font-family: Arial, Helvetica, sans-serif;
+    list-style: circle;
+}
+
+.fancy-list {
+    font-style: italic;
+    text-align: left;
+    margin-left: 10%;
+}
+
+.title {
+    background-color: aliceblue;
+    padding: 1px 2px 1px 2px;
+    display: inline;
+    line-height: 2em;
+}
+
+.img-link {
+    text-decoration: none;
+}
+
+.gray-back {
+    background-color: lightsteelblue;
+    padding: 3px;
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-bottom: 2em;
+}
+
+.blue-back {
+    background-color: cornflowerblue;
+    padding: 5px;
+}
+
+.gray-border {
+    border-top: 2px solid gray;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    border-left: 2px solid gray;
+    }
+
+.blue-border {
+    border-top: 2px solid dodgerblue;
+    border-right: 2px solid blue;
+    border-bottom: 2px solid blue;
+    border-left: 2px solid dodgerblue;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.padded {
+    padding: 1em;
+}
+
+.boxed {
+    height: 450px;
+    width: 350px;
+}
+
+.absolute-top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
