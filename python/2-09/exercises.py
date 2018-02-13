@@ -1,15 +1,15 @@
 ## Smallest divisible by 1-20
-def testDiv(number):
-    for i in range(1,21):
-        if number % i != 0:
-            return False
-    return True
+# def testDiv(number):
+#     for i in range(1,21):
+#         if number % i != 0:
+#             return False
+#     return True
 
 # num = 20
 # while not testDiv(num):
 #     num += 20
 # print num
-### Result: 232792560
+## Result: 232792560
 
 assert testDiv(2) == False, "Test failed for 2 == False"
 assert testDiv(10) == False, "Test failed for 10 == False"
