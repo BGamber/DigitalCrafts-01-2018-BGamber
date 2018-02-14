@@ -1,12 +1,14 @@
-@import url('https://fonts.googleapis.com/css?family=Josefin+Sans|Quicksand');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans|Quicksand|Material+Icons');
 
 body {
+    height: 100%;
     margin: 0;
     position: static;
 }
 
 .little-text {
     font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
 }
 
 #center-text {
@@ -14,7 +16,8 @@ body {
     font-size: 120px;
     position: absolute;
     top: 200px;
-    left: 40%;
+    margin-left: 38%;
+    margin-right: 38%;
     letter-spacing: -8px;
 }
 
@@ -23,6 +26,7 @@ body {
     top: 400px;
     left: 30%;
     width: 600px;
+    max-width: 50%;
     height: 40px;
     border: 1px solid lightgray;
     border-radius: 5px;
@@ -38,11 +42,65 @@ body {
 }
 
 #header-bar {
-    
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.head-left {
+    position: absolute;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    left: 1em;
+}
+
+.head-right {
+    position: absolute;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    right: 1em;
+}
+
+.usr-img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
 }
 
 #footer-bar {
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: rgb(238, 238, 238);
+    border-top: 1px solid lightgray;
+}
 
+.foot-left {
+    position: absolute;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    left: 1em;
+}
+
+.foot-right {
+    position: absolute;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    right: 1em;
+}
+
+a.nice-link {
+    text-decoration: none;
+    color: darkslategray;
+    padding: 0 15px 0 15px;
+}
+
+a.nice-link:hover {
+    text-decoration: underline;
 }
 
 .fake-mic img {
