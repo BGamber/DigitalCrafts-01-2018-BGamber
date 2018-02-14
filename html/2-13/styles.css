@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans|Quicksand');
+
+body {
+    margin: 0;
+    position: static;
+}
+
+.little-text {
+    font-family: 'Quicksand', sans-serif;
+}
+
+#center-text {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 120px;
+    position: absolute;
+    top: 200px;
+    left: 40%;
+    letter-spacing: -8px;
+}
+
+#center-bar {
+    position: absolute;
+    top: 400px;
+    left: 30%;
+    width: 600px;
+    height: 40px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px lightgray;
+}
+
+#center-bar:hover {
+    box-shadow: 4px 4px 6px lightgray;
+}
+
+#center-bar:active {
+    display: none;
+}
+
+#header-bar {
+    
+}
+
+#footer-bar {
+
+}
+
+.fake-mic img {
+    width: 16px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    z-index: 1;
+}
+
+#center-bar .little-text {
+    color: gray;
+    position: relative;
+    left: 10px;
+    top: 10px;
+}
+
+.blue {
+    color: rgb(87, 135, 240);
+}
+
+.red {
+    color: rgb(240, 50, 50);
+}
+
+.yellow {
+    color: rgb(247, 203, 62);
+}
+
+.green {
+    color: rgb(56, 173, 56);
+}
+
+.inline {
+    display: inline;
+}
