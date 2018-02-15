@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css?family=Material+Icons');
+
+body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar {
+    width: 0%;
+}
+
+.sidebar-icon {
+    color: black;
+}
+
+.sidebar-text {
+    display: none;
+}
+
+.interface {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.header {
+    height: 10%;
+    background-color: dodgerblue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.header-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-block {
+    text-decoration: none;
+    color: darkslateblue;
+}
+
+.header-icon {
+    color: gray;
+    font-size: 200%;
+}
+
+.header-text {
+    display: none;
+}
+
+.header-block:hover {
+    background-color: cornflowerblue;
+    border-radius: 50%;
+    color: black;
+}
+
+.header-block:hover .header-icon {
+    color: black;
+}
+
+.page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+    background-color: aliceblue;
+}
+
+.footer {
+    height: 10%;
+    background-color: darkslateblue;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.search-foot {
+    position: relative;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row: 2;
+}
+
+.search-head {
+    display: none;
+    min-width: 50px;
+    position: relative;
+}
+
+.search-box {
+    min-width: 2em;
+    min-height: 50%;
+    max-height: 80%;
+    font-size: 20px;
+}
+
+.search-icon {
+    position: absolute;
+    top: 5px;
+    left: 87%;
+}
+
+@media (min-width: 768px) {
+    .header-icon {
+        font-size: 60px;
+    }
+
+    .header-text {
+        display: inherit;
+        font-size: 40px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header {
+        height: 10%;
+    }
+
+    .sidebar {
+        width: 20%;
+        background-color: blue;
+    }
+
+    .page {
+        background-color: aliceblue;
+    }
+
+    .search-head {
+        display: inherit;
+    }
+
+    .footer {
+        display: none;
+    }
+}
