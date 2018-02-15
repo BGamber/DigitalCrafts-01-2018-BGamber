@@ -2,12 +2,10 @@
 
 body {
     margin: 0;
-    display: flex;
     height: 100vh;
 }
 
 .page-layout {
-    flex: 1;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -109,8 +107,8 @@ body {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    padding-top: 0.9em;
-    margin-left: 0.8em;
+    margin-top: 9px;
+    margin-left: 16px;
 }
 
 .head-right {
@@ -119,13 +117,23 @@ body {
     justify-content: flex-end;
     align-items: center;
     padding-top: 0.9em;
-    padding-right: 0.8em;
+    padding-right: 21px;
 }
 
 .usr-img {
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url("../filip.png");
+    margin-left: 9px;
+    margin-right: 9px;
+}
+
+.usr-img:hover {
+    box-shadow: 0 1px 0 lightgray;
 }
 
 #footer-bar {
@@ -156,10 +164,35 @@ body {
 
 a.nice-link {
     text-decoration: none;
-    color: darkslategray;
-    padding: 0 15px 0 15px;
+    color: #404040;
+    margin-right: 9px;
+    margin-left: 9px;
+}
+
+a.nice-link-b {
+    text-decoration: none;
+    color: #212121;
+    margin-right: 9px;
+    margin-left: 9px;
 }
 
 a.nice-link:hover {
     text-decoration: underline;
+}
+
+a.nice-link-b:hover {
+    color: #404040;
+    text-decoration: underline;
+}
+
+a.nice-link i {
+    color: #737373;
+}
+
+a.nice-link i:hover {
+    color: darkslategray;
+}
+
+a.nice-link img:hover {
+    box-shadow: 0 1px 0 lightgray;
 }
