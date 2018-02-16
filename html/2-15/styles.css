@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css?family=Roboto|Material+Icons');
+@import url('https://use.fontawesome.com/releases/v5.0.6/css/all.css');
 
 body {
     margin: 0;
@@ -6,18 +7,7 @@ body {
     width: 100vw;
     display: flex;
     flex-direction: column;
-}
-
-.sidebar {
-    width: 0%;
-}
-
-.sidebar-icon {
-    color: black;
-}
-
-.sidebar-text {
-    display: none;
+    font-family: 'Roboto', sans-serif;
 }
 
 .interface {
@@ -40,16 +30,13 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-}
-
-.header-block {
     text-decoration: none;
     color: darkslateblue;
 }
 
 .header-icon {
     color: gray;
-    font-size: 200%;
+    font-size: 280%;
 }
 
 .header-text {
@@ -58,12 +45,26 @@ body {
 
 .header-block:hover {
     background-color: cornflowerblue;
-    border-radius: 50%;
+    border-radius: 10%;
     color: black;
 }
 
 .header-block:hover .header-icon {
     color: black;
+}
+
+.sidebar {
+    width: 0%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-icon {
+    color: black;
+}
+
+.sidebar-text {
+    display: none;
 }
 
 .page {
@@ -129,7 +130,7 @@ body {
 
     .sidebar {
         width: 20%;
-        background-color: blue;
+        background-color: darkslateblue;
     }
 
     .page {
