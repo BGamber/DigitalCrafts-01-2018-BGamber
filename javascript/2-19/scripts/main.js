@@ -199,6 +199,7 @@ var rockPaperScissors = function (p1, p2) {
     }
 }
 
+// Bonus!
 var vsRockPaperScissors = function (numPlayers) {
     var playerlist = [];
     for (var i = 0; i < numPlayers; i++) {
@@ -219,12 +220,19 @@ var vsRockPaperScissors = function (numPlayers) {
         }
         playerlist.push(player);
     }
-    // while (playerlist.length > 0) {
-    var playerMoves = {};
-    for (var i=0; i < playerlist.length; i++) {
-        playerMoves[playerlist[i].name] = playerlist[i].play();
+    var check = prompt('This function is not complete, and will loop infinitely, probably messing up your browser. Are you sure you want to run it?');
+    if (check === 'yes') {
+        while (playerlist.length > 0) {
+            var playerMoves = {};
+            for (var i=0; i < playerlist.length; i++) {
+                playerMoves[playerlist[i].name] = playerlist[i].play();
+            }
+            for (var i=0; i < playerlist.length - 1; i++) {
+                for (var j=i+1; j < playerlist.length - i; j++) {
+
+                }
+            }
+        }
+        // return `${playerlist[0].name} wins!`;
     }
-    console.log(playerMoves);
-    // }
-    // return `${playerlist[0].name} wins!`;
 }
