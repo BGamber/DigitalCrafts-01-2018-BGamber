@@ -46,21 +46,64 @@ var imageList = [
     alt: 'aerial view of a snowy forest'},
     {item: 15,
     src: 'https://images.pexels.com/photos/877867/pexels-photo-877867.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb',
-    alt: 'walking path through hilly plains'}
+    alt: 'walking path through hilly plains'},
+    {item: 16,
+    src: 'https://images.pexels.com/photos/878980/pexels-photo-878980.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb',
+    alt: 'sandy dunes of a desert'},
+    {item: 17,
+    src: 'https://images.pexels.com/photos/869258/pexels-photo-869258.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb',
+    alt: 'mountain range with hikers'},
+    {item: 18,
+    src: 'https://images.pexels.com/photos/871715/pexels-photo-871715.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb',
+    alt: 'distant earthy mountains'},
+    {item: 19,
+    src: 'https://images.pexels.com/photos/614484/pexels-photo-614484.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb',
+    alt: 'road into the horizon'},
+    {item: 20,
+    src: 'https://images.pexels.com/photos/42154/pexels-photo-42154.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb',
+    alt: "village in a mountain's shadow"}
 ];
 
 var previewer = document.getElementById('preview');
 var fullView = document.getElementById('full-view');
 var lightbox = document.getElementById('lightbox');
 
-lightbox.addEventListener('click', function() {
-    lightbox.classList.toggle('inactive');
+lightbox.addEventListener('click', function(event) {
+    if (event.target === lightbox || event.target === lightbox.querySelector('img')) {
+        lightbox.classList.toggle('inactive');
+    }
+});
+
+lightbox.querySelector('.left-arrow').addEventListener('click', function(event) {
+    var currentImage = lightbox.querySelector('img');
+    var nextImage;
+    if (currentImage.getAttribute('item') === '0') {
+        nextImage = imageList[(imageList.length-1)];
+    } else {
+        nextImage = imageList[Number(currentImage.getAttribute('item'))-1];
+    }
+    currentImage.setAttribute('src', nextImage.src);
+    currentImage.setAttribute('alt', nextImage.alt);
+    currentImage.setAttribute('item', nextImage.item);
+});
+
+lightbox.querySelector('.right-arrow').addEventListener('click', function(event) {
+    var currentImage = lightbox.querySelector('img');
+    var nextImage;
+    if (Number(currentImage.getAttribute('item')) === (imageList.length-1)) {
+        nextImage = imageList[0];
+    } else {
+        nextImage = imageList[Number(currentImage.getAttribute('item'))+1];
+    }
+    currentImage.setAttribute('src', nextImage.src);
+    currentImage.setAttribute('alt', nextImage.alt);
+    currentImage.setAttribute('item', nextImage.item);
 });
 
 for (var i=0; i < imageList.length; i++) {
     var image = document.createElement('img');
     image.classList.add('preview-image');
-    image.setAttribute('name', imageList[i].item);
+    image.setAttribute('item', imageList[i].item);
     image.setAttribute('src', imageList[i].src);
     image.setAttribute('alt', imageList[i].alt);
     previewer.appendChild(image);
@@ -70,8 +113,11 @@ var previewImages = document.getElementsByClassName('preview-image');
 for (var i=0; i < previewImages.length; i++) {
     var image = previewImages[i];
     image.addEventListener('click', function(event) {
+        var pic = lightbox.querySelector('img');
         var me = event.target;
-        lightbox.querySelector('img').setAttribute('src', me.src);
+        pic.setAttribute('src', me.src);
+        pic.setAttribute('alt', me.alt);
+        pic.setAttribute('item', me.getAttribute('item'));
         lightbox.classList.toggle('inactive');
     });
     image.addEventListener('mouseenter', function(event) {
