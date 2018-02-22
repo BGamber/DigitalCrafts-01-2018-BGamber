@@ -185,8 +185,13 @@ var matrixMultiply = function (matrix1, matrix2) {
 }
 
 var rockPaperScissors = function (p1, p2) {
-    shapes = { rock: 1, paper: 2, scissors: 0 }
-    result = shapes[p1.play()] - shapes[p2.play()];
+    var result = 0;
+    var shapes = { rock: 1, paper: 2, scissors: 0 }
+    if (typeof p1 === 'string' && typeof p2 === 'string') {
+        result = shapes[p1] - shapes[p2];
+    } else {
+        result = shapes[p1.play()] - shapes[p2.play()];
+    }
     if (Math.abs(result) > 1) {
         result *= -0.5;
     }
@@ -235,4 +240,24 @@ var vsRockPaperScissors = function (numPlayers) {
         }
         // return `${playerlist[0].name} wins!`;
     }
+}
+
+var ticTacToe = function (grid) {
+    for (var row=0; row < grid.length; row++) {
+        if (grid[row][0] === grid[row][1] && grid[row][1] === grid[row][2]) {
+            return grid[row][0];
+        }
+    }
+    for (var col=0; col < grid[0].length; col++) {
+        if (grid[0][col] === grid[1][col] && grid[1][col] === grid[2][col]) {
+            return grid[0][col];
+        }
+    }
+    if (grid[0][0] === grid[1][1] && grid[1][1] === grid[2][2]) {
+        return grid[0][0];
+    }
+    if (grid[0][2] === grid[1][1] && grid[1][1] === grid[2][0]) {
+        return grid[0][2];
+    }
+    return null;
 }
