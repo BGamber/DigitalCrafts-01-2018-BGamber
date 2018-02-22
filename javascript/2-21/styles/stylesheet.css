@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css?family=Berkshire+Swash|BioRhyme+Expanded');
+
+body {
+    margin: 0;
+    width: 100vw;
+    background-color: skyblue;
+}
+
+#header {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+#preview {
+    padding: 10px;
+    background-color: cornflowerblue;
+    background-image: radial-gradient(circle at center, rgba(100, 100, 150, 0.3) 0%, rgba(15, 15, 50, 0.9) ), url('https://upload.wikimedia.org/wikipedia/commons/d/d1/Mount_Everest_as_seen_from_Drukair2_PLW_edit.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.preview-image {
+    margin: 15px;
+    max-height: 260px;
+    box-shadow: 2px 2px 1px black;
+}
+
+.mouse-over {
+    margin: 13px;
+    border-top: 2px solid gainsboro;
+    border-right: 2px solid gray;
+    border-bottom: 2px solid gray;
+    border-left: 2px solid gainsboro;
+}
+
+.light-border {
+    border-top: 2px solid lightblue;
+    border-right: 2px solid dodgerblue;
+    border-bottom: 2px solid dodgerblue;
+    border-left: 2px solid lightblue;
+}
+
+.fancy {
+    font-size: 48px;
+    font-family: 'Berkshire Swash', 'BioRhyme Expanded', serif;
+    background-color: cyan;
+    padding: 10px 25px 10px 25px;
+}
+
+#lightbox {
+    transition: all 0.5s ease-in-out;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(50, 50, 50, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#lightbox > img {
+    max-height: 90%;
+    border-top: 4px solid gray;
+    border-right: 4px solid black;
+    border-bottom: 4px solid black;
+    border-left: 4px solid gray;
+}
+
+.inactive {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
