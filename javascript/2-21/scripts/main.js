@@ -152,7 +152,8 @@ var previewbox = document.getElementById('preview');
 var lightbox = document.getElementById('lightbox');
 
 lightbox.addEventListener('click', function(event) {
-    if (event.target === lightbox || event.target === lightbox.querySelector('img')) {
+    console.log(event.target);
+    if (event.target === lightbox || event.target === lightbox.querySelector('.close-button')) {
         lightbox.classList.toggle('inactive');
     }
 });

@@ -97,6 +97,15 @@ body {
     align-items: center;
 }
 
+.close-button {
+    color: rgba(150, 150, 150, 0.8);
+    font-size: 32px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
 .left-arrow {
     height: 80%;
     width: 10%;
@@ -164,10 +173,8 @@ body {
     color: rgba(150, 150, 150, 0.8);
     font-size: 32px;
     position: absolute;
-    left: 50%;
     bottom: 10px;
     z-index: 1;
-    cursor: pointer;
 }
 
 .inactive {
