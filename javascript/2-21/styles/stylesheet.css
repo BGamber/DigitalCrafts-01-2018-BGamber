@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Berkshire+Swash|BioRhyme+Expanded');
+@import url('https://fonts.googleapis.com/css?family=Bungee|Rubik');
 @import url('https://use.fontawesome.com/releases/v5.0.6/css/all.css');
 
 body {
@@ -10,8 +10,45 @@ body {
 #header {
     height: 80px;
     display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.light-border {
+    border-top: 2px solid lightblue;
+    border-right: 2px solid dodgerblue;
+    border-bottom: 2px solid dodgerblue;
+    border-left: 2px solid lightblue;
+}
+
+.big-padding {
+    padding: 10px 25px 10px 25px;
+}
+
+.big-padding > img {
+    height: 40px;
+    width: 48px;
+}
+
+.little-padding {
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
+}
+
+.little-padding > img {
+    height: 20px;
+    width: 24px;
+}
+
+.fancy {
+    margin-left: 75px;
+    font-family: 'Bungee', 'Rubik', sans-serif;
+    font-size: 48px;
+    background-color: powderblue;
 }
 
 #preview {
@@ -41,20 +78,6 @@ body {
     border-left: 2px solid gainsboro;
 }
 
-.light-border {
-    border-top: 2px solid lightblue;
-    border-right: 2px solid dodgerblue;
-    border-bottom: 2px solid dodgerblue;
-    border-left: 2px solid lightblue;
-}
-
-.fancy {
-    font-size: 48px;
-    font-family: 'Berkshire Swash', 'BioRhyme Expanded', serif;
-    background-color: cyan;
-    padding: 10px 25px 10px 25px;
-}
-
 #lightbox {
     transition: all 0.5s ease-in-out;
     position: fixed;
@@ -75,16 +98,16 @@ body {
 }
 
 .left-arrow {
-    height: 100%;
+    height: 80%;
     width: 10%;
     position: absolute;
-    top: 0;
     left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
     font-size: 40px;
+    text-decoration: none;
 }
 
 .left-arrow:hover {
@@ -92,29 +115,59 @@ body {
 }
 
 .right-arrow {
-    height: 100%;
+    height: 80%;
     width: 10%;
     position: absolute;
-    top: 0;
     right: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
     font-size: 40px;
+    text-decoration: none;
 }
 
 .right-arrow:hover {
     background-color: rgba(100, 100, 100, 0.3);
 }
 
-.container > img {
-    max-height: 90%;
-    max-width: 90%;
+.content {
+    width: 1200px;
+    height: 768px;
+    background-color: black;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+.content img {
+    flex: 1;
+    max-width: 100%;
+    height: auto;
     border-top: 4px solid gray;
     border-right: 4px solid black;
     border-bottom: 4px solid black;
     border-left: 4px solid gray;
+}
+
+.content .left-arrow, .content .right-arrow {
+    align-self: center;
+}
+
+.comments {
+    background-color: white;
+}
+
+.comment-button {
+    color: rgba(150, 150, 150, 0.8);
+    font-size: 32px;
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    z-index: 1;
+    cursor: pointer;
 }
 
 .inactive {
