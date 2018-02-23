@@ -148,8 +148,7 @@ var imageList = [
     }}
 ];
 
-var previewer = document.getElementById('preview');
-var fullView = document.getElementById('full-view');
+var previewbox = document.getElementById('preview');
 var lightbox = document.getElementById('lightbox');
 
 lightbox.addEventListener('click', function(event) {
@@ -158,7 +157,7 @@ lightbox.addEventListener('click', function(event) {
     }
 });
 
-lightbox.querySelector('.left-arrow').addEventListener('click', function(event) {
+lightbox.querySelector('.left-arrow').addEventListener('click', function() {
     var currentImage = lightbox.querySelector('img');
     var nextImage;
     if (currentImage.getAttribute('data-item-id') === '0') {
@@ -171,7 +170,7 @@ lightbox.querySelector('.left-arrow').addEventListener('click', function(event) 
     currentImage.setAttribute('data-item-id', nextImage.id);
 });
 
-lightbox.querySelector('.right-arrow').addEventListener('click', function(event) {
+lightbox.querySelector('.right-arrow').addEventListener('click', function() {
     var currentImage = lightbox.querySelector('img');
     var nextImage;
     if (Number(currentImage.getAttribute('data-item-id')) === (imageList.length-1)) {
@@ -203,5 +202,5 @@ imageList.forEach(function(image) {
         preview.addEventListener('mouseout', function() {
             preview.classList.remove('mouse-over');
         });
-        previewer.appendChild(preview);
+        previewbox.appendChild(preview);
     });
