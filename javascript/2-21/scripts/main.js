@@ -184,27 +184,24 @@ lightbox.querySelector('.right-arrow').addEventListener('click', function(event)
     currentImage.setAttribute('data-item-id', nextImage.id);
 });
 
-for (var i=0; i < imageList.length; i++) {
-    var image = document.createElement('img');
-    image.classList.add('preview-image');
-    image.setAttribute('data-item-id', imageList[i].id);
-    image.setAttribute('src', imageList[i].src);
-    image.setAttribute('alt', imageList[i].alt);
-    image.addEventListener('click', function(event) {
-        var pic = lightbox.querySelector('img');
-        var me = event.target;
-        pic.setAttribute('src', me.src);
-        pic.setAttribute('alt', me.alt);
-        pic.setAttribute('data-item-id', me.getAttribute('data-item-id'));
-        lightbox.classList.toggle('inactive');
+imageList.forEach(function(image) {
+        var preview = document.createElement('img');
+        preview.classList.add('preview-image');
+        preview.setAttribute('data-item-id', image.id);
+        preview.setAttribute('src', image.src);
+        preview.setAttribute('alt', image.alt);
+        preview.addEventListener('click', function() {
+            var pic = lightbox.querySelector('img');
+            pic.setAttribute('src', image.src);
+            pic.setAttribute('alt', image.alt);
+            pic.setAttribute('data-item-id', image.id);
+            lightbox.classList.toggle('inactive');
+        });
+        preview.addEventListener('mouseenter', function() {
+            preview.classList.add('mouse-over');
+        });
+        preview.addEventListener('mouseout', function() {
+            preview.classList.remove('mouse-over');
+        });
+        previewer.appendChild(preview);
     });
-    image.addEventListener('mouseenter', function(event) {
-        var me = event.target;
-        me.classList.add('mouse-over');
-    });
-    image.addEventListener('mouseout', function(event) {
-        var me = event.target;
-        me.classList.remove('mouse-over');
-    });
-    previewer.appendChild(image);
-}
