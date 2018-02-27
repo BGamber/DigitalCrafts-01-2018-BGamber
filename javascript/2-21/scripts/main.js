@@ -187,11 +187,12 @@ $('.right-arrow').click(function(event) {
 });
 
 imageList.forEach(function(image, i) {
-            var $preview = $('<img>');
-            $preview.addClass('preview-image');
-            $preview.attr('data-item-id', i);
-            $preview.attr('src', image.src);
-            $preview.attr('alt', image.alt);
+            var $preview = $('<img>', {
+                'class': 'preview-image',
+                'data-item-id': i,
+                'src': image.src,
+                'alt': image.alt
+            });
             $previewbox.append($preview);
         });
 
