@@ -1,0 +1,21 @@
+.complete-button {
+    padding: 2px;
+    background-color: white;
+    border-radius: 5%;
+    border: 1px solid darkgray;
+    box-shadow: 1px 1px 1px lightgray;
+}
+
+.complete-button:hover {
+    background-color: green;
+    border: 2px solid gray;
+    box-shadow: 2px 2px 2px lightgray;
+}
+
+.order-item {
+    display: inline-block;
+    box-sizing: content-box;
+    padding: 5px;
+    border-top: 1px dashed gray;
+    border-bottom: 1px dashed gray;
+}
