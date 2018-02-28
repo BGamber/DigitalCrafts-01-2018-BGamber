@@ -148,63 +148,88 @@ var imageList = [
     }}
 ];
 
-var previewbox = document.getElementById('preview');
-var lightbox = document.getElementById('lightbox');
+var $previewbox = $('#preview');
+var $lightbox = $('#lightbox');
 
-lightbox.addEventListener('click', function(event) {
+$lightbox.on('click', function(event) {
     event.preventDefault();
-    if (event.target === lightbox || event.target === lightbox.querySelector('.close-button')) {
-        lightbox.classList.toggle('inactive');
+    if (event.target === $lightbox[0] || event.target === $('.close-button')[0]) {
+        $lightbox.toggleClass('inactive');
     }
 });
 
-lightbox.querySelector('.left-arrow').addEventListener('click', function(event) {
+$('.left-arrow').click(function(event) {
     event.preventDefault();
-    var currentImage = lightbox.querySelector('img');
+    var $currentImage = $('#lightbox img');
     var nextImage;
-    if (currentImage.getAttribute('data-item-id') === '0') {
+    if ($currentImage.attr('data-item-id') === '0') {
         nextImage = imageList[(imageList.length-1)];
     } else {
-        nextImage = imageList[Number(currentImage.getAttribute('data-item-id'))-1];
+        nextImage = imageList[Number($currentImage.attr('data-item-id'))-1];
     }
-    currentImage.setAttribute('src', nextImage.src);
-    currentImage.setAttribute('alt', nextImage.alt);
-    currentImage.setAttribute('data-item-id', nextImage.id);
+    $currentImage.attr('src', nextImage.src);
+    $currentImage.attr('alt', nextImage.alt);
+    $currentImage.attr('data-item-id', nextImage.id);
 });
 
-lightbox.querySelector('.right-arrow').addEventListener('click', function(event) {
+$('.right-arrow').click(function(event) {
     event.preventDefault();
-    var currentImage = lightbox.querySelector('img');
+    var $currentImage = $('#lightbox img');
     var nextImage;
-    if (Number(currentImage.getAttribute('data-item-id')) === (imageList.length-1)) {
+    if (Number($currentImage.attr('data-item-id')) === (imageList.length-1)) {
         nextImage = imageList[0];
     } else {
-        nextImage = imageList[Number(currentImage.getAttribute('data-item-id'))+1];
+        nextImage = imageList[Number($currentImage.attr('data-item-id'))+1];
     }
-    currentImage.setAttribute('src', nextImage.src);
-    currentImage.setAttribute('alt', nextImage.alt);
-    currentImage.setAttribute('data-item-id', nextImage.id);
+    $currentImage.attr('src', nextImage.src);
+    $currentImage.attr('alt', nextImage.alt);
+    $currentImage.attr('data-item-id', nextImage.id);
 });
 
 imageList.forEach(function(image, i) {
-        var preview = document.createElement('img');
-        preview.classList.add('preview-image');
-        preview.setAttribute('data-item-id', i);
-        preview.setAttribute('src', image.src);
-        preview.setAttribute('alt', image.alt);
-        preview.addEventListener('click', function(event) {
-            event.preventDefault();
-            var pic = lightbox.querySelector('img');
-            pic.setAttribute('src', image.src);
-            pic.setAttribute('alt', image.alt);
-            pic.setAttribute('data-item-id', i);
-            lightbox.classList.toggle('inactive');
+            var $preview = $('<img>', {
+                'class': 'preview-image',
+                'data-item-id': i,
+                'src': image.src,
+                'alt': image.alt
+            });
+            $previewbox.append($preview);
         });
-        preview.addEventListener('mouseenter', function() {
-            preview.classList.add('mouse-over');
-        });
-        preview.addEventListener('mouseout', function() {
-            preview.classList.remove('mouse-over');
-        });
-        previewbox.appendChild(preview);
-    });
+
+$('.preview-image').click(function(event) {
+    event.preventDefault();
+    var $pic = $('#lightbox img');
+    $pic.attr('src', $(this).prop('src'));
+    $pic.attr('alt', $(this).prop('alt'));
+    $pic.attr('data-item-id', $(this).prop('id'));
+    $lightbox.toggleClass('inactive');
+});
+
+$('.preview-image').hover(function() {
+    $(this).addClass('mouse-over');
+}, function() {
+    $(this).removeClass('mouse-over');
+});
+
+// imageList.forEach(function(image, i) {
+//         var preview = document.createElement('img');
+//         preview.classList.add('preview-image');
+//         preview.setAttribute('data-item-id', i);
+//         preview.setAttribute('src', image.src);
+//         preview.setAttribute('alt', image.alt);
+//         preview.addEventListener('click', function(event) {
+//             event.preventDefault();
+//             var pic = lightbox.querySelector('img');
+//             pic.setAttribute('src', image.src);
+//             pic.setAttribute('alt', image.alt);
+//             pic.setAttribute('data-item-id', i);
+//             lightbox.classList.toggle('inactive');
+//         });
+//         preview.addEventListener('mouseenter', function() {
+//             preview.classList.add('mouse-over');
+//         });
+//         preview.addEventListener('mouseout', function() {
+//             preview.classList.remove('mouse-over');
+//         });
+//         previewbox.appendChild(preview);
+//     });
