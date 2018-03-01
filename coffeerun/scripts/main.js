@@ -64,17 +64,38 @@ var orderTracker = function() {
                 let $button = $('<a>').attr('href', '#').append($('<span>'));
                 $button.addClass('complete-button');
                 $button.text('Complete Order');
-                $button.click(function(event) {
+                $button.click(function fnDel(event) {
                     event.preventDefault();
                     var $parent = $($(this)[0].parentElement);
                     $parent.addClass('order-complete');
-                    $.ajax({
-                            type: 'DELETE',
-                            url: apiAddress+email
-                        });
+                    $(this).removeClass('complete-button');
+                    $(this).addClass('undo-button');
+                    $(this).text('Undo Delete');
+                    $(this).off('click', fnDel);
+                    $(this).attr('data-delete', 'true')
+                    $(this).click(function fnDelCancel(event) {
+                        event.preventDefault();
+                        $(this).attr('data-delete', 'false');
+                        $(this).text('Cancelling...');
+                        $(this).removeClass('undo-button');
+                        $parent.removeClass('order-complete');
+                    });
                     setTimeout(function() {
-                        orderTracker.loadOrderList();
+                        if (event.target.getAttribute('data-delete') === 'true') {
+                            $.ajax({
+                                type: 'DELETE',
+                                url: apiAddress+email,
+                                success: function() {
+                                    orderTracker.loadOrderList();
+                                }
+                            });
+                        } else {
+                            orderTracker.loadOrderList();
+                        };
                     }, 2000);
+                });
+                $button.click(function(event) {
+                    event.preventDefault();
                 });
                 // $button.click(function(event) {
                 //     event.preventDefault();
@@ -137,7 +158,7 @@ $pop.click(function(event) {
     event.preventDefault();
     for (let i=1; i < 10; i++) {
         let newOrder = {
-            "coffee": "test",
+            "coffee": `test${i}`,
             "emailAddress": `test${i}@test.com`,
             "size": "tall",
             "flavor": "None",
