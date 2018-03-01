@@ -1,5 +1,5 @@
 // var orderList = [];
-var apiAddress = 'http://dc-coffeerun.herokuapp.com/api/coffeeorders';
+var apiAddress = 'http://dc-coffeerun.herokuapp.com/api/coffeeorders/';
 var orderForm = document.querySelector('form');
 
 var orderTracker = function() {
@@ -55,6 +55,7 @@ var orderTracker = function() {
             orderList.forEach(function(order, i) {
                 let newListItem = document.createElement('li');
                 let orderID = order['_id'].split('').splice(order['_id'].length - 2).join('');
+                let email = order['emailAddress'];
                 newListItem.setAttribute('data-id', orderID);
                 newListItem.setAttribute('data-email', order['emailAddress']);
                 let listText = (i+1)+'. '+orderTracker.makeOrderString(order);
@@ -65,15 +66,15 @@ var orderTracker = function() {
                 $button.text('Complete Order');
                 $button.click(function(event) {
                     event.preventDefault();
-                    var email = '/' + $(this)[0].parentElement.getAttribute('data-email');
-                    // var email = $(this).emailAddress;
+                    var $parent = $($(this)[0].parentElement);
+                    $parent.addClass('order-complete');
                     $.ajax({
-                        type: 'DELETE',
-                        url: apiAddress+email,
-                        complete: function() {
-                            orderTracker.loadOrderList();
-                        }
-                    })
+                            type: 'DELETE',
+                            url: apiAddress+email
+                        });
+                    setTimeout(function() {
+                        orderTracker.loadOrderList();
+                    }, 2000);
                 });
                 // $button.click(function(event) {
                 //     event.preventDefault();
@@ -118,6 +119,7 @@ var orderTracker = function() {
 
 orderForm.addEventListener('submit', function(event) {
     event.preventDefault();
+    event.target.removeEventListener('submit', arguments.callee);
     var order = {};
     for (let i=0; i < orderForm.length; i++) {
         let element = orderForm.elements[i];
@@ -128,6 +130,24 @@ orderForm.addEventListener('submit', function(event) {
         };
     };
     orderTracker.addOrder(order);
+});
+
+var $pop = $('#pop');
+$pop.click(function(event) {
+    event.preventDefault();
+    for (let i=1; i < 10; i++) {
+        let newOrder = {
+            "coffee": "test",
+            "emailAddress": `test${i}@test.com`,
+            "size": "tall",
+            "flavor": "None",
+            "strength": 50
+        }
+        $.post(apiAddress, newOrder);
+    };
+    setTimeout(function() {
+        orderTracker.loadOrderList();
+    }, 0);
 });
 
 // IDEA: Create object (via factory) for storing data and functions
