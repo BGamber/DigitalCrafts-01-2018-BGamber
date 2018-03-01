@@ -17,23 +17,23 @@ var orderTracker = function() {
             console.log('Querying server...');
             var onlineList = [];
             $.ajax({
-                async: false,
                 type: 'GET',
                 url: apiAddress,
                 success: function(data) {
                     for (var key in data) {
                         onlineList.push(data[key]);
                     };
+                    orderList = onlineList;
+                    orderTracker.updateOrderList();
                 }
            });
             console.log('Query done.')
-            orderList = onlineList;
         },
         addOrder: function(order) {
             // orderList.push(order);
             // this.saveLocalOrderList();
             $.post(apiAddress, order, function() {
-                this.updateOrderList();
+                orderTracker.loadOrderList();
             });
         },
         removeOrder: function(index) {
@@ -50,7 +50,6 @@ var orderTracker = function() {
         },
         updateOrderList: function() {
             // this.loadLocalOrderList();
-            this.loadOrderList();
             var $pageList = $('#order-list');
             $pageList.empty();
             orderList.forEach(function(order, i) {
@@ -72,7 +71,7 @@ var orderTracker = function() {
                         type: 'DELETE',
                         url: apiAddress+email,
                         complete: function() {
-                            orderTracker.updateOrderList();
+                            orderTracker.loadOrderList();
                         }
                     })
                 });
@@ -140,4 +139,4 @@ orderForm.addEventListener('submit', function(event) {
 //     orderList = JSON.parse(localStorage.getItem('orders'));
 //     updateOrderList();
 // }
-orderTracker.updateOrderList();
+orderTracker.loadOrderList();
