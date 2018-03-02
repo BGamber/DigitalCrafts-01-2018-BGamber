@@ -1,20 +1,75 @@
 var apiAddress = 'http://dc-coffeerun.herokuapp.com/api/coffeeorders/';
 var orderForm = document.querySelector('form');
 
+// Reads form data and coverts to an object
+var createOrder = function(form) {
+    let order = {};
+    for (let i=0; i < form.length; i++) {
+        let element = form.elements[i];
+        if (element.type === 'radio' && element.checked === true) {
+            order[element.name] = element.value;
+        } else if (element.type !== 'radio' && element.nodeName !== 'BUTTON') {
+            order[element.name] = element.value;
+        };
+    };
+    return order;
+};
+
+// Constructs and returns the "Complete Order" button for each listing
+var createCompleteButton = function(targetEmail) {
+    let $button = $('<a>').attr('href', '#').append($('<span>'));
+    $button.addClass('complete-button');
+    $button.text('Complete Order');
+    $button.click(function fnDel(event) {
+        event.preventDefault();
+        var $parent = $($(this)[0].parentElement);
+        $parent.addClass('order-complete');
+        $(this).removeClass('complete-button');
+        $(this).addClass('undo-button');
+        $(this).text('Undo Delete');
+        $(this).off('click', fnDel);
+        $(this).attr('data-delete', 'true')
+        $(this).click(function fnDelCancel(event) {
+            event.preventDefault();
+            $(this).attr('data-delete', 'false');
+            $(this).text('Cancelling...');
+            $(this).removeClass('undo-button');
+            $parent.removeClass('order-complete');
+        });
+        // Timer for completing/deleting orders; waits two seconds then 
+        // checks 'data-delete' flag before sending DELETE request
+        setTimeout(function() {
+            if (event.target.getAttribute('data-delete') === 'true') {
+                $.ajax({
+                    type: 'DELETE',
+                    url: apiAddress+targetEmail,
+                    success: function() {
+                        orderTracker.loadOrderList();
+                    }
+                });
+            } else {
+                orderTracker.loadOrderList();
+            };
+        }, 2000);
+    });
+    // This blocks default behavior even when previous listener is cleared
+    $button.click(function(event) {
+        event.preventDefault();
+    });
+    // return only HTML element
+    return $button[0];
+};
+
 var orderTracker = function() {
     var orderList = [];
     return {
         loadOrderList: function() {
             console.log('Querying server...');
-            var onlineList = [];
             $.ajax({
                 type: 'GET',
                 url: apiAddress,
                 success: function(data) {
-                    for (var key in data) {
-                        onlineList.push(data[key]);
-                    };
-                    orderList = onlineList;
+                    orderList = Object.values(data);
                     orderTracker.updateOrderList();
                 }
            });
@@ -39,49 +94,12 @@ var orderTracker = function() {
             $pageList.empty();
             orderList.forEach(function(order, i) {
                 let newListItem = document.createElement('li');
-                let orderID = order['_id'].split('').splice(order['_id'].length - 2).join('');
                 let email = order['emailAddress'];
-                newListItem.setAttribute('data-id', orderID);
                 let listText = (i+1)+'. '+orderTracker.makeOrderString(order);
                 newListItem.textContent = listText;
                 newListItem.classList.add('order-item')
-                let $button = $('<a>').attr('href', '#').append($('<span>'));
-                $button.addClass('complete-button');
-                $button.text('Complete Order');
-                $button.click(function fnDel(event) {
-                    event.preventDefault();
-                    var $parent = $($(this)[0].parentElement);
-                    $parent.addClass('order-complete');
-                    $(this).removeClass('complete-button');
-                    $(this).addClass('undo-button');
-                    $(this).text('Undo Delete');
-                    $(this).off('click', fnDel);
-                    $(this).attr('data-delete', 'true')
-                    $(this).click(function fnDelCancel(event) {
-                        event.preventDefault();
-                        $(this).attr('data-delete', 'false');
-                        $(this).text('Cancelling...');
-                        $(this).removeClass('undo-button');
-                        $parent.removeClass('order-complete');
-                    });
-                    setTimeout(function() {
-                        if (event.target.getAttribute('data-delete') === 'true') {
-                            $.ajax({
-                                type: 'DELETE',
-                                url: apiAddress+email,
-                                success: function() {
-                                    orderTracker.loadOrderList();
-                                }
-                            });
-                        } else {
-                            orderTracker.loadOrderList();
-                        };
-                    }, 2000);
-                });
-                $button.click(function(event) {
-                    event.preventDefault();
-                });
-                newListItem.appendChild($button[0]);
+                let button = createCompleteButton(email);
+                newListItem.appendChild(button);
                 $pageList.append(newListItem);
             });
         }
@@ -91,15 +109,7 @@ var orderTracker = function() {
 orderForm.addEventListener('submit', function(event) {
     event.preventDefault();
     event.target.removeEventListener('submit', arguments.callee);
-    var order = {};
-    for (let i=0; i < orderForm.length; i++) {
-        let element = orderForm.elements[i];
-        if (element.type === 'radio' && element.checked === true) {
-            order[element.name] = element.value;
-        } else if (element.type !== 'radio' && element.nodeName !== 'BUTTON') {
-            order[element.name] = element.value;
-        };
-    };
+    order = createOrder(orderForm);
     orderTracker.addOrder(order);
 });
 
