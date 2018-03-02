@@ -24,8 +24,7 @@ var createCompleteButton = function(targetEmail) {
         event.preventDefault();
         var $parent = $($(this)[0].parentElement);
         $parent.addClass('order-complete');
-        $(this).removeClass('complete-button');
-        $(this).addClass('undo-button');
+        $(this).toggleClass('complete-button undo-button');
         $(this).text('Undo Delete');
         $(this).off('click', fnDel);
         $(this).attr('data-delete', 'true')
