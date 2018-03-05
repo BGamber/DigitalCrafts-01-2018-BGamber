@@ -39,13 +39,8 @@ var createCompleteButton = function(targetEmail) {
         // checks 'data-delete' flag before sending DELETE request
         setTimeout(function() {
             if (event.target.getAttribute('data-delete') === 'true') {
-                $.ajax({
-                    type: 'DELETE',
-                    url: apiAddress+targetEmail,
-                    success: function() {
-                        orderTracker.loadOrderList();
-                    }
-                });
+                var delPromise = fetch(apiAddress+targetEmail, {type: 'DELETE'});
+                delPromise.then(orderTracker.loadOrderList)
             } else {
                 orderTracker.loadOrderList();
             };
@@ -63,14 +58,29 @@ var orderTracker = function() {
     var orderList = [];
     return {
         loadOrderList: function() {
-            var getPromise = $.get(apiAddress);
-            getPromise.then(function(data) {
-                orderList = Object.values(data);
-                orderTracker.updateOrderList();
+            console.log("Querying server...");
+            var getPromise = fetch(apiAddress);
+            getPromise
+                .then(function(serverData) {
+                    return serverData.json();
+                })
+                .then(function(jsonData) {
+                    orderList = Object.values(jsonData);
+                    orderTracker.updateOrderList();
+                    console.log("Query complete.");
+                });
+            getPromise.catch(function(reason) {
+                console.log(`Query failed: ${reason}`);
             });
         },
         addOrder: function(order) {
-            let addPromise = $.post(apiAddress, order);
+            let addPromise = fetch(apiAddress,
+                {method: 'POST',
+                body: JSON.stringify(order),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+              })
+            });
             addPromise.then(this.loadOrderList());
         },
         makeOrderString: function(order) {
