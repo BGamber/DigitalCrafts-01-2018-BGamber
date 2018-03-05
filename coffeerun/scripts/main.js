@@ -17,7 +17,7 @@ var createOrder = function(form) {
 
 // Constructs and returns the "Complete Order" button for each listing
 var createCompleteButton = function(targetEmail) {
-    let $button = $('<a>').attr('href', '#').append($('<span>'));
+    let $button = $('<a>').attr('href', '#');
     $button.addClass('complete-button');
     $button.text('Complete Order');
     $button.click(function fnDel(event) {
@@ -26,8 +26,8 @@ var createCompleteButton = function(targetEmail) {
         $parent.addClass('order-complete');
         $(this).toggleClass('complete-button undo-button');
         $(this).text('Undo Delete');
+        $(this).attr('data-delete', 'true');
         $(this).off('click', fnDel);
-        $(this).attr('data-delete', 'true')
         $(this).click(function fnDelCancel(event) {
             event.preventDefault();
             $(this).attr('data-delete', 'false');
@@ -115,16 +115,18 @@ orderForm.addEventListener('submit', function(event) {
 var $pop = $('#pop');
 $pop.click(function(event) {
     event.preventDefault();
-    for (let i=1; i < 10; i++) {
-        let newOrder = {
-            "coffee": `test${i}`,
-            "emailAddress": `test${i}@test.com`,
-            "size": "tall",
-            "flavor": "None",
-            "strength": 50
-        }
-        $.post(apiAddress, newOrder);
-    };
+    var testData = [
+        { coffee: "Chai Latte", emailAddress: "dangerfoot@johnroscoe.com", size: "tall", flavor: "None", strength: "30" },
+        { coffee: "Green Tea Latte", emailAddress: "dry.humor@freshrefresh.com", size: "grande", flavor: "None", strength: "50" },
+        { coffee: "Double Espresso", emailAddress: "hachacha@spicymeatball.net", size: "tall", flavor: "Almond", strength: "80" },
+        { coffee: "Pumpkin Spice Latte, Nonfat, 6cm of Foam, No Syrup, Two Splenda Packets, Stirred for 4.8 Seconds, Two Lids", emailAddress: "singlesoccermom65@sixkidsandadog.com", size: "grande", flavor: "None", strength: "100" },
+        { coffee: "Coffee", emailAddress: "bob@nofrills.com", size: "short", flavor: "Mocha", strength: "60" },
+        { coffee: "The Tom Frank", emailAddress: "t.frank@themanhimself.com", size: "tall", flavor: "Mocha", strength: "57" },
+        { coffee: "Vanilla Frappuchino", emailAddress: "icequeen92@nevertoocold.net", size: "tall", flavor: "Mocha", strength: "25" },
+    ];
+    testData.forEach(function(item) {
+        $.post(apiAddress, item);
+    });
     setTimeout(function() {
         orderTracker.loadOrderList();
     }, 0);
