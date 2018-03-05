@@ -63,21 +63,15 @@ var orderTracker = function() {
     var orderList = [];
     return {
         loadOrderList: function() {
-            console.log('Querying server...');
-            $.ajax({
-                type: 'GET',
-                url: apiAddress,
-                success: function(data) {
-                    orderList = Object.values(data);
-                    orderTracker.updateOrderList();
-                }
-           });
-            console.log('Query done.')
+            var getPromise = $.get(apiAddress);
+            getPromise.then(function(data) {
+                orderList = Object.values(data);
+                orderTracker.updateOrderList();
+            });
         },
         addOrder: function(order) {
-            $.post(apiAddress, order, function() {
-                orderTracker.loadOrderList();
-            });
+            let addPromise = $.post(apiAddress, order);
+            addPromise.then(this.loadOrderList());
         },
         makeOrderString: function(order) {
             orderString = '';
@@ -122,14 +116,16 @@ $pop.click(function(event) {
         { coffee: "Pumpkin Spice Latte, Nonfat, 6cm of Foam, No Syrup, Two Splenda Packets, Stirred for 4.8 Seconds, Two Lids", emailAddress: "singlesoccermom65@sixkidsandadog.com", size: "grande", flavor: "None", strength: "100" },
         { coffee: "Coffee", emailAddress: "bob@nofrills.com", size: "short", flavor: "Mocha", strength: "60" },
         { coffee: "The Tom Frank", emailAddress: "t.frank@themanhimself.com", size: "tall", flavor: "Mocha", strength: "57" },
-        { coffee: "Vanilla Frappuchino", emailAddress: "icequeen92@nevertoocold.net", size: "tall", flavor: "Mocha", strength: "25" },
+        { coffee: "Vanilla Frappuchino", emailAddress: "icequeen92@nevertoocold.net", size: "tall", flavor: "None", strength: "25" },
     ];
-    testData.forEach(function(item) {
-        $.post(apiAddress, item);
+    var promiseArray = testData.map(function(item) {
+        return $.post(apiAddress, item);
     });
-    setTimeout(function() {
-        orderTracker.loadOrderList();
-    }, 0);
+    var bigPromise = Promise.all(promiseArray);
+    bigPromise.then(orderTracker.loadOrderList());
+    bigPromise.catch(function(reason) {
+        console.log(`Populate failed: ${reason}`);
+    });
 });
 
 // Once everything else is set, load server data!
