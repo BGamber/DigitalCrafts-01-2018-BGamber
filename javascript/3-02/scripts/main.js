@@ -1,15 +1,12 @@
-let size = 200;
-let testArray = [];
-
-for (let i=0; i<size; i++) {
-    testArray.push([]);
-    testArray[i] = 'x'.repeat(size).split('');
-};
+let size = 100;
+let testArray = Array(size).fill(null).map(function() { return Array(size).fill(null)})
 
 // Pre-populating given cells
-testArray[1][2] = "o";
-testArray[2][2] = "o";
-testArray[3][2] = "o";
+testArray[50][50] = "o";
+testArray[50][51] = "o";
+testArray[51][49] = "o";
+testArray[51][50] = "o";
+testArray[52][50] = "o";
 
 console.log(testArray);
 
@@ -21,7 +18,7 @@ let neighborCheck = function (row, col, arr) {
             if (row+i >= 0 && row+i < size) {
                 if (col+j >= 0 && col+j < size) {
                     if (i !== 0 || j !== 0) {
-                        if (arr[(row+i)][(col+j)] === "o") {
+                        if (arr[(row+i)][(col+j)] !== null) {
                             liveNeighbors++;
                         }
                     }
@@ -31,18 +28,18 @@ let neighborCheck = function (row, col, arr) {
     };
 
 
-    if (thisCell === "o") {
+    if (thisCell !== null) {
         if (liveNeighbors < 2 || liveNeighbors > 3) {
-            return "x";
+            return null;
         } else {
             return "o";
         }
     };
-    if (thisCell === "x") {
+    if (thisCell === null) {
         if (liveNeighbors === 3) {
             return "o";
         } else {
-            return "x";
+            return null;
         }
     }
 };
@@ -59,36 +56,57 @@ let nextDayLifeArray = function (arry) {
     return newArry;
 }
 
-let createGridLayout = function(dayLayout) {
-    var gridLayout = nextDayLifeArray(dayLayout);
-    var $grid = $('#grid-container');
-    for (let i=0; i<size; i++) {
-        for (let j=0; j<size; j++) {
-            var $cell = $('<div>');
-            if (dayLayout[i][j] === "o") {
-                $cell.addClass('live-cell');
-            } else {
-                $cell.addClass('dead-cell');
-            }
-            $grid.append($cell);
-        };
-    };
-}
+var canvas = document.getElementById('canvas');
+if (canvas.getContext) {
+    var ctx = canvas.getContext('2d');
+    ctx.canvas.width  = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+    
+    ctx.fillStyle = 'rgb(200, 0, 0)';
+    ctx.fillRect(10, 10, 50, 50);
 
-newGridLayout(testArray);
-var nextDay = nextDayLifeArray(testArray);
+    ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
+    ctx.fillRect(30, 30, 50, 50);
+};
 
-// setInterval(function() {
+// var nextDay = nextDayLifeArray(testArray);
+// let animate = function animate(timestamp) {
 //     nextDay = nextDayLifeArray(nextDay);
+//     console.log(nextDay);
+//     requestAnimationFrame(animate);
+// };
+// requestAnimationFrame(animate);
+
+// ## Drawing using <canvas>
+
+
+
+// ## Drawing using CSS Grid and DOM elements -- inefficient
+// let newGridLayout = function(dayLayout) {
+//     var gridLayout = nextDayLifeArray(dayLayout);
+//     var $grid = $('#grid-container');
+//     $grid.empty();
+//     cellArray = [];
 //     for (let i=0; i<size; i++) {
 //         for (let j=0; j<size; j++) {
 //             var $cell = $('<div>');
-//             if (nextDay[i][j] === "o") {
+//             if (dayLayout[i][j] !== null) {
 //                 $cell.addClass('live-cell');
 //             } else {
 //                 $cell.addClass('dead-cell');
 //             }
-//             $grid.append($cell);
+//             cellArray.push($cell);
 //         };
 //     };
-// }, 1000);
+//     $grid.append(cellArray);
+//     return gridLayout;
+// };
+
+// var nextDay = newGridLayout(testArray);
+
+// let animate = function animate(timestamp) {
+//     nextDay = newGridLayout(nextDay);
+//     requestAnimationFrame(animate);
+// };
+
+// requestAnimationFrame(animate);
