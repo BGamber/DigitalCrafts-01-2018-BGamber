@@ -39,7 +39,7 @@ var createCompleteButton = function(targetEmail) {
         // checks 'data-delete' flag before sending DELETE request
         setTimeout(function() {
             if (event.target.getAttribute('data-delete') === 'true') {
-                var delPromise = fetch(apiAddress+targetEmail, {type: 'DELETE'});
+                var delPromise = fetch(apiAddress+targetEmail, {method: 'DELETE'});
                 delPromise.then(orderTracker.loadOrderList)
             } else {
                 orderTracker.loadOrderList();
@@ -78,14 +78,16 @@ var orderTracker = function() {
                 
         },
         addOrder: function(order) {
-            let addPromise = fetch(apiAddress,
+            let addPromise = fetch(apiAddress, 
                 {method: 'POST',
                 body: JSON.stringify(order),
                 headers: new Headers({
                     'Content-Type': 'application/json'
               })
             });
-            addPromise.then(this.loadOrderList());
+            addPromise.then(function() {
+                    orderTracker.loadOrderList();
+                });
         },
         makeOrderString: function(order) {
             orderString = '';
