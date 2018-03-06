@@ -65,13 +65,17 @@ var orderTracker = function() {
                     return serverData.json();
                 })
                 .then(function(jsonData) {
-                    orderList = Object.values(jsonData);
+                    return Object.values(jsonData);
+                })
+                .then(function(orderValues) {
+                    orderList = orderValues;
                     orderTracker.updateOrderList();
                     console.log("Query complete.");
                 });
             getPromise.catch(function(reason) {
                 console.log(`Query failed: ${reason}`);
-            });
+            })
+                
         },
         addOrder: function(order) {
             let addPromise = fetch(apiAddress,
