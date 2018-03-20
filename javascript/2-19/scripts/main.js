@@ -37,31 +37,39 @@ var splitAmount = function (bill, service, numSplit) {
 
 // Javascript 102
 var printNumbers = function (num1, num2) {
+    var numArray = [];
     for (i = num1; i <= num2; i++) {
-        console.log(i);
+        numArray.push(i);
     }
+    return numArray;
 }
 
 var printSquare = function (size) {
+    var squareArray = [];
     for (i = 0; i < size; i++) {
-        console.log('* '.repeat(size));
+        squareArray.push('* '.repeat(size));
     }
+    return squareArray;
 }
 
 var printBox = function (size) {
+    var boxArray = [];
     for (i = 1; i <= size; i++) {
         if (i == 1 || i == size) {
-            console.log('* '.repeat(size));
+            boxArray.push('* '.repeat(size));
         } else {
-            console.log('* ' + '  '.repeat(size - 2) + '* ');
+            boxArray.push('* ' + '  '.repeat(size - 2) + '* ');
         }
     }
+    return boxArray;
 }
 
 var printBanner = function (message) {
-    console.log('*'.repeat(message.length + 4));
-    console.log('* ' + message + ' *');
-    console.log('*'.repeat(message.length + 4));
+    messageArray = [];
+    messageArray.push('*'.repeat(message.length + 4));
+    messageArray.push('* ' + message + ' *');
+    messageArray.push('*'.repeat(message.length + 4));
+    return messageArray;
 }
 
 var factor = function (number) {
@@ -260,4 +268,20 @@ var ticTacToe = function (grid) {
         return grid[0][2];
     }
     return null;
+}
+
+module.exports = {
+    printNumbers: printNumbers,
+    printSquare: printSquare,
+    printBox: printBox,
+    printBanner: printBanner,
+    factor: factor,
+    cipher: cipher,
+    leetspeak: leetspeak,
+    longLongVowels: longLongVowels,
+    sumNumbers: sumNumbers,
+    positiveNumbers: positiveNumbers,
+    matrixAdd: matrixAdd,
+    matrixMultiply: matrixMultiply,
+    rockPaperScissors: rockPaperScissors
 }
