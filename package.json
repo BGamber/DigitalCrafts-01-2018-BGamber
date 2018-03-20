@@ -1,0 +1,23 @@
+{
+  "name": "DigitalCrafts-01-2018",
+  "version": "1.0.0",
+  "description": "Digital Crafts January ’18 Cohort — All exercises",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BGamber/DigitalCrafts-01-2018-BGamber.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BGamber/DigitalCrafts-01-2018-BGamber/issues"
+  },
+  "homepage": "https://github.com/BGamber/DigitalCrafts-01-2018-BGamber#readme",
+  "dependencies": {
+    "request": "^2.85.0"
+  }
+}
