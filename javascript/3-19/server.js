@@ -106,7 +106,7 @@ var server = http.createServer(function (request, response) {
     };
 
   } else if (requestMatches(request, 'POST', '/contacts')) {
-    readBody(request, createContactEntry(body));
+    readBody(request, createContactEntry);
     
   } else if (requestMatches(request, 'GET', '/myip')) {
     var ip = getConnectionIP(request);
