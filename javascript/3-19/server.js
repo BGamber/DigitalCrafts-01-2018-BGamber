@@ -21,6 +21,31 @@ var contacts = [
   }
 ];
 
+var getMatchingContacts = function (request, response) {
+  var searchID = request.url.substring(10);
+  console.log('Searching ID:', searchID);
+
+  // Easter Egg!
+  if (searchID.toLowerCase() === 'zalgo') {
+    sendZalgo(response);
+
+  } else {
+    var searchContact = findContact(contacts, searchID);
+    if (searchContact) {
+      console.log("Found: \n", searchContact);
+      response.end(JSON.stringify(searchContact));
+    } else {
+      response.statusCode = 404;
+      response.end("404 ERROR: Could not find listing for given ID");
+    };
+  };
+};
+
+var getAllContacts = function (contacts, response) {
+  console.log('No ID included; sending full list');
+  response.end(JSON.stringify(contacts));
+};
+
 var readBody = function (request, callback) {
   var body = '';
   request.on('data', function (chunk) {
@@ -28,9 +53,13 @@ var readBody = function (request, callback) {
   });
   request.on('end', function () {
     callback(body);
-    response.end('New contact added!');
   });
 };
+
+var postContact = function (request, response) {
+    readBody(request, createContactEntry);
+    response.end('New contact added!');
+}
 
 var createContactEntry = function (body) {
   var id = uuidv4();
@@ -52,11 +81,11 @@ var findContact = function (contacts, searchID) {
   return searchContact;
 };
 
-var getConnectionIP = function (request) {
+var getConnectionIP = function (request, response) {
   var address = request.connection.remoteAddress;
   var addressArr = address.split(':');
   var ip = addressArr[addressArr.length - 1];
-  return ip;
+  response.end(`Hi, ${ip !== '1' ? ip : 'Host'}!`);
 };
 
 var logConnection = function (request) {
@@ -64,6 +93,15 @@ var logConnection = function (request) {
   var userIP = getConnectionIP(request);
   console.log(`${userIP}: ${request.method} ${request.url} ${nowString}`);
 };
+
+var notFound = function (request, response) {
+  response.statusCode = 404;
+  if (requestMatches(request, 'GET', '/contacts/')) {
+    response.end("404 ERROR: Oops! No matching ID found!");
+  } else {
+    response.end("404 ERROR: Location not found (try /contacts or /myip)!");
+  }
+}
 
 var sendZalgo = function (response) {
   var zalgo = {
@@ -75,47 +113,39 @@ var sendZalgo = function (response) {
   response.end(JSON.stringify(zalgo));
 };
 
-routes = [
+var router = function (request) {
+  return routes.find(route => { return requestMatches(request, route.method, route.url) })
+};
 
+routes = [
+  { route: 'GET /contacts', handler: getAllContacts },
+  { route: 'GET /contacts/', handler: getMatchingContacts },
+  { route: 'GET /myip', handler: getConnectionIP },
+  { route: 'POST /contacts', handler: postContact }
 ];
 
 var server = http.createServer(function (request, response) {
   logConnection(request);
-  if (requestMatches(request, 'GET', '/contacts')) {
+  let route = router(request);
 
-    if (requestMatches(request, 'GET', '/contacts/')) {
-      var searchID = request.url.substring(10);
-      console.log('Searching ID:', searchID);
-
-      // Easter Egg!
-      if (searchID.toLowerCase() === 'zalgo') {
-        sendZalgo(response);
-      } else {
-        var searchContact = findContact(contacts, searchID);
-        if (searchContact) {
-          console.log("Found: \n", searchContact);
-          response.end(JSON.stringify(searchContact));
-        } else {
-          response.statusCode = 404;
-          response.end("404 ERROR: Could not find listing for given ID");
-        };
-      };
-    } else {
-      console.log('No ID included; sending full list');
-      response.end(JSON.stringify(contacts));
-    };
-
-  } else if (requestMatches(request, 'POST', '/contacts')) {
-    readBody(request, createContactEntry);
-    
-  } else if (requestMatches(request, 'GET', '/myip')) {
-    var ip = getConnectionIP(request);
-    response.end(`Hi, ${ip !== '1' ? ip : 'Host'}!`);
-
-  } else {
-    response.statusCode = 404;
-    response.end("404 Error: Oops, that location doesn't exist! (Try /contacts or /myip)");
-  };
+  (route ? route.handler : notFound)(request, response);
 });
+
+// // GET for specific contact ID
+// if (requestMatches(request, 'GET', '/contacts/')) {
+//   getMatchingContacts(request, response);
+
+// } else if (requestMatches(request, 'POST', '/contacts')) {
+//   postContact(request, response);
+
+// } else if (requestMatches(request, 'GET', '/myip')) {
+//   getConnectionIP(request, response);
+
+// } else if (requestMatches(request, 'GET', '/contacts')) {
+//   getAllContacts(contacts, response);
+
+// } else {
+//   notFound(request, response);
+// };
 
 server.listen(3000);
