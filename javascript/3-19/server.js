@@ -1,12 +1,12 @@
 // HTTP is required for server
-var http = require('http');
+const http = require('http');
 // UUID generates unique ids server-side
-var uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid/v4');
 // Moment is a date/time module, used here for logging activity
-var moment = require('moment');
+const moment = require('moment');
 
 // Pre-populate data for testing
-var contacts = [
+let contacts = [
   {
     "contact-name": "Ben Gamber",
     "contact-phone": "555-555-5555",
@@ -21,8 +21,8 @@ var contacts = [
   }
 ];
 
-var getMatchingContacts = function (request, response) {
-  var searchID = request.url.substring(10);
+let getMatchingContacts = (request, response) => {
+  let searchID = request.url.substring(10);
   console.log('Searching ID:', searchID);
 
   // Easter Egg!
@@ -30,7 +30,7 @@ var getMatchingContacts = function (request, response) {
     sendZalgo(response);
 
   } else {
-    var searchContact = findContact(contacts, searchID);
+    let searchContact = findContact(contacts, searchID);
     if (searchContact) {
       console.log("Found: \n", searchContact);
       response.end(JSON.stringify(searchContact));
@@ -42,14 +42,14 @@ var getMatchingContacts = function (request, response) {
   };
 };
 
-var getAllContacts = function (request, response) {
+let getAllContacts = (request, response) => {
   console.log('No ID included; sending full list');
   response.end(JSON.stringify(contacts));
 };
 
-var readBody = function (request, callback) {
-  var body = '';
-  request.on('data', function (chunk) {
+let readBody = (request, callback) => {
+  let body = '';
+  request.on('data', (chunk) => {
     body += chunk.toString();
   });
   request.on('end', function () {
@@ -57,22 +57,22 @@ var readBody = function (request, callback) {
   });
 };
 
-var postContact = function (request, response) {
+let postContact = (request, response) => {
   readBody(request, createContactEntry);
   response.end('New contact added!');
 }
 
-var createContactEntry = function (body) {
-  var id = uuidv4();
-  var contact = JSON.parse(body);
+let createContactEntry = (body) => {
+  let id = uuidv4();
+  let contact = JSON.parse(body);
   contact["contact-id"] = id;
   contacts.push(contact);
   console.log("Added new entry: ", id + '\n', contact);
 }
 
-var requestMatches = function (request, method, path) {
+let requestMatches = (request, method, path) => {
   if (request.method === method) {
-    var match = path.exec(request.url);
+    let match = path.exec(request.url);
     if (match) {
       return match.slice(1);
     };
@@ -80,42 +80,44 @@ var requestMatches = function (request, method, path) {
   };
 };
 
-var findContact = function (contacts, searchID) {
-  var searchContact = contacts.find(function (item) {
+let findContact = (contacts, searchID) => {
+  let searchContact = contacts.find((item) => {
     return item["contact-id"] === searchID;
   });
   return searchContact;
 };
 
-var getConnectionIP = function (request) {
-  var address = request.connection.remoteAddress;
-  var addressArr = address.split(':');
-  var ip = addressArr[addressArr.length - 1];
+let getConnectionIP = (request) => {
+  let address = request.connection.remoteAddress;
+  let addressArr = address.split(':');
+  let ip = addressArr[addressArr.length - 1];
   return ip;
 };
 
-var respondConnectionIP = (request, response) => {
-  var ip = getConnectionIP(request);
+let respondConnectionIP = (request, response) => {
+  let ip = getConnectionIP(request);
   response.end(`Hi, ${ip !== '1' ? ip : 'Host'}!`);
 };
 
-var logConnection = function (request, response) {
-  var nowString = moment().format("h:mm:ss M-DD-YYYY");
-  var userIP = getConnectionIP(request, response);
+let logConnection = (request, response) => {
+  let nowString = moment().format("h:mm:ss M-DD-YYYY");
+  let userIP = getConnectionIP(request, response);
   console.log(`${userIP}: ${request.method} ${request.url} ${nowString}`);
 };
 
-var notFound = function (request, response) {
+let notFound = (request, response) => {
   response.statusCode = 404;
   if (requestMatches(request, 'GET', /^\/contacts\/?$/)) {
     response.end("404 ERROR: Oops! No matching ID found!");
   } else {
     response.end("404 ERROR: Invalid request method and/or path!");
   }
-}
+};
 
-var sendZalgo = function (response) {
-  var zalgo = {
+
+
+let sendZalgo = (response) => {
+  let zalgo = {
     first: "Z̠̣̱͚͚͕á̱l̰ͅg̡o̮",
     last: " Ṉ̶͓̭̼ḛ̴̥͓̳̲z̤̜ͅp͔̩̱e͏͎r̜̙̪͚ḏi̹̣a͙͢n̼̞͉",
     email: "Z̤̺͉̦A̖͝L͍̱G̶̰̺̲̗̥̖̮O̩͈̠@h̴̥i̮v̜̣̗̖̭ẹ͞-̱͔͙m͔in̩̮̯d̟̫̟̦̖̯̗́.net",
@@ -124,7 +126,7 @@ var sendZalgo = function (response) {
   response.end(JSON.stringify(zalgo));
 };
 
-var router = function (request) {
+let router = (request) => {
   return routes.find(route => { return requestMatches(request, route.method, route.path) })
 };
 
@@ -135,7 +137,7 @@ routes = [
   { method: 'GET', path: /^\/myip$/, handler: respondConnectionIP },
 ];
 
-var server = http.createServer(function (request, response) {
+let server = http.createServer((request, response) => {
   logConnection(request, response);
   let route = router(request);
 
