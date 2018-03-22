@@ -110,7 +110,7 @@ var notFound = function (request, response) {
   if (requestMatches(request, 'GET', /^\/contacts\/?$/)) {
     response.end("404 ERROR: Oops! No matching ID found!");
   } else {
-    response.end("404 ERROR: Location not found (try /contacts or /myip)!");
+    response.end("404 ERROR: Invalid request method and/or path!");
   }
 }
 
@@ -138,7 +138,6 @@ routes = [
 var server = http.createServer(function (request, response) {
   logConnection(request, response);
   let route = router(request);
-  console.log(route);
 
   (route ? route.handler : notFound)(request, response);
 });
