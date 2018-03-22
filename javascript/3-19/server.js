@@ -143,21 +143,4 @@ var server = http.createServer(function (request, response) {
   (route ? route.handler : notFound)(request, response);
 });
 
-// // GET for specific contact ID
-// if (requestMatches(request, 'GET', '/contacts/')) {
-//   getMatchingContacts(request, response);
-
-// } else if (requestMatches(request, 'POST', '/contacts')) {
-//   postContact(request, response);
-
-// } else if (requestMatches(request, 'GET', '/myip')) {
-//   getConnectionIP(request, response);
-
-// } else if (requestMatches(request, 'GET', '/contacts')) {
-//   getAllContacts(contacts, response);
-
-// } else {
-//   notFound(request, response);
-// };
-
 server.listen(3000);
