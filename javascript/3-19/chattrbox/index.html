@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chattrbox</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/index.css">
+  </head>
+  <body class="container">
+    <nav class="sidebar column">
+      <h2 class="section-header">Participants</h2>
+      <ul class="user-list" data-chat="user-list">
+      </ul>
+    </nav>
+
+    <div class="chat-wrapper column">
+    <header class="chat-app-header">
+      <h1>Chattrbox</h1>
+    </header>
+
+    <div class="panel panel-default chat-messages">
+        <ul class="panel-body chat-message-list" data-chat="message-list"></ul>
+    </div>
+
+    <section class="chat-input">
+      <form data-chat="chat-form" class="cb-container">
+        <div class="input-group">
+          <label for="js-message-input" class="sr-only">Message:</label>
+          <input type="text" class="form-control" data-chat="message-input" autofocus>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Go!</button>
+          </span>
+        </div>
+      </form>
+    </section>
+    </div>
+
+    <script src="/index.js"></script>
+  </body>
+</html>
