@@ -1,0 +1,39 @@
+.complete-button {
+    padding: 2px;
+    background-color: white;
+    border-radius: 5%;
+    border: 1px solid darkgray;
+    box-shadow: 1px 1px 1px lightgray;
+    text-decoration: none;
+}
+
+.complete-button:hover {
+    background-color: green;
+    border: 2px solid gray;
+    box-shadow: 2px 2px 2px lightgray;
+    text-decoration: none;
+}
+
+.undo-button {
+    padding: 2px;
+    background-color: red;
+    color: white;
+    border-radius: 5%;
+    border: 1px solid darkgray;
+    box-shadow: 1px 1px 1px lightgray;
+    text-decoration: none;
+}
+
+.order-item {
+    display: inline-block;
+    box-sizing: content-box;
+    padding: 5px;
+    border-top: 1px dashed gray;
+    border-bottom: 1px dashed gray;
+}
+
+.order-complete {
+    background-color: rgb(115, 168, 7);
+    border: 1px solid green;
+    transition: all 0.5s ease-out;
+}
