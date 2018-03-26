@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>Continuation-passing style - Wikipedia</title>
+<script>document.documentElement.className = document.documentElement.className.replace( /(^|\s)client-nojs(\s|$)/, "$1client-js$2" );</script>
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Continuation-passing_style","wgTitle":"Continuation-passing style","wgCurRevisionId":829975551,"wgRevisionId":829975551,"wgArticleId":749852,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Articles with example Java code","Continuations","Functional programming","Implementation of functional programming languages","Articles with example Scheme code"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Continuation-passing_style","wgRelevantArticleId":749852,"wgRequestId":"WqitjQpAICIAAA-j9loAAAAH","wgIsProbablyEditable":true,"wgRelevantPageIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgFlaggedRevsParams":{"tags":{}},"wgStableRevisionId":null,"wgWikiEditorEnabledModules":[],"wgBetaFeaturesFeatures":[],"wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgPopupsShouldSendModuleToUser":true,"wgPopupsConflictsWithNavPopupGadget":false,"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","pageVariantFallbacks":"en","usePageImages":true,"usePageDescriptions":true},"wgPreferredVariant":"en","wgMFExpandAllSectionsUserOption":true,"wgMFEnableFontChanger":true,"wgMFDisplayWikibaseDescriptions":{"search":true,"nearby":true,"watchlist":true,"tagline":false},"wgRelatedArticles":null,"wgRelatedArticlesUseCirrusSearch":true,"wgRelatedArticlesOnlyUseCirrusSearch":false,"wgULSCurrentAutonym":"English","wgNoticeProject":"wikipedia","wgCentralNoticeCookiesToDelete":[],"wgCentralNoticeCategoriesUsingLegacy":["Fundraising","fundraising"],"wgCategoryTreePageCategoryOptions":"{\"mode\":0,\"hideprefix\":20,\"showcount\":true,\"namespaces\":false}","wgWikibaseItemId":"Q749893","wgScoreNoteLanguages":{"arabic":"العربية","catalan":"català","deutsch":"Deutsch","english":"English","espanol":"español","italiano":"italiano","nederlands":"Nederlands","norsk":"norsk","portugues":"português","suomi":"suomi","svenska":"svenska","vlaams":"West-Vlams"},"wgScoreDefaultNoteLanguage":"nederlands","wgCentralAuthMobileDomain":false,"wgCodeMirrorEnabled":false,"wgVisualEditorToolbarScrollOffset":0,"wgVisualEditorUnsupportedEditParams":["undo","undoafter","veswitched"],"wgEditSubmitButtonLabelPublish":true});mw.loader.state({"ext.gadget.charinsert-styles":"ready","ext.globalCssJs.user.styles":"ready","ext.globalCssJs.site.styles":"ready","site.styles":"ready","noscript":"ready","user.styles":"ready","user":"ready","user.options":"ready","user.tokens":"loading","ext.cite.styles":"ready","ext.pygments":"ready","wikibase.client.init":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.interlanguage":"ready","ext.wikimediaBadges":"ready","mediawiki.legacy.shared":"ready","mediawiki.legacy.commonPrint":"ready","mediawiki.sectionAnchor":"ready","mediawiki.skinning.interface":"ready","skins.vector.styles":"ready","ext.globalCssJs.user":"ready","ext.globalCssJs.site":"ready"});mw.loader.implement("user.tokens@1dqfd7l",function($,jQuery,require,module){/*@nomin*/mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+});mw.loader.load(["ext.cite.a11y","site","mediawiki.page.startup","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.toc","mediawiki.searchSuggest","ext.gadget.teahouse","ext.gadget.ReferenceTooltips","ext.gadget.watchlist-notice","ext.gadget.DRN-wizard","ext.gadget.charinsert","ext.gadget.refToolbar","ext.gadget.extra-toolbar-buttons","ext.gadget.switcher","ext.centralauth.centralautologin","mmv.head","mmv.bootstrap.autostart","ext.popups","ext.visualEditor.desktopArticleTarget.init","ext.visualEditor.targetLoader","ext.eventLogging.subscriber","ext.wikimediaEvents","ext.navigationTiming","ext.uls.eventlogger","ext.uls.init","ext.uls.compactlinks","ext.uls.interface","ext.3d","ext.centralNotice.geoIP","ext.centralNotice.startUp","skins.vector.js"]);});</script>
+<link rel="stylesheet" href="/w/load.php?debug=false&amp;lang=en&amp;modules=ext.cite.styles%7Cext.pygments%2CwikimediaBadges%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cmediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.sectionAnchor%7Cmediawiki.skinning.interface%7Cskins.vector.styles%7Cwikibase.client.init&amp;only=styles&amp;skin=vector"/>
+<script async="" src="/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=vector"></script>
+<meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="/w/load.php?debug=false&amp;lang=en&amp;modules=ext.gadget.charinsert-styles&amp;only=styles&amp;skin=vector"/>
+<link rel="stylesheet" href="/w/load.php?debug=false&amp;lang=en&amp;modules=site.styles&amp;only=styles&amp;skin=vector"/>
+<meta name="generator" content="MediaWiki 1.31.0-wmf.24"/>
+<meta name="referrer" content="origin"/>
+<meta name="referrer" content="origin-when-crossorigin"/>
+<meta name="referrer" content="origin-when-cross-origin"/>
+<link rel="alternate" href="android-app://org.wikipedia/http/en.m.wikipedia.org/wiki/Continuation-passing_style"/>
+<link rel="alternate" type="application/x-wiki" title="Edit this page" href="/w/index.php?title=Continuation-passing_style&amp;action=edit"/>
+<link rel="edit" title="Edit this page" href="/w/index.php?title=Continuation-passing_style&amp;action=edit"/>
+<link rel="apple-touch-icon" href="/static/apple-touch/wikipedia.png"/>
+<link rel="shortcut icon" href="/static/favicon/wikipedia.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="Wikipedia (en)"/>
+<link rel="EditURI" type="application/rsd+xml" href="//en.wikipedia.org/w/api.php?action=rsd"/>
+<link rel="license" href="//creativecommons.org/licenses/by-sa/3.0/"/>
+<link rel="canonical" href="https://en.wikipedia.org/wiki/Continuation-passing_style"/>
+<link rel="dns-prefetch" href="//login.wikimedia.org"/>
+<link rel="dns-prefetch" href="//meta.wikimedia.org" />
+<!--[if lt IE 9]><script src="/w/load.php?debug=false&amp;lang=en&amp;modules=html5shiv&amp;only=scripts&amp;skin=vector&amp;sync=1"></script><![endif]-->
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Continuation-passing_style rootpage-Continuation-passing_style skin-vector action-view">		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<div id="content" class="mw-body" role="main">
+			<a id="top"></a>
+			<div id="siteNotice" class="mw-body-content"><!-- CentralNotice --></div><div class="mw-indicators mw-body-content">
+</div>
+<h1 id="firstHeading" class="firstHeading" lang="en">Continuation-passing style</h1>			<div id="bodyContent" class="mw-body-content">
+				<div id="siteSub" class="noprint">From Wikipedia, the free encyclopedia</div>				<div id="contentSub"></div>
+								<div id="jump-to-nav" class="mw-jump">
+					Jump to:					<a href="#mw-head">navigation</a>, 					<a href="#p-search">search</a>
+				</div>
+				<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div class="mw-parser-output"><p>In <a href="/wiki/Functional_programming" title="Functional programming">functional programming</a>, <b>continuation-passing style</b> (<b>CPS</b>) is a style of programming in which <a href="/wiki/Control_flow" title="Control flow">control</a> is passed explicitly in the form of a <a href="/wiki/Continuation" title="Continuation">continuation</a>. This is contrasted with <a href="/wiki/Direct_style" title="Direct style">direct style</a>, which is the usual style of programming. <a href="/wiki/Gerald_Jay_Sussman" title="Gerald Jay Sussman">Gerald Jay Sussman</a> and <a href="/wiki/Guy_L._Steele,_Jr." class="mw-redirect" title="Guy L. Steele, Jr.">Guy L. Steele, Jr.</a> coined the phrase in <a href="/wiki/AI_Memo" title="AI Memo">AI Memo</a> 349 (1975), which sets out the first version of the <a href="/wiki/Scheme_(programming_language)" title="Scheme (programming language)">Scheme</a> programming language.<sup id="cite_ref-1" class="reference"><a href="#cite_note-1">[1]</a></sup><sup id="cite_ref-2" class="reference"><a href="#cite_note-2">[2]</a></sup> <a href="/wiki/John_C._Reynolds" title="John C. Reynolds">John C. Reynolds</a> gives a detailed account of the numerous discoveries of continuations.<sup id="cite_ref-3" class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p>A function written in continuation-passing style takes an extra argument: an explicit "continuation", i.e. a function of one argument. When the CPS function has computed its result value, it "returns" it by calling the continuation function with this value as the argument. That means that when invoking a CPS function, the calling function is required to supply a procedure to be invoked with the subroutine's "return" value. Expressing code in this form makes a number of things explicit which are implicit in direct style. These include: procedure returns, which become apparent as calls to a continuation; intermediate values, which are all given names; order of argument evaluation, which is made explicit; and <a href="/wiki/Tail_call" title="Tail call">tail calls</a>, which simply call a procedure with the same continuation, unmodified, that was passed to the caller.</p>
+<p>Programs can be automatically transformed from direct style to CPS. Functional and <a href="/wiki/Logic_programming" title="Logic programming">logic</a> compilers often use CPS as an <a href="/wiki/Intermediate_representation" title="Intermediate representation">intermediate representation</a> where a compiler for an <a href="/wiki/Imperative_programming" title="Imperative programming">imperative</a> or <a href="/wiki/Procedural_programming" title="Procedural programming">procedural</a> <a href="/wiki/Programming_language" title="Programming language">programming language</a> would use <a href="/wiki/Static_single_assignment_form" title="Static single assignment form">static single assignment form</a> (SSA).<sup id="cite_ref-Appel1998_4-0" class="reference"><a href="#cite_note-Appel1998-4">[4]</a></sup> SSA is formally equivalent to a subset of CPS (excluding non-local control flow, which does not occur when CPS is used as intermediate representation).<sup id="cite_ref-Kelsey1995_5-0" class="reference"><a href="#cite_note-Kelsey1995-5">[5]</a></sup> Functional compilers can also use <a href="/wiki/A-normal_form" title="A-normal form">A-normal form</a> (ANF) (but only for languages requiring eager evaluation), rather than with '<a href="/wiki/Thunk_(delayed_computation)" class="mw-redirect" title="Thunk (delayed computation)">thunks</a>' (described in the examples below) in CPS. CPS is used more frequently by <a href="/wiki/Compiler" title="Compiler">compilers</a> than by programmers as a local or global style.</p>
+<p></p>
+<div id="toc" class="toc">
+<div class="toctitle" lang="en" dir="ltr" xml:lang="en">
+<h2>Contents</h2>
+</div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Examples"><span class="tocnumber">1</span> <span class="toctext">Examples</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#CPS_in_Haskell"><span class="tocnumber">1.1</span> <span class="toctext">CPS in Haskell</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="#Continuations_as_objects"><span class="tocnumber">1.2</span> <span class="toctext">Continuations as objects</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-4"><a href="#Tail_calls"><span class="tocnumber">2</span> <span class="toctext">Tail calls</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="#Use_and_implementation"><span class="tocnumber">3</span> <span class="toctext">Use and implementation</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="#Use_in_other_fields"><span class="tocnumber">4</span> <span class="toctext">Use in other fields</span></a></li>
+<li class="toclevel-1 tocsection-7"><a href="#See_also"><span class="tocnumber">5</span> <span class="toctext">See also</span></a></li>
+<li class="toclevel-1 tocsection-8"><a href="#Notes"><span class="tocnumber">6</span> <span class="toctext">Notes</span></a></li>
+<li class="toclevel-1 tocsection-9"><a href="#References"><span class="tocnumber">7</span> <span class="toctext">References</span></a></li>
+</ul>
+</div>
+<p></p>
+<h2><span class="mw-headline" id="Examples">Examples</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Continuation-passing_style&amp;action=edit&amp;section=1" title="Edit section: Examples">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>In CPS, each procedure takes an extra argument representing what should be done with the result the function is calculating. This, along with a restrictive style prohibiting a variety of constructs usually available, is used to expose the semantics of programs, making them easier to analyze. This style also makes it easy to express unusual control structures, like catch/throw or other non-local transfers of control.</p>
+<p>The key to CPS is to remember that (a) <i>every</i> function takes an extra argument, its continuation, and (b) every argument in a function call must be either a variable or a <a href="/wiki/Lambda_(programming)" class="mw-redirect" title="Lambda (programming)">lambda expression</a> (not a more complex expression). This has the effect of turning expressions "inside-out" because the innermost parts of the expression must be evaluated first, so CPS explicates the order of evaluation as well as the control flow. Some examples of code in direct style and the corresponding CPS appear below. These examples are written in the <a href="/wiki/Scheme_(programming_language)" title="Scheme (programming language)">Scheme programming language</a>; by convention the continuation function is represented as a parameter named "<code>k</code>":</p>
+<table>
+<tr>
+<th>
+<center>Direct style</center>
+</th>
+<th>
+<center>Continuation passing style</center>
+</th>
+</tr>
+<tr valign="top">
+<td>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">pyth</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+ <span class="p">(</span><span class="nb">sqrt </span><span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">* </span><span class="nv">x</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">* </span><span class="nv">y</span> <span class="nv">y</span><span class="p">))))</span>
+</pre></div>
+</td>
+<td>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">pyth&amp;</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">k</span><span class="p">)</span>
+ <span class="p">(</span><span class="nf">*&amp;</span> <span class="nv">x</span> <span class="nv">x</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x2</span><span class="p">)</span>
+          <span class="p">(</span><span class="nf">*&amp;</span> <span class="nv">y</span> <span class="nv">y</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">y2</span><span class="p">)</span>
+                   <span class="p">(</span><span class="nf">+&amp;</span> <span class="nv">x2</span> <span class="nv">y2</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x2py2</span><span class="p">)</span>
+                              <span class="p">(</span><span class="nf">sqrt&amp;</span> <span class="nv">x2py2</span> <span class="nv">k</span><span class="p">))))))))</span>
+</pre></div>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">factorial</span> <span class="nv">n</span><span class="p">)</span>
+ <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">0</span><span class="p">)</span>
+     <span class="mi">1</span>     <span class="c1">; NOT tail-recursive</span>
+     <span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="p">(</span><span class="nf">factorial</span> <span class="p">(</span><span class="nb">- </span><span class="nv">n</span> <span class="mi">1</span><span class="p">)))))</span>
+</pre></div>
+</td>
+<td>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">factorial&amp;</span> <span class="nv">n</span> <span class="nv">k</span><span class="p">)</span>
+ <span class="p">(</span><span class="nf">=&amp;</span> <span class="nv">n</span> <span class="mi">0</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">b</span><span class="p">)</span>
+          <span class="p">(</span><span class="k">if </span><span class="nv">b</span>                    <span class="c1">; growing continuation</span>
+              <span class="p">(</span><span class="nf">k</span> <span class="mi">1</span><span class="p">)</span>                <span class="c1">; in the recursive call</span>
+              <span class="p">(</span><span class="nf">-&amp;</span> <span class="nv">n</span> <span class="mi">1</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">nm1</span><span class="p">)</span>
+                       <span class="p">(</span><span class="nf">factorial&amp;</span> <span class="nv">nm1</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">f</span><span class="p">)</span>
+                                        <span class="p">(</span><span class="nf">*&amp;</span> <span class="nv">n</span> <span class="nv">f</span> <span class="nv">k</span><span class="p">)))))))))</span>
+</pre></div>
+</td>
+</tr>
+<tr valign="top">
+<td>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">factorial</span> <span class="nv">n</span><span class="p">)</span>
+ <span class="p">(</span><span class="nf">f-aux</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">f-aux</span> <span class="nv">n</span> <span class="nv">a</span><span class="p">)</span>
+ <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">0</span><span class="p">)</span>
+     <span class="nv">a</span>        <span class="c1">; tail-recursive</span>
+     <span class="p">(</span><span class="nf">f-aux</span> <span class="p">(</span><span class="nb">- </span><span class="nv">n</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nb">* </span><span class="nv">n</span> <span class="nv">a</span><span class="p">))))</span>
+</pre></div>
+</td>
+<td>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">factorial&amp;</span> <span class="nv">n</span> <span class="nv">k</span><span class="p">)</span> <span class="p">(</span><span class="nf">f-aux&amp;</span> <span class="nv">n</span> <span class="mi">1</span> <span class="nv">k</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">f-aux&amp;</span> <span class="nv">n</span> <span class="nv">a</span> <span class="nv">k</span><span class="p">)</span>
+ <span class="p">(</span><span class="nf">=&amp;</span> <span class="nv">n</span> <span class="mi">0</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">b</span><span class="p">)</span>
+          <span class="p">(</span><span class="k">if </span><span class="nv">b</span>                    <span class="c1">; unmodified continuation</span>
+              <span class="p">(</span><span class="nf">k</span> <span class="nv">a</span><span class="p">)</span>                <span class="c1">; in the recursive call</span>
+              <span class="p">(</span><span class="nf">-&amp;</span> <span class="nv">n</span> <span class="mi">1</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">nm1</span><span class="p">)</span> 
+                       <span class="p">(</span><span class="nf">*&amp;</span> <span class="nv">n</span> <span class="nv">a</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">nta</span><span class="p">)</span>
+                                <span class="p">(</span><span class="nf">f-aux&amp;</span> <span class="nv">nm1</span> <span class="nv">nta</span> <span class="nv">k</span><span class="p">)))))))))</span>
+</pre></div>
+</td>
+</tr>
+</table>
+<p>Note that in the CPS versions, the primitives used, like <code>+&amp;</code> and <code>*&amp;</code> are themselves CPS, not direct style, so to make the above examples work in a Scheme system we would need to write these CPS versions of primitives, with for instance <code>*&amp;</code> defined by:</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">*&amp;</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">k</span><span class="p">)</span>
+ <span class="p">(</span><span class="nf">k</span> <span class="p">(</span><span class="nb">* </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)))</span>
+</pre></div>
+<p>To do this in general, we might write a conversion routine:</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">cps-prim</span> <span class="nv">f</span><span class="p">)</span>
+ <span class="p">(</span><span class="k">lambda </span><span class="nv">args</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">r</span> <span class="p">(</span><span class="nb">reverse </span><span class="nv">args</span><span class="p">)))</span>
+   <span class="p">((</span><span class="nb">car </span><span class="nv">r</span><span class="p">)</span> <span class="p">(</span><span class="nb">apply </span><span class="nv">f</span>
+             <span class="p">(</span><span class="nb">reverse </span><span class="p">(</span><span class="nb">cdr </span><span class="nv">r</span><span class="p">)))))))</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">*&amp;</span> <span class="p">(</span><span class="nf">cps-prim</span> <span class="nv">*</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">+&amp;</span> <span class="p">(</span><span class="nf">cps-prim</span> <span class="nv">+</span><span class="p">))</span>
+</pre></div>
+<p>In order to call a procedure written in CPS from a procedure written in direct style, it is necessary to provide a continuation that will receive the result computed by the CPS procedure. In the example above (assuming that CPS-style primitives have been provided), we might call <code>(factorial&amp; 10 (lambda (x) (display x) (newline)))</code>.</p>
+<p>There is some variety between compilers in the way primitive functions are provided in CPS. Above we have used the simplest convention, however sometimes boolean primitives are provided that take two <a href="/wiki/Thunk_(delayed_computation)" class="mw-redirect" title="Thunk (delayed computation)">thunks</a> to be called in the two possible cases, so the <code>(=&amp; n 0 (lambda (b) (if b ...)))</code> call inside <code>f-aux&amp;</code> definition above would be written instead as <code>(=&amp; n 0 (lambda () (k a)) (lambda () (-&amp; n 1 ...)))</code>. Similarly, sometimes the <code>if</code> primitive itself is not included in CPS, and instead a function <code>if&amp;</code> is provided which takes three arguments: a boolean condition and the two thunks corresponding to the two arms of the conditional.</p>
+<p>The translations shown above show that CPS is a global transformation. The direct-style <i>factorial</i> takes, as might be expected, a single argument; the CPS <i>factorial&amp;</i> takes two: the argument and a continuation. Any function calling a CPS-ed function must either provide a new continuation or pass its own; any calls from a CPS-ed function to a non-CPS function will use implicit continuations. Thus, to ensure the total absence of a function stack, the entire program must be in CPS.</p>
+<h3><span class="mw-headline" id="CPS_in_Haskell">CPS in <a href="/wiki/Haskell" class="mw-disambig" title="Haskell">Haskell</a></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Continuation-passing_style&amp;action=edit&amp;section=2" title="Edit section: CPS in Haskell">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>In this section we will write a function that calculates hypotenuse using <a href="/wiki/Pythagorean_theorem" title="Pythagorean theorem">Pythagorean theorem</a>. Traditional <code>pyth</code> function looks like this:</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="nf">pow2</span> <span class="ow">::</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Float</span>
+<span class="nf">pow2</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">a</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="nf">add</span> <span class="ow">::</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Float</span>
+<span class="nf">add</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="nf">pyth</span> <span class="ow">::</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Float</span>
+<span class="nf">pyth</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">=</span> <span class="n">sqrt</span> <span class="p">(</span><span class="n">add</span> <span class="p">(</span><span class="n">pow2</span> <span class="n">a</span><span class="p">)</span> <span class="p">(</span><span class="n">pow2</span> <span class="n">b</span><span class="p">))</span>
+</pre></div>
+<p>To transform traditional function to CPS one we need to change it's signature. Function will get another argument and it's return type depends on that function:</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="nf">pow2'</span> <span class="ow">::</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="nf">pow2'</span> <span class="n">a</span> <span class="n">cont</span> <span class="ow">=</span> <span class="n">cont</span> <span class="p">(</span><span class="n">a</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="nf">add'</span> <span class="ow">::</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="nf">add'</span> <span class="n">a</span> <span class="n">b</span> <span class="n">cont</span> <span class="ow">=</span> <span class="n">cont</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="c1">-- Types a -&gt; (b -&gt; c) and a -&gt; b -&gt; are equivalent, so CPS function</span>
+<span class="c1">-- may be viewed as higher order function</span>
+<span class="nf">sqrt'</span> <span class="ow">::</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="p">((</span><span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span>
+<span class="nf">sqrt'</span> <span class="n">a</span> <span class="ow">=</span> <span class="nf">\</span><span class="n">cont</span> <span class="ow">-&gt;</span> <span class="n">cont</span> <span class="p">(</span><span class="n">sqrt</span> <span class="n">a</span><span class="p">)</span>
+
+<span class="nf">pyth'</span> <span class="ow">::</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="nf">pyth'</span> <span class="n">a</span> <span class="n">b</span> <span class="n">cont</span> <span class="ow">=</span> <span class="n">pow2'</span> <span class="n">a</span> <span class="p">(</span><span class="nf">\</span><span class="n">a2</span> <span class="ow">-&gt;</span> <span class="n">pow2'</span> <span class="n">b</span> <span class="p">(</span><span class="nf">\</span><span class="n">b2</span> <span class="ow">-&gt;</span> <span class="n">add'</span> <span class="n">a2</span> <span class="n">b2</span> <span class="p">(</span><span class="nf">\</span><span class="n">anb</span> <span class="ow">-&gt;</span> <span class="n">sqrt'</span> <span class="n">anb</span> <span class="n">cont</span><span class="p">)))</span>
+</pre></div>
+<p>First we calculate square of <i>a</i> in <code>pyth'</code> function and pass lambda function as continuation which will accept a square of a as a first argument. And so on until we reach the result of our calculations. To get the result of this function we can pass <code>id</code> function as a final argument which returns the value that was passed to it unchanged: <code>pyth' 3 4 id == 5.0</code>.</p>
+<p>mtl library which is shipped with <a href="/wiki/Ghc_compiler" class="mw-redirect" title="Ghc compiler">Ghc compiler</a> has <tt>Control.Monad.Cont</tt> module. This module provides Cont type, which implements Monad and some other useful functions. The following snippet shows <code>pyth'</code> function using Cont type:</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="nf">pow2_m</span> <span class="ow">::</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Cont</span> <span class="n">a</span> <span class="kt">Float</span>
+<span class="nf">pow2_m</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="nf">pyth_m</span> <span class="ow">::</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Cont</span> <span class="n">a</span> <span class="kt">Float</span>
+<span class="nf">pyth_m</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">a2</span> <span class="ow">&lt;-</span> <span class="n">pow2_m</span> <span class="n">a</span>
+  <span class="n">b2</span> <span class="ow">&lt;-</span> <span class="n">pow2_m</span> <span class="n">b</span>
+  <span class="n">anb</span> <span class="ow">&lt;-</span> <span class="n">cont</span> <span class="p">(</span><span class="n">add'</span> <span class="n">a2</span> <span class="n">b2</span><span class="p">)</span>
+  <span class="n">r</span> <span class="ow">&lt;-</span> <span class="n">cont</span> <span class="p">(</span><span class="n">sqrt'</span> <span class="n">anb</span><span class="p">)</span>
+  <span class="n">return</span> <span class="n">r</span>
+</pre></div>
+<p>Not only the syntax became cleaner, but this type allows us to use function <code>callCC</code> with type <code>MonadCont m =&gt; ((a -&gt; m b) -&gt; m a) -&gt; m a</code>. This function has the only argument of a function type; that function argument accepts the function too, which discards all computations going after it's call. For example let's break the execution of pyth function if at least one of it's arguments is negative returning zero:</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="nf">pyth_m</span> <span class="ow">::</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Float</span> <span class="ow">-&gt;</span> <span class="kt">Cont</span> <span class="n">a</span> <span class="kt">Float</span>
+<span class="nf">pyth_m</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">=</span> <span class="n">callCC</span> <span class="o">$</span> <span class="nf">\</span><span class="n">exitF</span> <span class="ow">-&gt;</span> <span class="kr">do</span> <span class="c1">-- $ sign helps to avoid parentheses: a $ b + c == a (b + c)</span>
+  <span class="n">when</span> <span class="p">(</span><span class="n">b</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="n">exitF</span> <span class="mf">0.0</span><span class="p">)</span> <span class="c1">-- when :: Applicative f =&gt; Bool -&gt; f () -&gt; f ()</span>
+  <span class="n">a2</span> <span class="ow">&lt;-</span> <span class="n">pow2_m</span> <span class="n">a</span>
+  <span class="n">b2</span> <span class="ow">&lt;-</span> <span class="n">pow2_m</span> <span class="n">b</span>
+  <span class="n">anb</span> <span class="ow">&lt;-</span> <span class="n">cont</span> <span class="p">(</span><span class="n">add'</span> <span class="n">a2</span> <span class="n">b2</span><span class="p">)</span>
+  <span class="n">r</span> <span class="ow">&lt;-</span> <span class="n">cont</span> <span class="p">(</span><span class="n">sqrt'</span> <span class="n">anb</span><span class="p">)</span>
+  <span class="n">return</span> <span class="n">r</span>
+</pre></div>
+<p><br /></p>
+<h3><span class="mw-headline" id="Continuations_as_objects">Continuations as objects</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Continuation-passing_style&amp;action=edit&amp;section=3" title="Edit section: Continuations as objects">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<div role="note" class="hatnote navigation-not-searchable">See also: <a href="/wiki/Callback_(computer_programming)" title="Callback (computer programming)">Callback (computer programming)</a></div>
+<p>Programming with continuations can also be useful when a caller does not want to wait until the callee completes. For example, in user-interface (UI) programming, a routine can set up dialog box fields and pass these, along with a continuation function, to the UI framework. This call returns right away, allowing the application code to continue while the user interacts with the dialog box. Once the user presses the "OK" button, the framework calls the continuation function with the updated fields. Although this style of coding uses continuations, it is not full CPS.</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="kd">function</span> <span class="nx">confirmName</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fields</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="nx">framework</span><span class="p">.</span><span class="nx">Show_dialog_box</span><span class="p">(</span><span class="nx">fields</span><span class="p">,</span> <span class="nx">confirmNameContinuation</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">confirmNameContinuation</span><span class="p">(</span><span class="nx">fields</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">fields</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>A similar idea can be used when the function must run in a different thread or on a different processor. The framework can execute the called function in a worker thread, then call the continuation function in the original thread with the worker's results. This is in <a href="/wiki/Java_(programming_language)" title="Java (programming language)">Java</a> using the <a href="/wiki/Swing_(Java)" title="Swing (Java)">Swing</a> UI framework:</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="kt">void</span> <span class="nf">buttonHandler</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// This is executing in the Swing UI thread.</span>
+    <span class="c1">// We can access UI widgets here to get query parameters.</span>
+    <span class="kd">final</span> <span class="kt">int</span> <span class="n">parameter</span> <span class="o">=</span> <span class="n">getField</span><span class="o">();</span>
+
+    <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+            <span class="c1">// This code runs in a separate thread.</span>
+            <span class="c1">// We can do things like access a database or a </span>
+            <span class="c1">// blocking resource like the network to get data.</span>
+            <span class="kd">final</span> <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">lookup</span><span class="o">(</span><span class="n">parameter</span><span class="o">);</span>
+
+            <span class="n">javax</span><span class="o">.</span><span class="na">swing</span><span class="o">.</span><span class="na">SwingUtilities</span><span class="o">.</span><span class="na">invokeLater</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+                <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                    <span class="c1">// This code runs in the UI thread and can use</span>
+                    <span class="c1">// the fetched data to fill in UI widgets.</span>
+                    <span class="n">setField</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">});</span>
+        <span class="o">}</span>
+    <span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+<p>Using Java 8 lambda notation above code shortens to (<code>final</code> keyword might be skipped):</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="kt">void</span> <span class="nf">buttonHandler</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">parameter</span> <span class="o">=</span> <span class="n">getField</span><span class="o">();</span>
+
+    <span class="k">new</span> <span class="n">Thread</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">lookup</span><span class="o">(</span><span class="n">parameter</span><span class="o">);</span>
+        <span class="n">javax</span><span class="o">.</span><span class="na">swing</span><span class="o">.</span><span class="na">SwingUtilities</span><span class="o">.</span><span class="na">invokeLater</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">setField</span><span class="o">(</span><span class="n">result</span><span class="o">));</span>
+    <span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+<h2><span class="mw-headline" id="Tail_calls">Tail calls</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Continuation-passing_style&amp;action=edit&amp;section=4" title="Edit section: Tail calls">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Every call in CPS is a <a href="/wiki/Tail_call" title="Tail call">tail call</a>, and the continuation is explicitly passed. Using CPS without <a href="/wiki/Tail_call_optimization" class="mw-redirect" title="Tail call optimization">tail call optimization</a> (TCO) will cause not only the constructed continuation to potentially grow during recursion, but also the <a href="/wiki/Call_stack" title="Call stack">call stack</a>. This is usually undesirable, but has been used in interesting ways—see the <a href="/wiki/Chicken_(Scheme_implementation)" class="mw-redirect" title="Chicken (Scheme implementation)">Chicken Scheme</a> compiler. As CPS and TCO eliminate the concept of an implicit function return, their combined use can eliminate the need for a run-time stack. Several compilers and interpreters for <a href="/wiki/Functional_programming_language" class="mw-redirect" title="Functional programming language">functional programming languages</a> use this ability in novel ways.<sup id="cite_ref-6" class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<h2><span class="mw-headline" id="Use_and_implementation">Use and implementation</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Continuation-passing_style&amp;action=edit&amp;section=5" title="Edit section: Use and implementation">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Continuation passing style can be used to implement continuations and control flow operators in a functional language that does not feature first-class <a href="/wiki/Continuations" class="mw-redirect" title="Continuations">continuations</a> but does have <a href="/wiki/First-class_function" title="First-class function">first-class functions</a> and <a href="/wiki/Tail-call_optimization" class="mw-redirect" title="Tail-call optimization">tail-call optimization</a>. Without tail-call optimization, techniques such as <a href="/wiki/Trampoline_(computers)" class="mw-redirect" title="Trampoline (computers)">trampolining</a>, i.e. using a loop that iteratively invokes <a href="/wiki/Thunk_(functional_programming)" class="mw-redirect" title="Thunk (functional programming)">thunk</a>-returning functions, can be used; without first-class functions, it is even possible to convert tail calls into just gotos in such a loop.</p>
+<p>Writing code in CPS, while not impossible, is often error-prone. There are various translations, usually defined as one- or two-pass conversions of pure <a href="/wiki/Lambda_calculus" title="Lambda calculus">lambda calculus</a>, which convert direct style expressions into CPS expressions. Writing in trampolined style, however, is extremely difficult; when used, it is usually the target of some sort of transformation, such as <a href="/wiki/Compiler" title="Compiler">compilation</a>.</p>
+<p>Functions using more than one continuation can be defined to capture various control flow paradigms, for example (in <a href="/wiki/Scheme_(programming_language)" title="Scheme (programming language)">Scheme</a>):</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr">
+<pre>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">/&amp;</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">ok</span> <span class="nv">err</span><span class="p">)</span>
+ <span class="p">(</span><span class="nf">=&amp;</span> <span class="nv">y</span> <span class="mf">0.0</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">b</span><span class="p">)</span>
+            <span class="p">(</span><span class="k">if </span><span class="nv">b</span>
+                <span class="p">(</span><span class="nf">err</span> <span class="p">(</span><span class="nb">list </span><span class="s">"div by zero!"</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span>
+                <span class="p">(</span><span class="nf">ok</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">x</span> <span class="nv">y</span><span class="p">))))))</span>
+</pre></div>
+<p>It is of note that CPS transform is conceptually a <a href="/wiki/Yoneda_embedding" class="mw-redirect" title="Yoneda embedding">Yoneda embedding</a>.<sup id="cite_ref-7" class="reference"><a href="#cite_note-7">[7]</a></sup> It is also similar to the embedding of <a href="/wiki/Lambda_calculus" title="Lambda calculus">lambda calculus</a> in <a href="/wiki/%CE%A0-calculus" title="Π-calculus">π-calculus</a>.<sup id="cite_ref-8" class="reference"><a href="#cite_note-8">[8]</a></sup><sup id="cite_ref-9" class="reference"><a href="#cite_note-9">[9]</a></sup></p>
+<h2><span class="mw-headline" id="Use_in_other_fields">Use in other fields</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Continuation-passing_style&amp;action=edit&amp;section=6" title="Edit section: Use in other fields">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Outside of <a href="/wiki/Computer_science" title="Computer science">computer science</a>, CPS is of more general interest as an alternative to the conventional method of composing simple expressions into complex expressions. For example, within linguistic <a href="/wiki/Semantics" title="Semantics">semantics</a>, <a href="/wiki/Chris_Barker_(linguist)" title="Chris Barker (linguist)">Chris Barker</a> and his collaborators have suggested that specifying the denotations of sentences using CPS might explain certain phenomena in <a href="/wiki/Natural_language" title="Natural language">natural language</a>. <a rel="nofollow" class="external autonumber" href="http://www.semanticsarchive.net/Archive/902ad5f7/barker.continuations.pdf">[1]</a></p>
+<p>In <a href="/wiki/Mathematics" title="Mathematics">mathematics</a>, the <a href="/wiki/Curry%E2%80%93Howard_isomorphism" class="mw-redirect" title="Curry–Howard isomorphism">Curry–Howard isomorphism</a> between computer programs and mathematical proofs relates continuation-passing style translation to a variation of double-negation <a href="/wiki/Embedding" title="Embedding">embeddings</a> of <a href="/wiki/Classical_logic" title="Classical logic">classical logic</a> into <a href="/wiki/Intuitionistic_logic" title="Intuitionistic logic">intuitionistic (constructive) logic</a>. Unlike the regular <a href="/wiki/Double-negation_translation" title="Double-negation translation">double-negation translation</a>, which maps atomic propositions <i>p</i> to ((<i>p</i> → ⊥) → ⊥), the continuation passing style replaces ⊥ by the type of the final expression. Accordingly, the result is obtained by passing the <a href="/wiki/Identity_function" title="Identity function">identity function</a> as a continuation to the CPS-style expression, as in the above example.</p>
+<p>Classical logic itself relates to manipulating the continuation of programs directly, as in Scheme's <a href="/wiki/Call-with-current-continuation" title="Call-with-current-continuation">call-with-current-continuation</a> control operator, an observation due to Tim Griffin (using the closely related C control operator).<sup id="cite_ref-10" class="reference"><a href="#cite_note-10">[10]</a></sup></p>
+<h2><span class="mw-headline" id="See_also">See also</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Continuation-passing_style&amp;action=edit&amp;section=7" title="Edit section: See also">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul>
+<li><a href="/wiki/Tail_recursion#Through_trampolining" class="mw-redirect" title="Tail recursion">Tail recursion through trampolining</a></li>
+</ul>
+<h2><span class="mw-headline" id="Notes">Notes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Continuation-passing_style&amp;action=edit&amp;section=8" title="Edit section: Notes">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<div class="reflist" style="list-style-type: decimal;">
+<div class="mw-references-wrap">
+<ol class="references">
+<li id="cite_note-1"><span class="mw-cite-backlink"><b><a href="#cite_ref-1">^</a></b></span> <span class="reference-text"><cite class="citation journal"><a href="/wiki/Gerald_Jay_Sussman" title="Gerald Jay Sussman">Sussman, Gerald Jay</a>; <a href="/wiki/Guy_L._Steele,_Jr." class="mw-redirect" title="Guy L. Steele, Jr.">Steele, Guy L., Jr.</a> (December 1975). "<a href="https://en.wikisource.org/wiki/Scheme:_An_interpreter_for_extended_lambda_calculus" class="extiw" title="wikisource:Scheme: An interpreter for extended lambda calculus">Scheme: An interpreter for extended lambda calculus</a>". <i><a href="/wiki/AI_Memo" title="AI Memo">AI Memo</a></i>. <b>349</b>: 19. <q>That is, in this <b>continuation-passing programming style</b>, <i>a function always "returns" its result by "sending" it to another function</i>. This is the key idea.</q></cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=AI+Memo&amp;rft.atitle=Scheme%3A+An+interpreter+for+extended+lambda+calculus&amp;rft.volume=349&amp;rft.pages=19&amp;rft.date=1975-12&amp;rft.aulast=Sussman&amp;rft.aufirst=Gerald+Jay&amp;rft.au=Steele%2C+Guy+L.%2C+Jr.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></span></li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><b><a href="#cite_ref-2">^</a></b></span> <span class="reference-text"><cite class="citation journal"><a href="/wiki/Gerald_Jay_Sussman" title="Gerald Jay Sussman">Sussman, Gerald Jay</a>; <a href="/wiki/Guy_L._Steele,_Jr." class="mw-redirect" title="Guy L. Steele, Jr.">Steele, Guy L., Jr.</a> (December 1998). <a rel="nofollow" class="external text" href="http://www.brics.dk/~hosc/local/HOSC-11-4-pp405-439.pdf">"Scheme: A Interpreter for Extended Lambda Calculus"</a> <span style="font-size:85%;">(reprint)</span>. <i>Higher-Order and Symbolic Computation</i>. <b>11</b> (4): 405–439. <a href="/wiki/Digital_object_identifier" title="Digital object identifier">doi</a>:<a rel="nofollow" class="external text" href="//doi.org/10.1023%2FA%3A1010035624696">10.1023/A:1010035624696</a>. <q>We believe that this was the first occurrence of the term "<b>continuation-passing style</b>" in the literature. It has turned out to be an important concept in source code analysis and transformation for compilers and other metaprogramming tools. It has also inspired a set of other "styles" of program expression.</q></cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Higher-Order+and+Symbolic+Computation&amp;rft.atitle=Scheme%3A+A+Interpreter+for+Extended+Lambda+Calculus&amp;rft.volume=11&amp;rft.issue=4&amp;rft.pages=405-439&amp;rft.date=1998-12&amp;rft_id=info%3Adoi%2F10.1023%2FA%3A1010035624696&amp;rft.aulast=Sussman&amp;rft.aufirst=Gerald+Jay&amp;rft.au=Steele%2C+Guy+L.%2C+Jr.&amp;rft_id=http%3A%2F%2Fwww.brics.dk%2F~hosc%2Flocal%2FHOSC-11-4-pp405-439.pdf&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></span></li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><b><a href="#cite_ref-3">^</a></b></span> <span class="reference-text"><cite class="citation journal"><a href="/wiki/John_C._Reynolds" title="John C. Reynolds">Reynolds, John C.</a> (1993). "The Discoveries of Continuations". <i>Lisp and Symbolic Computation</i>. <b>6</b> (3-4): 233–248. <a href="/wiki/Digital_object_identifier" title="Digital object identifier">doi</a>:<a rel="nofollow" class="external text" href="//doi.org/10.1007%2Fbf01019459">10.1007/bf01019459</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Lisp+and+Symbolic+Computation&amp;rft.atitle=The+Discoveries+of+Continuations&amp;rft.volume=6&amp;rft.issue=3-4&amp;rft.pages=233-248&amp;rft.date=1993&amp;rft_id=info%3Adoi%2F10.1007%2Fbf01019459&amp;rft.aulast=Reynolds&amp;rft.aufirst=John+C.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></span></li>
+<li id="cite_note-Appel1998-4"><span class="mw-cite-backlink"><b><a href="#cite_ref-Appel1998_4-0">^</a></b></span> <span class="reference-text">* <cite class="citation journal">Appel, Andrew W. (April 1998). "SSA is Functional Programming". <i>SIGPLAN Not</i>. <b>33</b>: 17–20.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=SIGPLAN+Not.&amp;rft.atitle=SSA+is+Functional+Programming&amp;rft.volume=33&amp;rft.pages=17-20&amp;rft.date=1998-04&amp;rft.aulast=Appel&amp;rft.aufirst=Andrew+W.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></span></li>
+<li id="cite_note-Kelsey1995-5"><span class="mw-cite-backlink"><b><a href="#cite_ref-Kelsey1995_5-0">^</a></b></span> <span class="reference-text">* <cite class="citation journal">Kelsey, Richard A. (March 1995). "A Correspondence between Continuation Passing Style and Static Single Assignment Form". <i>ACM SIGPLAN Notices</i>. <b>30</b> (3): 13–22. <a href="/wiki/Digital_object_identifier" title="Digital object identifier">doi</a>:<a rel="nofollow" class="external text" href="//doi.org/10.1145%2F202530.202532">10.1145/202530.202532</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=ACM+SIGPLAN+Notices&amp;rft.atitle=A+Correspondence+between+Continuation+Passing+Style+and+Static+Single+Assignment+Form&amp;rft.volume=30&amp;rft.issue=3&amp;rft.pages=13-22&amp;rft.date=1995-03&amp;rft_id=info%3Adoi%2F10.1145%2F202530.202532&amp;rft.aulast=Kelsey&amp;rft.aufirst=Richard+A.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></span></li>
+<li id="cite_note-6"><span class="mw-cite-backlink"><b><a href="#cite_ref-6">^</a></b></span> <span class="reference-text">Appel, Andrew W. (1992). Compiling with Continuations. Cambridge University Press. <a href="/wiki/International_Standard_Book_Number" title="International Standard Book Number">ISBN</a>&#160;<a href="/wiki/Special:BookSources/0-521-41695-7" title="Special:BookSources/0-521-41695-7">0-521-41695-7</a>.</span></li>
+<li id="cite_note-7"><span class="mw-cite-backlink"><b><a href="#cite_ref-7">^</a></b></span> <span class="reference-text">Mike Stay, <a rel="nofollow" class="external text" href="http://golem.ph.utexas.edu/category/2008/01/the_continuation_passing_trans.html">"The Continuation Passing Transform and the Yoneda Embedding"</a></span></li>
+<li id="cite_note-8"><span class="mw-cite-backlink"><b><a href="#cite_ref-8">^</a></b></span> <span class="reference-text">Mike Stay, <a rel="nofollow" class="external text" href="http://golem.ph.utexas.edu/category/2009/09/the_pi_calculus_ii.html">"The Pi Calculus II"</a></span></li>
+<li id="cite_note-9"><span class="mw-cite-backlink"><b><a href="#cite_ref-9">^</a></b></span> <span class="reference-text"><cite class="citation journal">Boudol, Gérard. "The π-Calculus in Direct Style". <a href="/wiki/CiteSeerX" title="CiteSeerX">CiteSeerX</a>&#160;<span class="plainlinks"><a rel="nofollow" class="external text" href="//citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.52.6034">10.1.1.52.6034</a> <img alt="Freely accessible" src="//upload.wikimedia.org/wikipedia/commons/thumb/6/65/Lock-green.svg/9px-Lock-green.svg.png" title="Freely accessible" width="9" height="14" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/6/65/Lock-green.svg/14px-Lock-green.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/6/65/Lock-green.svg/18px-Lock-green.svg.png 2x" data-file-width="512" data-file-height="813" /></span>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=The+%CF%80-Calculus+in+Direct+Style&amp;rft_id=%2F%2Fciteseerx.ist.psu.edu%2Fviewdoc%2Fsummary%3Fdoi%3D10.1.1.52.6034&amp;rft.aulast=Boudol&amp;rft.aufirst=G%C3%A9rard&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></span></li>
+<li id="cite_note-10"><span class="mw-cite-backlink"><b><a href="#cite_ref-10">^</a></b></span> <span class="reference-text"><cite class="citation journal">Griffin, Timothy (January 1990). "A formulae-as-type notion of control". <i>Proceedings of the Conference on the Principles of Programming Languages</i>. <b>17</b>: 47–58. <a href="/wiki/Digital_object_identifier" title="Digital object identifier">doi</a>:<a rel="nofollow" class="external text" href="//doi.org/10.1145%2F96709.96714">10.1145/96709.96714</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Proceedings+of+the+Conference+on+the+Principles+of+Programming+Languages&amp;rft.atitle=A+formulae-as-type+notion+of+control&amp;rft.volume=17&amp;rft.pages=47-58&amp;rft.date=1990-01&amp;rft_id=info%3Adoi%2F10.1145%2F96709.96714&amp;rft.aulast=Griffin&amp;rft.aufirst=Timothy&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></span></li>
+</ol>
+</div>
+</div>
+<h2><span class="mw-headline" id="References">References</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Continuation-passing_style&amp;action=edit&amp;section=9" title="Edit section: References">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul>
+<li>Continuation Passing C (CPC) - <a rel="nofollow" class="external text" href="http://www.pps.univ-paris-diderot.fr/~kerneis/software/">programming language for writing concurrent systems</a>, designed and developed by Juliusz Chroboczek and Gabriel Kerneis. <a rel="nofollow" class="external text" href="https://github.com/kerneis/cpc">github repository</a></li>
+<li>The construction of a CPS-based compiler for <a href="/wiki/ML_programming_language" class="mw-redirect" title="ML programming language">ML</a> is described in: <cite class="citation book"><a href="/wiki/Andrew_Appel" title="Andrew Appel">Appel, Andrew W.</a> (1992). <a rel="nofollow" class="external text" href="https://books.google.com/books?id=0Uoecu9ju4AC&amp;dq"><i>Compiling with Continuations</i></a>. Cambridge University Press. <a href="/wiki/International_Standard_Book_Number" title="International Standard Book Number">ISBN</a>&#160;<a href="/wiki/Special:BookSources/0-521-41695-7" title="Special:BookSources/0-521-41695-7">0-521-41695-7</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=book&amp;rft.btitle=Compiling+with+Continuations&amp;rft.pub=Cambridge+University+Press&amp;rft.date=1992&amp;rft.isbn=0-521-41695-7&amp;rft.aulast=Appel&amp;rft.aufirst=Andrew+W.&amp;rft_id=https%3A%2F%2Fbooks.google.com%2Fbooks%3Fid%3D0Uoecu9ju4AC%26dq&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></li>
+<li><cite class="citation journal"><a href="/wiki/Olivier_Danvy" title="Olivier Danvy">Danvy, Olivier</a>; <a href="/w/index.php?title=Andrzej_Filinski&amp;action=edit&amp;redlink=1" class="new" title="Andrzej Filinski (page does not exist)">Filinski, Andrzej</a> (1992). "Representing Control, A Study of the CPS Transformation". <i>Mathematical Structures in Computer Science</i>. <b>2</b> (4): 361–391. <a href="/wiki/CiteSeerX" title="CiteSeerX">CiteSeerX</a>&#160;<span class="plainlinks"><a rel="nofollow" class="external text" href="//citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.46.84">10.1.1.46.84</a> <img alt="Freely accessible" src="//upload.wikimedia.org/wikipedia/commons/thumb/6/65/Lock-green.svg/9px-Lock-green.svg.png" title="Freely accessible" width="9" height="14" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/6/65/Lock-green.svg/14px-Lock-green.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/6/65/Lock-green.svg/18px-Lock-green.svg.png 2x" data-file-width="512" data-file-height="813" /></span>. <a href="/wiki/Digital_object_identifier" title="Digital object identifier">doi</a>:<a rel="nofollow" class="external text" href="//doi.org/10.1017%2FS0960129500001535">10.1017/S0960129500001535</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Mathematical+Structures+in+Computer+Science&amp;rft.atitle=Representing+Control%2C+A+Study+of+the+CPS+Transformation&amp;rft.volume=2&amp;rft.issue=4&amp;rft.pages=361-391&amp;rft.date=1992&amp;rft_id=%2F%2Fciteseerx.ist.psu.edu%2Fviewdoc%2Fsummary%3Fdoi%3D10.1.1.46.84&amp;rft_id=info%3Adoi%2F10.1017%2FS0960129500001535&amp;rft.aulast=Danvy&amp;rft.aufirst=Olivier&amp;rft.au=Filinski%2C+Andrzej&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></li>
+<li><a href="/wiki/Chicken_Scheme_compiler" class="mw-redirect" title="Chicken Scheme compiler">Chicken Scheme compiler</a>, a <a href="/wiki/Scheme_(programming_language)" title="Scheme (programming language)">Scheme</a> to <a href="/wiki/C_(programming_language)" title="C (programming language)">C</a> compiler that uses continuation-passing style for translating Scheme procedures into C functions while using the C-stack as the nursery for the <a href="/wiki/Garbage_collection_(computer_science)#Generational_GC_(aka_Ephemeral_GC)" title="Garbage collection (computer science)">generational garbage collector</a></li>
+<li><cite class="citation journal">Kelsey, Richard A. (March 1995). "A Correspondence between Continuation Passing Style and Static Single Assignment Form". <i>ACM SIGPLAN Notices</i>. <b>30</b> (3): 13–22. <a href="/wiki/CiteSeerX" title="CiteSeerX">CiteSeerX</a>&#160;<span class="plainlinks"><a rel="nofollow" class="external text" href="//citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.3.6773">10.1.1.3.6773</a> <img alt="Freely accessible" src="//upload.wikimedia.org/wikipedia/commons/thumb/6/65/Lock-green.svg/9px-Lock-green.svg.png" title="Freely accessible" width="9" height="14" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/6/65/Lock-green.svg/14px-Lock-green.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/6/65/Lock-green.svg/18px-Lock-green.svg.png 2x" data-file-width="512" data-file-height="813" /></span>. <a href="/wiki/Digital_object_identifier" title="Digital object identifier">doi</a>:<a rel="nofollow" class="external text" href="//doi.org/10.1145%2F202530.202532">10.1145/202530.202532</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=ACM+SIGPLAN+Notices&amp;rft.atitle=A+Correspondence+between+Continuation+Passing+Style+and+Static+Single+Assignment+Form&amp;rft.volume=30&amp;rft.issue=3&amp;rft.pages=13-22&amp;rft.date=1995-03&amp;rft_id=%2F%2Fciteseerx.ist.psu.edu%2Fviewdoc%2Fsummary%3Fdoi%3D10.1.1.3.6773&amp;rft_id=info%3Adoi%2F10.1145%2F202530.202532&amp;rft.aulast=Kelsey&amp;rft.aufirst=Richard+A.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></li>
+<li><cite class="citation journal"><a href="/wiki/Andrew_Appel" title="Andrew Appel">Appel, Andrew W.</a> (April 1998). <a rel="nofollow" class="external text" href="http://www.cs.princeton.edu/~appel/papers/ssafun.ps">"SSA is Functional Programming"</a>. <i>ACM SIGPLAN Notices</i>. <b>33</b> (4): 17–20. <a href="/wiki/Digital_object_identifier" title="Digital object identifier">doi</a>:<a rel="nofollow" class="external text" href="//doi.org/10.1145%2F278283.278285">10.1145/278283.278285</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=ACM+SIGPLAN+Notices&amp;rft.atitle=SSA+is+Functional+Programming&amp;rft.volume=33&amp;rft.issue=4&amp;rft.pages=17-20&amp;rft.date=1998-04&amp;rft_id=info%3Adoi%2F10.1145%2F278283.278285&amp;rft.aulast=Appel&amp;rft.aufirst=Andrew+W.&amp;rft_id=http%3A%2F%2Fwww.cs.princeton.edu%2F~appel%2Fpapers%2Fssafun.ps&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></li>
+<li><cite class="citation web">Danvy, Olivier; Millikin, Kevin; Nielsen, Lasse R. (2007). <a rel="nofollow" class="external text" href="http://www.brics.dk/RS/07/6/">"On One-Pass CPS Transformations"</a>. BRICS, Department of Computer Science, University of Aarhus. p.&#160;24. <a href="/wiki/International_Standard_Serial_Number" title="International Standard Serial Number">ISSN</a>&#160;<a rel="nofollow" class="external text" href="//www.worldcat.org/issn/0909-0878">0909-0878</a>. RS-07-6<span class="reference-accessdate">. Retrieved <span class="nowrap">26 October</span> 2007</span>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=unknown&amp;rft.btitle=On+One-Pass+CPS+Transformations&amp;rft.place=BRICS%2C+Department+of+Computer+Science%2C+University+of+Aarhus&amp;rft.pages=24&amp;rft.date=2007&amp;rft.issn=0909-0878&amp;rft.aulast=Danvy&amp;rft.aufirst=Olivier&amp;rft.au=Millikin%2C+Kevin&amp;rft.au=Nielsen%2C+Lasse+R.&amp;rft_id=http%3A%2F%2Fwww.brics.dk%2FRS%2F07%2F6%2F&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span></li>
+<li><cite class="citation book"><a href="/wiki/R._Kent_Dybvig" title="R. Kent Dybvig">Dybvig, R. Kent</a> (2003). <a rel="nofollow" class="external text" href="http://www.scheme.com/tspl3/"><i>The Scheme Programming Language</i></a>. Prentice Hall. p.&#160;64.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=book&amp;rft.btitle=The+Scheme+Programming+Language&amp;rft.pages=64&amp;rft.pub=Prentice+Hall&amp;rft.date=2003&amp;rft.aulast=Dybvig&amp;rft.aufirst=R.+Kent&amp;rft_id=http%3A%2F%2Fwww.scheme.com%2Ftspl3%2F&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AContinuation-passing+style" class="Z3988"><span style="display:none;">&#160;</span></span> Direct link: <a rel="nofollow" class="external text" href="http://scheme.com/tspl3/further.html#./further:h4">"Section 3.4. Continuation Passing Style"</a>.</li>
+</ul>
+
+
+<!-- 
+NewPP limit report
+Parsed by mw1283
+Cached time: 20180311233539
+Cache expiry: 1900800
+Dynamic content: false
+CPU time usage: 0.196 seconds
+Real time usage: 0.426 seconds
+Preprocessor visited node count: 948/1000000
+Preprocessor generated node count: 0/1500000
+Post‐expand include size: 24033/2097152 bytes
+Template argument size: 492/2097152 bytes
+Highest expansion depth: 16/40
+Expensive parser function count: 0/500
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 32948/5000000 bytes
+Lua time usage: 0.092/10.000 seconds
+Lua memory usage: 3.39 MB/50 MB
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%  186.368      1 -total
+ 66.91%  124.707      1 Template:Reflist
+ 44.29%   82.551      9 Template:Cite_journal
+ 14.91%   27.795      1 Template:ISBN
+ 12.14%   22.617      1 Template:See_also
+  6.41%   11.937      1 Template:Catalog_lookup_link
+  5.69%   10.607      2 Template:Cite_book
+  4.22%    7.859      1 Template:Cite_web
+  3.06%    5.699      1 Template:Cite_paper
+  2.85%    5.307      1 Template:Error-small
+-->
+</div>
+<!-- Saved in parser cache with key enwiki:pcache:idhash:749852-0!canonical and timestamp 20180311233625 and revision id 829975551
+ -->
+<noscript><img src="//en.wikipedia.org/wiki/Special:CentralAutoLogin/start?type=1x1" alt="" title="" width="1" height="1" style="border: none; position: absolute;" /></noscript></div>					<div class="printfooter">
+						Retrieved from "<a dir="ltr" href="https://en.wikipedia.org/w/index.php?title=Continuation-passing_style&amp;oldid=829975551">https://en.wikipedia.org/w/index.php?title=Continuation-passing_style&amp;oldid=829975551</a>"					</div>
+				<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Help:Category" title="Help:Category">Categories</a>: <ul><li><a href="/wiki/Category:Continuations" title="Category:Continuations">Continuations</a></li><li><a href="/wiki/Category:Functional_programming" title="Category:Functional programming">Functional programming</a></li><li><a href="/wiki/Category:Implementation_of_functional_programming_languages" title="Category:Implementation of functional programming languages">Implementation of functional programming languages</a></li><li><a href="/wiki/Category:Articles_with_example_Scheme_code" title="Category:Articles with example Scheme code">Articles with example Scheme code</a></li></ul></div><div id="mw-hidden-catlinks" class="mw-hidden-catlinks mw-hidden-cats-hidden">Hidden categories: <ul><li><a href="/wiki/Category:Articles_with_example_Java_code" title="Category:Articles with example Java code">Articles with example Java code</a></li></ul></div></div>				<div class="visualClear"></div>
+							</div>
+		</div>
+		<div id="mw-navigation">
+			<h2>Navigation menu</h2>
+			<div id="mw-head">
+									<div id="p-personal" role="navigation" class="" aria-labelledby="p-personal-label">
+						<h3 id="p-personal-label">Personal tools</h3>
+						<ul>
+							<li id="pt-anonuserpage">Not logged in</li><li id="pt-anontalk"><a href="/wiki/Special:MyTalk" title="Discussion about edits from this IP address [n]" accesskey="n">Talk</a></li><li id="pt-anoncontribs"><a href="/wiki/Special:MyContributions" title="A list of edits made from this IP address [y]" accesskey="y">Contributions</a></li><li id="pt-createaccount"><a href="/w/index.php?title=Special:CreateAccount&amp;returnto=Continuation-passing+style" title="You are encouraged to create an account and log in; however, it is not mandatory">Create account</a></li><li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Continuation-passing+style" title="You&#039;re encouraged to log in; however, it&#039;s not mandatory. [o]" accesskey="o">Log in</a></li>						</ul>
+					</div>
+									<div id="left-navigation">
+										<div id="p-namespaces" role="navigation" class="vectorTabs" aria-labelledby="p-namespaces-label">
+						<h3 id="p-namespaces-label">Namespaces</h3>
+						<ul>
+							<li id="ca-nstab-main" class="selected"><span><a href="/wiki/Continuation-passing_style" title="View the content page [c]" accesskey="c">Article</a></span></li><li id="ca-talk"><span><a href="/wiki/Talk:Continuation-passing_style" rel="discussion" title="Discussion about the content page [t]" accesskey="t">Talk</a></span></li>						</ul>
+					</div>
+										<div id="p-variants" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-variants-label">
+												<input type="checkbox" class="vectorMenuCheckbox" aria-labelledby="p-variants-label" />
+						<h3 id="p-variants-label">
+							<span>Variants</span>
+						</h3>
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+									</div>
+				<div id="right-navigation">
+										<div id="p-views" role="navigation" class="vectorTabs" aria-labelledby="p-views-label">
+						<h3 id="p-views-label">Views</h3>
+						<ul>
+							<li id="ca-view" class="collapsible selected"><span><a href="/wiki/Continuation-passing_style">Read</a></span></li><li id="ca-edit" class="collapsible"><span><a href="/w/index.php?title=Continuation-passing_style&amp;action=edit" title="Edit this page [e]" accesskey="e">Edit</a></span></li><li id="ca-history" class="collapsible"><span><a href="/w/index.php?title=Continuation-passing_style&amp;action=history" title="Past revisions of this page [h]" accesskey="h">View history</a></span></li>						</ul>
+					</div>
+										<div id="p-cactions" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-cactions-label">
+						<input type="checkbox" class="vectorMenuCheckbox" aria-labelledby="p-cactions-label" />
+						<h3 id="p-cactions-label"><span>More</span></h3>
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+										<div id="p-search" role="search">
+						<h3>
+							<label for="searchInput">Search</label>
+						</h3>
+						<form action="/w/index.php" id="searchform">
+							<div id="simpleSearch">
+								<input type="search" name="search" placeholder="Search Wikipedia" title="Search Wikipedia [f]" accesskey="f" id="searchInput"/><input type="hidden" value="Special:Search" name="title"/><input type="submit" name="fulltext" value="Search" title="Search Wikipedia for this text" id="mw-searchButton" class="searchButton mw-fallbackSearchButton"/><input type="submit" name="go" value="Go" title="Go to a page with this exact name if it exists" id="searchButton" class="searchButton"/>							</div>
+						</form>
+					</div>
+									</div>
+			</div>
+			<div id="mw-panel">
+				<div id="p-logo" role="banner"><a class="mw-wiki-logo" href="/wiki/Main_Page"  title="Visit the main page"></a></div>
+						<div class="portal" role="navigation" id='p-navigation' aria-labelledby='p-navigation-label'>
+			<h3 id='p-navigation-label'>Navigation</h3>
+			<div class="body">
+								<ul>
+					<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li><li id="n-contents"><a href="/wiki/Portal:Contents" title="Guides to browsing Wikipedia">Contents</a></li><li id="n-featuredcontent"><a href="/wiki/Portal:Featured_content" title="Featured content – the best of Wikipedia">Featured content</a></li><li id="n-currentevents"><a href="/wiki/Portal:Current_events" title="Find background information on current events">Current events</a></li><li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random article [x]" accesskey="x">Random article</a></li><li id="n-sitesupport"><a href="https://donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&amp;utm_medium=sidebar&amp;utm_campaign=C13_en.wikipedia.org&amp;uselang=en" title="Support us">Donate to Wikipedia</a></li><li id="n-shoplink"><a href="//shop.wikimedia.org" title="Visit the Wikipedia store">Wikipedia store</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-interaction' aria-labelledby='p-interaction-label'>
+			<h3 id='p-interaction-label'>Interaction</h3>
+			<div class="body">
+								<ul>
+					<li id="n-help"><a href="/wiki/Help:Contents" title="Guidance on how to use and edit Wikipedia">Help</a></li><li id="n-aboutsite"><a href="/wiki/Wikipedia:About" title="Find out about Wikipedia">About Wikipedia</a></li><li id="n-portal"><a href="/wiki/Wikipedia:Community_portal" title="About the project, what you can do, where to find things">Community portal</a></li><li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li><li id="n-contactpage"><a href="//en.wikipedia.org/wiki/Wikipedia:Contact_us" title="How to contact Wikipedia">Contact page</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-tb' aria-labelledby='p-tb-label'>
+			<h3 id='p-tb-label'>Tools</h3>
+			<div class="body">
+								<ul>
+					<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/Continuation-passing_style" title="List of all English Wikipedia pages containing links to this page [j]" accesskey="j">What links here</a></li><li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/Continuation-passing_style" rel="nofollow" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li><li id="t-upload"><a href="/wiki/Wikipedia:File_Upload_Wizard" title="Upload files [u]" accesskey="u">Upload file</a></li><li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li><li id="t-permalink"><a href="/w/index.php?title=Continuation-passing_style&amp;oldid=829975551" title="Permanent link to this revision of the page">Permanent link</a></li><li id="t-info"><a href="/w/index.php?title=Continuation-passing_style&amp;action=info" title="More information about this page">Page information</a></li><li id="t-wikibase"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q749893" title="Link to connected data repository item [g]" accesskey="g">Wikidata item</a></li><li id="t-cite"><a href="/w/index.php?title=Special:CiteThisPage&amp;page=Continuation-passing_style&amp;id=829975551" title="Information on how to cite this page">Cite this page</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-coll-print_export' aria-labelledby='p-coll-print_export-label'>
+			<h3 id='p-coll-print_export-label'>Print/export</h3>
+			<div class="body">
+								<ul>
+					<li id="coll-create_a_book"><a href="/w/index.php?title=Special:Book&amp;bookcmd=book_creator&amp;referer=Continuation-passing+style">Create a book</a></li><li id="coll-download-as-rdf2latex"><a href="/w/index.php?title=Special:ElectronPdf&amp;page=Continuation-passing+style&amp;action=show-download-screen">Download as PDF</a></li><li id="t-print"><a href="/w/index.php?title=Continuation-passing_style&amp;printable=yes" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-lang' aria-labelledby='p-lang-label'>
+			<h3 id='p-lang-label'>Languages</h3>
+			<div class="body">
+								<ul>
+					<li class="interlanguage-link interwiki-de"><a href="https://de.wikipedia.org/wiki/Continuation-Passing_Style" title="Continuation-Passing Style – German" lang="de" hreflang="de" class="interlanguage-link-target">Deutsch</a></li><li class="interlanguage-link interwiki-el"><a href="https://el.wikipedia.org/wiki/%CE%A3%CF%84%CF%85%CE%BB_%CF%80%CE%B5%CF%81%CE%AC%CF%83%CE%BC%CE%B1%CF%84%CE%BF%CF%82_%CF%83%CF%85%CE%BD%CE%B5%CF%87%CE%B5%CE%B9%CF%8E%CE%BD" title="Στυλ περάσματος συνεχειών – Greek" lang="el" hreflang="el" class="interlanguage-link-target">Ελληνικά</a></li><li class="interlanguage-link interwiki-es"><a href="https://es.wikipedia.org/wiki/Continuation-passing_style" title="Continuation-passing style – Spanish" lang="es" hreflang="es" class="interlanguage-link-target">Español</a></li><li class="interlanguage-link interwiki-ja"><a href="https://ja.wikipedia.org/wiki/%E7%B6%99%E7%B6%9A%E6%B8%A1%E3%81%97%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB" title="継続渡しスタイル – Japanese" lang="ja" hreflang="ja" class="interlanguage-link-target">日本語</a></li>				</ul>
+				<div class="after-portlet after-portlet-lang"><span class="wb-langlinks-edit wb-langlinks-link"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q749893#sitelinks-wikipedia" title="Edit interlanguage links" class="wbc-editpage">Edit links</a></span></div>			</div>
+		</div>
+				</div>
+		</div>
+				<div id="footer" role="contentinfo">
+						<ul id="footer-info">
+								<li id="footer-info-lastmod"> This page was last edited on 11 March 2018, at 23:36.</li>
+								<li id="footer-info-copyright">Text is available under the <a rel="license" href="//en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">Creative Commons Attribution-ShareAlike License</a><a rel="license" href="//creativecommons.org/licenses/by-sa/3.0/" style="display:none;"></a>;
+additional terms may apply.  By using this site, you agree to the <a href="//wikimediafoundation.org/wiki/Terms_of_Use">Terms of Use</a> and <a href="//wikimediafoundation.org/wiki/Privacy_policy">Privacy Policy</a>. Wikipedia® is a registered trademark of the <a href="//www.wikimediafoundation.org/">Wikimedia Foundation, Inc.</a>, a non-profit organization.</li>
+							</ul>
+						<ul id="footer-places">
+								<li id="footer-places-privacy"><a href="https://wikimediafoundation.org/wiki/Privacy_policy" class="extiw" title="wmf:Privacy policy">Privacy policy</a></li>
+								<li id="footer-places-about"><a href="/wiki/Wikipedia:About" title="Wikipedia:About">About Wikipedia</a></li>
+								<li id="footer-places-disclaimer"><a href="/wiki/Wikipedia:General_disclaimer" title="Wikipedia:General disclaimer">Disclaimers</a></li>
+								<li id="footer-places-contact"><a href="//en.wikipedia.org/wiki/Wikipedia:Contact_us">Contact Wikipedia</a></li>
+								<li id="footer-places-developers"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/How_to_contribute">Developers</a></li>
+								<li id="footer-places-cookiestatement"><a href="https://wikimediafoundation.org/wiki/Cookie_statement">Cookie statement</a></li>
+								<li id="footer-places-mobileview"><a href="//en.m.wikipedia.org/w/index.php?title=Continuation-passing_style&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Mobile view</a></li>
+							</ul>
+										<ul id="footer-icons" class="noprint">
+										<li id="footer-copyrightico">
+						<a href="https://wikimediafoundation.org/"><img src="/static/images/wikimedia-button.png" srcset="/static/images/wikimedia-button-1.5x.png 1.5x, /static/images/wikimedia-button-2x.png 2x" width="88" height="31" alt="Wikimedia Foundation"/></a>					</li>
+										<li id="footer-poweredbyico">
+						<a href="//www.mediawiki.org/"><img src="/static/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="/static/images/poweredby_mediawiki_132x47.png 1.5x, /static/images/poweredby_mediawiki_176x62.png 2x" width="88" height="31"/></a>					</li>
+									</ul>
+						<div style="clear: both;"></div>
+		</div>
+		<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.196","walltime":"0.426","ppvisitednodes":{"value":948,"limit":1000000},"ppgeneratednodes":{"value":0,"limit":1500000},"postexpandincludesize":{"value":24033,"limit":2097152},"templateargumentsize":{"value":492,"limit":2097152},"expansiondepth":{"value":16,"limit":40},"expensivefunctioncount":{"value":0,"limit":500},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":32948,"limit":5000000},"entityaccesscount":{"value":0,"limit":400},"timingprofile":["100.00%  186.368      1 -total"," 66.91%  124.707      1 Template:Reflist"," 44.29%   82.551      9 Template:Cite_journal"," 14.91%   27.795      1 Template:ISBN"," 12.14%   22.617      1 Template:See_also","  6.41%   11.937      1 Template:Catalog_lookup_link","  5.69%   10.607      2 Template:Cite_book","  4.22%    7.859      1 Template:Cite_web","  3.06%    5.699      1 Template:Cite_paper","  2.85%    5.307      1 Template:Error-small"]},"scribunto":{"limitreport-timeusage":{"value":"0.092","limit":"10.000"},"limitreport-memusage":{"value":3554387,"limit":52428800}},"cachereport":{"origin":"mw1283","timestamp":"20180311233539","ttl":1900800,"transientcontent":false}}});});</script><script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgBackendResponseTime":85,"wgHostname":"mw1332"});});</script>
+	</body>
+</html>
