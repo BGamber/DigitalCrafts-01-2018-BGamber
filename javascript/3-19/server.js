@@ -1,23 +1,34 @@
 // HTTP is required for server
 const http = require('http');
+// WS is required for running WebSocketServer
+const WebSocket = require('ws');
+// FS enabled file read/write for file serving
+const fs = require('fs');
+// Promisify converts callback-based functions to Promise-based
+const promisify = require('util').promisify;
 // UUID generates unique ids server-side
 const uuidv4 = require('uuid/v4');
 // Moment is a date/time module, used here for logging activity
 const moment = require('moment');
+// Convert needed functions to promisers
+const readFile = promisify(fs.readFile);
+
+// Load WebSocketServer from file
+const wss = require('./websocket-server.js');
 
 // Pre-populate data for testing
 let contacts = [
   {
-    "contact-name": "Ben Gamber",
-    "contact-phone": "555-555-5555",
-    "contact-email": "ben@ben.ben",
-    "contact-id": "8bfcade3-445c-45ae-bb4f-f90eb49857d4"
+    "name": "Ben Gamber",
+    "phone": "555-555-5555",
+    "email": "ben@ben.ben",
+    "id": "8bfcade3-445c-45ae-bb4f-f90eb49857d4"
   },
   {
-    "contact-name": "Dude Duderson",
-    "contact-phone": "123-456-7890",
-    "contact-email": "dude@dude.dude",
-    "contact-id": "7b306ea9-0ec0-4037-af2d-e6ae06e7cfeb"
+    "name": "Dude Duderson",
+    "phone": "123-456-7890",
+    "email": "dude@dude.dude",
+    "id": "7b306ea9-0ec0-4037-af2d-e6ae06e7cfeb"
   }
 ];
 
@@ -47,28 +58,46 @@ let getAllContacts = (request, response) => {
   response.end(JSON.stringify(contacts));
 };
 
+let findContact = (contacts, searchID) => {
+  let searchContact = contacts.find((item) => {
+    return item["id"] === searchID;
+  });
+  return searchContact;
+};
+
 let readBody = (request, callback) => {
   let body = '';
   request.on('data', (chunk) => {
     body += chunk.toString();
   });
   request.on('end', function () {
-    callback(body);
+    let result = callback(body);
+    return result;
   });
 };
 
 let postContact = (request, response) => {
-  readBody(request, createContactEntry);
+  let contact = readBody(request, createContactEntry);
+  console.log(contact);
+  contacts.push(contact);
   response.end('New contact added!');
-}
+};
 
 let createContactEntry = (body) => {
   let id = uuidv4();
   let contact = JSON.parse(body);
-  contact["contact-id"] = id;
-  contacts.push(contact);
-  console.log("Added new entry: ", id + '\n', contact);
-}
+  contact["id"] = id;
+  console.log("Created new contact: ", id + '\n', contact);
+  return contact;
+};
+
+let updateContact = (request, response) => {
+  let contactEdit = readBody(request, createContactEntry);
+};
+
+let deleteContact = (request, response) => {
+  response.end("delete code dev in progress");
+};
 
 let requestMatches = (request, method, path) => {
   if (request.method === method) {
@@ -80,17 +109,9 @@ let requestMatches = (request, method, path) => {
   };
 };
 
-let findContact = (contacts, searchID) => {
-  let searchContact = contacts.find((item) => {
-    return item["contact-id"] === searchID;
-  });
-  return searchContact;
-};
-
 let getConnectionIP = (request) => {
   let address = request.connection.remoteAddress;
-  let addressArr = address.split(':');
-  let ip = addressArr[addressArr.length - 1];
+  let ip = /::(.*:)?([0-9.]+)/.exec(request.connection.remoteAddress)[2];
   return ip;
 };
 
@@ -105,6 +126,25 @@ let logConnection = (request, response) => {
   console.log(`${userIP}: ${request.method} ${request.url} ${nowString}`);
 };
 
+let requestPage = (request, response) => {
+  let page = requestMatches(request, 'GET', /^\/([a-zA-Z0-9]+\.[a-zA-Z0-9]+)?$/);
+  if (page[0]) {
+    renderPage(page[0], response);
+  } else {
+    renderPage('index.html', response);
+  };
+};
+
+let renderPage = (address, response) => {
+  let file = readFile(`./static/${address}`);
+  file.then(data => {
+    response.end(data);
+  })
+  .catch(err => {
+    response.end(err);
+  });
+};
+
 let notFound = (request, response) => {
   response.statusCode = 404;
   if (requestMatches(request, 'GET', /^\/contacts\/?$/)) {
@@ -113,8 +153,6 @@ let notFound = (request, response) => {
     response.end("404 ERROR: Invalid request method and/or path!");
   }
 };
-
-
 
 let sendZalgo = (response) => {
   let zalgo = {
@@ -133,8 +171,11 @@ let router = (request) => {
 routes = [
   { method: 'GET', path: /^\/contacts\/([a-zA-Z0-9\-]+)\/?$/, handler: getMatchingContacts },
   { method: 'POST', path: /^\/contacts\/?$/, handler: postContact },
+  { method: 'PUT', path: /^\/contacts\/([a-zA-Z0-9\-]+)\/?$$/, handler: updateContact },
+  { method: 'DELETE', path: /\/contacts\/([a-zA-Z0-9\-]+)\/?$/, handler: deleteContact },
   { method: 'GET', path: /^\/contacts\/?$/, handler: getAllContacts },
   { method: 'GET', path: /^\/myip$/, handler: respondConnectionIP },
+  { method: 'GET', path: /^\/([a-zA-Z0-9]+\.[a-zA-Z0-9]+)?$/, handler: requestPage }
 ];
 
 let server = http.createServer((request, response) => {
