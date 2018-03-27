@@ -4,6 +4,8 @@ const http = require('http');
 const WebSocket = require('ws');
 // FS enabled file read/write for file serving
 const fs = require('fs');
+// DB is Postgres database handling
+const db = require('./db.js');
 // Promisify converts callback-based functions to Promise-based
 const promisify = require('util').promisify;
 // UUID generates unique ids server-side
@@ -16,21 +18,21 @@ const readFile = promisify(fs.readFile);
 // Load WebSocketServer from file
 const wss = require('./websocket-server.js');
 
-// Pre-populate data for testing
-let contacts = [
-  {
-    "name": "Ben Gamber",
-    "phone": "555-555-5555",
-    "email": "ben@ben.ben",
-    "id": "8bfcade3-445c-45ae-bb4f-f90eb49857d4"
-  },
-  {
-    "name": "Dude Duderson",
-    "phone": "123-456-7890",
-    "email": "dude@dude.dude",
-    "id": "7b306ea9-0ec0-4037-af2d-e6ae06e7cfeb"
-  }
-];
+// // Pre-populate data for testing -- REPLACING WITH DATABASE
+// let contacts = [
+//   {
+//     "name": "Ben Gamber",
+//     "phone": "555-555-5555",
+//     "email": "ben@ben.ben",
+//     "id": "8bfcade3-445c-45ae-bb4f-f90eb49857d4"
+//   },
+//   {
+//     "name": "Dude Duderson",
+//     "phone": "123-456-7890",
+//     "email": "dude@dude.dude",
+//     "id": "7b306ea9-0ec0-4037-af2d-e6ae06e7cfeb"
+//   }
+// ];
 
 let getMatchingContacts = (request, response) => {
   let searchID = request.url.substring(10);
