@@ -1,17 +1,21 @@
+// Replace with Express
 // HTTP is required for server
 const http = require('http');
+// Remove; integrated in websocket-server.js
 // WS is required for running WebSocketServer
 const WebSocket = require('ws');
 // FS enabled file read/write for file serving
 const fs = require('fs');
 // DB is Postgres database handling
 const db = require('./db.js');
+// Replace with Express sendFile
 // Promisify converts callback-based functions to Promise-based
 const promisify = require('util').promisify;
 // UUID generates unique ids server-side
 const uuidv4 = require('uuid/v4');
 // Moment is a date/time module, used here for logging activity
 const moment = require('moment');
+// Obsolete with sendFile
 // Convert needed functions to promisers
 const readFile = promisify(fs.readFile);
 
@@ -59,6 +63,7 @@ let getAllContacts = (request, response) => {
   });
 };
 
+// Replace with Express bodyParser
 let readBody = (request, callback) => {
   let body = '';
   request.on('data', (chunk) => {
@@ -69,6 +74,7 @@ let readBody = (request, callback) => {
   });
 };
 
+// Modify to use Express bodyParser
 let postContact = (request, response) => {
   readBody(request, (body) => {
     let id = uuidv4();
@@ -87,6 +93,7 @@ let postContact = (request, response) => {
   });
 };
 
+// Update to use bodyParser
 let updateContact = (request, response) => {
   let contactEdit = readBody(request, createContactEntry);
 };
@@ -95,6 +102,7 @@ let deleteContact = (request, response) => {
   response.end("delete code dev in progress");
 };
 
+// Replace with Express routing
 let requestMatches = (request, method, path) => {
   if (request.method === method) {
     let match = path.exec(request.url);
@@ -122,6 +130,7 @@ let logConnection = (request, response) => {
   console.log(`${userIP}: ${request.method} ${request.url} ${nowString}`);
 };
 
+// Replace with Express routing
 let requestPage = (request, response) => {
   let page = requestMatches(request, 'GET', /^\/([a-zA-Z0-9]+\.[a-zA-Z0-9]+)?$/);
   if (page[0]) {
@@ -131,6 +140,7 @@ let requestPage = (request, response) => {
   };
 };
 
+// Swap for express sendFile
 let renderPage = (address, response) => {
   let file = readFile(`./static/${address}`);
   file.then(data => {
@@ -141,6 +151,7 @@ let renderPage = (address, response) => {
     });
 };
 
+// Replace with Express routing
 let notFound = (request, response) => {
   response.statusCode = 404;
   if (requestMatches(request, 'GET', /^\/contacts\/?$/)) {
@@ -161,10 +172,12 @@ let sendZalgo = (response) => {
   response.end(JSON.stringify(zalgo));
 };
 
+// Replace with Express Router
 let router = (request) => {
   return routes.find(route => { return requestMatches(request, route.method, route.path) })
 };
 
+// Obsolete via Express routing
 routes = [
   { method: 'GET', path: /^\/contacts\/([a-zA-Z0-9\-]+)\/?$/, handler: getMatchingContacts },
   { method: 'POST', path: /^\/contacts\/?$/, handler: postContact },
@@ -175,6 +188,7 @@ routes = [
   { method: 'GET', path: /^\/([a-zA-Z0-9]+\.[a-zA-Z0-9]+)?$/, handler: requestPage }
 ];
 
+// Replace with Express app.listen
 let server = http.createServer((request, response) => {
   logConnection(request, response);
   let route = router(request);
