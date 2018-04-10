@@ -4,6 +4,8 @@ const http = require('http');
 const WebSocket = require('ws');
 // FS enabled file read/write for file serving
 const fs = require('fs');
+// DB is Postgres database handling
+const db = require('./db.js');
 // Promisify converts callback-based functions to Promise-based
 const promisify = require('util').promisify;
 // UUID generates unique ids server-side
@@ -16,22 +18,6 @@ const readFile = promisify(fs.readFile);
 // Load WebSocketServer from file
 const wss = require('./websocket-server.js');
 
-// Pre-populate data for testing
-let contacts = [
-  {
-    "name": "Ben Gamber",
-    "phone": "555-555-5555",
-    "email": "ben@ben.ben",
-    "id": "8bfcade3-445c-45ae-bb4f-f90eb49857d4"
-  },
-  {
-    "name": "Dude Duderson",
-    "phone": "123-456-7890",
-    "email": "dude@dude.dude",
-    "id": "7b306ea9-0ec0-4037-af2d-e6ae06e7cfeb"
-  }
-];
-
 let getMatchingContacts = (request, response) => {
   let searchID = request.url.substring(10);
   console.log('Searching ID:', searchID);
@@ -41,28 +27,36 @@ let getMatchingContacts = (request, response) => {
     sendZalgo(response);
 
   } else {
-    let searchContact = findContact(contacts, searchID);
-    if (searchContact) {
-      console.log("Found: \n", searchContact);
-      response.end(JSON.stringify(searchContact));
-    } else {
-      console.log(`ID '${searchID}' not found`);
-      response.statusCode = 404;
-      response.end(`404 ERROR: Could not find listing for given ID: ${searchID}`);
-    };
+    let searchContact = db.query(`SELECT * FROM contacts WHERE id = '${searchID}';`);
+    searchContact.then(result => {
+      if (result) {
+        console.log("Found: \n", result[0]);
+        response.end(JSON.stringify(result[0]));
+      } else {
+        console.log(`ID '${searchID}' not found`);
+        response.statusCode = 404;
+        response.end(`404 ERROR: Could not find listing for given ID: ${searchID}`);
+      };
+    })
+      .catch(err => {
+        console.log(err);
+      });
   };
 };
 
 let getAllContacts = (request, response) => {
   console.log('No ID included; sending full list');
-  response.end(JSON.stringify(contacts));
-};
-
-let findContact = (contacts, searchID) => {
-  let searchContact = contacts.find((item) => {
-    return item["id"] === searchID;
+  let getAll = db.query(`SELECT
+          c.id, c.name, c.email, c.phone, g.name as group
+          FROM contacts c
+          LEFT JOIN groups g
+          ON c.group_id = g.id;`);
+  getAll.then(result => {
+    response.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    console.log(err);
   });
-  return searchContact;
 };
 
 let readBody = (request, callback) => {
@@ -72,23 +66,25 @@ let readBody = (request, callback) => {
   });
   request.on('end', function () {
     let result = callback(body);
-    return result;
   });
 };
 
 let postContact = (request, response) => {
-  let contact = readBody(request, createContactEntry);
-  console.log(contact);
-  contacts.push(contact);
-  response.end('New contact added!');
-};
-
-let createContactEntry = (body) => {
-  let id = uuidv4();
-  let contact = JSON.parse(body);
-  contact["id"] = id;
-  console.log("Created new contact: ", id + '\n', contact);
-  return contact;
+  readBody(request, (body) => {
+    let id = uuidv4();
+    let c = JSON.parse(body);
+    c["id"] = id;
+    console.log("Created new contact: ", id + '\n', c);
+  
+    let postQuery = db.query(`INSERT INTO contacts (id, email, name, phone)
+          VALUES ('${c.id}', '${c.email}', '${c.name}', ${(c.phone === undefined ? null : "'"+c.phone+"'")});`);
+    postQuery.then(result => {
+      response.end('New contact added!');
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  });
 };
 
 let updateContact = (request, response) => {
@@ -140,9 +136,9 @@ let renderPage = (address, response) => {
   file.then(data => {
     response.end(data);
   })
-  .catch(err => {
-    response.end(err);
-  });
+    .catch(err => {
+      response.end(err);
+    });
 };
 
 let notFound = (request, response) => {
@@ -156,10 +152,11 @@ let notFound = (request, response) => {
 
 let sendZalgo = (response) => {
   let zalgo = {
-    first: "Z̠̣̱͚͚͕á̱l̰ͅg̡o̮",
-    last: " Ṉ̶͓̭̼ḛ̴̥͓̳̲z̤̜ͅp͔̩̱e͏͎r̜̙̪͚ḏi̹̣a͙͢n̼̞͉",
+    id: "H̵̪̥̠̼e̗͚̻̗̭̩̮ w̷͙̭͙̙̝͙h̡̩͇̝̯o͏͉̱͉̲ͅ ̘͉͡W̠̲͙̰̹͡a͞i͍̼̝ts̗̭̖̦̠̺̥ ̙B̝͖̤͜e̘̫͍̤̩͇h̹i̖̦̼͓̠n̸͉̲d̨͚͓͎ͅ Th̨̖̖è͈̞ͅ ̮Wa̬̻̜͕͚̼̤l͓͕̹͔̹̬l͖̦̟̼͈͡.͕̤͚͙̤",
+    name: "Z̠̣̱͚͚͕á̱l̰ͅg̡o̮",
     email: "Z̤̺͉̦A̖͝L͍̱G̶̰̺̲̗̥̖̮O̩͈̠@h̴̥i̮v̜̣̗̖̭ẹ͞-̱͔͙m͔in̩̮̯d̟̫̟̦̖̯̗́.net",
-    id: "H̵̪̥̠̼e̗͚̻̗̭̩̮ w̷͙̭͙̙̝͙h̡̩͇̝̯o͏͉̱͉̲ͅ ̘͉͡W̠̲͙̰̹͡a͞i͍̼̝ts̗̭̖̦̠̺̥ ̙B̝͖̤͜e̘̫͍̤̩͇h̹i̖̦̼͓̠n̸͉̲d̨͚͓͎ͅ Th̨̖̖è͈̞ͅ ̮Wa̬̻̜͕͚̼̤l͓͕̹͔̹̬l͖̦̟̼͈͡.͕̤͚͙̤"
+    phone: null,
+    group: null
   };
   response.end(JSON.stringify(zalgo));
 };
