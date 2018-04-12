@@ -1,25 +1,17 @@
-// HTTP is required for server
-const http = require('http');
-// WS is required for running WebSocketServer
-const WebSocket = require('ws');
-// FS enabled file read/write for file serving
-const fs = require('fs');
+// Express handles back-end routing and file serving
+const express = require('express');
 // DB is Postgres database handling
 const db = require('./db.js');
-// Promisify converts callback-based functions to Promise-based
-const promisify = require('util').promisify;
 // UUID generates unique ids server-side
 const uuidv4 = require('uuid/v4');
 // Moment is a date/time module, used here for logging activity
 const moment = require('moment');
-// Convert needed functions to promisers
-const readFile = promisify(fs.readFile);
 
 // Load WebSocketServer from file
 const wss = require('./websocket-server.js');
 
 let getMatchingContacts = (request, response) => {
-  let searchID = request.url.substring(10);
+  let searchID = request.params.id;
   console.log('Searching ID:', searchID);
 
   // Easter Egg!
@@ -31,11 +23,11 @@ let getMatchingContacts = (request, response) => {
     searchContact.then(result => {
       if (result) {
         console.log("Found: \n", result[0]);
-        response.end(JSON.stringify(result[0]));
+        response.send(JSON.stringify(result[0]));
       } else {
         console.log(`ID '${searchID}' not found`);
         response.statusCode = 404;
-        response.end(`404 ERROR: Could not find listing for given ID: ${searchID}`);
+        response.send(`404 ERROR: Could not find listing for given ID: ${searchID}`);
       };
     })
       .catch(err => {
@@ -52,49 +44,39 @@ let getAllContacts = (request, response) => {
           LEFT JOIN groups g
           ON c.group_id = g.id;`);
   getAll.then(result => {
-    response.end(JSON.stringify(result));
+    response.send(JSON.stringify(result));
   })
-  .catch(err => {
-    console.log(err);
-  });
-};
-
-let readBody = (request, callback) => {
-  let body = '';
-  request.on('data', (chunk) => {
-    body += chunk.toString();
-  });
-  request.on('end', function () {
-    let result = callback(body);
-  });
-};
-
-let postContact = (request, response) => {
-  readBody(request, (body) => {
-    let id = uuidv4();
-    let c = JSON.parse(body);
-    c["id"] = id;
-    console.log("Created new contact: ", id + '\n', c);
-  
-    let postQuery = db.query(`INSERT INTO contacts (id, email, name, phone)
-          VALUES ('${c.id}', '${c.email}', '${c.name}', ${(c.phone === undefined ? null : "'"+c.phone+"'")});`);
-    postQuery.then(result => {
-      response.end('New contact added!');
-    })
     .catch(err => {
       console.log(err);
     });
-  });
 };
 
+let postContact = (request, response) => {
+  let body = request.body;
+  let id = uuidv4();
+  body.id = id;
+  console.log("Created new contact: ", id + '\n', body);
+
+  let postQuery = db.query(`INSERT INTO contacts (id, email, name, phone)
+          VALUES ('${body.id}', '${body.email}', '${body.name}', ${(body.phone === undefined ? null : "'" + body.phone + "'")});`);
+  postQuery.then(result => {
+    response.send('New contact added!');
+  })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+// Update to use bodyParser
 let updateContact = (request, response) => {
   let contactEdit = readBody(request, createContactEntry);
 };
 
 let deleteContact = (request, response) => {
-  response.end("delete code dev in progress");
+  response.send("delete code dev in progress");
 };
 
+// Replace with Express routing
 let requestMatches = (request, method, path) => {
   if (request.method === method) {
     let match = path.exec(request.url);
@@ -113,7 +95,7 @@ let getConnectionIP = (request) => {
 
 let respondConnectionIP = (request, response) => {
   let ip = getConnectionIP(request);
-  response.end(`Hi, ${ip !== '1' ? ip : 'Host'}!`);
+  response.send(`Hi, ${ip !== '1' ? ip : 'Host'}!`);
 };
 
 let logConnection = (request, response) => {
@@ -122,6 +104,7 @@ let logConnection = (request, response) => {
   console.log(`${userIP}: ${request.method} ${request.url} ${nowString}`);
 };
 
+// Replace with Express routing
 let requestPage = (request, response) => {
   let page = requestMatches(request, 'GET', /^\/([a-zA-Z0-9]+\.[a-zA-Z0-9]+)?$/);
   if (page[0]) {
@@ -131,22 +114,24 @@ let requestPage = (request, response) => {
   };
 };
 
+// Swap for express sendFile
 let renderPage = (address, response) => {
   let file = readFile(`./static/${address}`);
   file.then(data => {
-    response.end(data);
+    response.send(data);
   })
     .catch(err => {
-      response.end(err);
+      response.send(err);
     });
 };
 
+// Replace with Express routing
 let notFound = (request, response) => {
   response.statusCode = 404;
   if (requestMatches(request, 'GET', /^\/contacts\/?$/)) {
-    response.end("404 ERROR: Oops! No matching ID found!");
+    response.send("404 ERROR: Oops! No matching ID found!");
   } else {
-    response.end("404 ERROR: Invalid request method and/or path!");
+    response.send("404 ERROR: Invalid request method and/or path!");
   }
 };
 
@@ -158,28 +143,27 @@ let sendZalgo = (response) => {
     phone: null,
     group: null
   };
-  response.end(JSON.stringify(zalgo));
+  response.send(JSON.stringify(zalgo));
 };
 
-let router = (request) => {
-  return routes.find(route => { return requestMatches(request, route.method, route.path) })
-};
+const Router = express.Router;
+const bodyParser = require('body-parser');
+let app = express();
+let api = new Router();
 
-routes = [
-  { method: 'GET', path: /^\/contacts\/([a-zA-Z0-9\-]+)\/?$/, handler: getMatchingContacts },
-  { method: 'POST', path: /^\/contacts\/?$/, handler: postContact },
-  { method: 'PUT', path: /^\/contacts\/([a-zA-Z0-9\-]+)\/?$$/, handler: updateContact },
-  { method: 'DELETE', path: /\/contacts\/([a-zA-Z0-9\-]+)\/?$/, handler: deleteContact },
-  { method: 'GET', path: /^\/contacts\/?$/, handler: getAllContacts },
-  { method: 'GET', path: /^\/myip$/, handler: respondConnectionIP },
-  { method: 'GET', path: /^\/([a-zA-Z0-9]+\.[a-zA-Z0-9]+)?$/, handler: requestPage }
-];
+api.get('/:id', getMatchingContacts);
+api.post('/', postContact);
+api.put('/:id', updateContact);
+api.delete('/:id', deleteContact);
+api.get('/', getAllContacts);
 
-let server = http.createServer((request, response) => {
-  logConnection(request, response);
-  let route = router(request);
-
-  (route ? route.handler : notFound)(request, response);
+app.use(bodyParser.json());
+app.use('/contacts', api);
+app.get('/myip', respondConnectionIP);
+app.use((req, res, next) => {
+  res.sendFile(__dirname + `/static/${req.url}`);
 });
 
-server.listen(3000);
+app.listen(3000, () => {
+  console.log("Server listening on Port 3000");
+});
