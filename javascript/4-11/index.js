@@ -1,14 +1,12 @@
 const root = document.querySelector('.react-root');
 const h = React.createElement;
 
-let blogs = [
+const blogs = [
   { id: '1', title: 'Hello World', author: 'Jonathan', date: "4-11-2018", body: 'Lorem Ipsum Sit Dolor Amet' },
   { id: '2', title: 'Bacon Ipsum', author: 'Ben', date: "4-11-2018", body: "Loading..." },
   { id: '3', title: 'React Demo', author: 'Ben', date: "4-11-2018", body: 'Building Blog Examples Using React' },
   { id: '4', title: 'Home Stretch', author: 'Ben', date: "4-11-2018", body: '5 1/2 weeks left!' }
 ];
-
-let blogBeingEdited = null;
 
 let Greeting = ({ person }) =>
   h('h1', { className: 'header' }, `Hello, ${person}!`);
@@ -22,54 +20,16 @@ let Footer = () =>
 let Title = ({ title }) =>
   h('span', { className: "title" }, title);
 
-let editBlog = (blogToEdit) => {
-  console.log(`Requested edit of ${blogToEdit.title}`);
-  blogBeingEdited = Object.assign({}, blogToEdit);
-  // update();
-};
-
-let EditButton = (blog) =>
+let EditButton = ({ blog, editBlog }) =>
   h('button', { onClick: () => { editBlog(blog) }, className: 'edit-btn' }, [h('i', { className: "material-icons" }, ['edit'])]);
 
-let updateTitle = (blogToEdit, newValue) => {
-  blogToEdit.title = newValue;
-  // update();
-};
-
-let updateBody = (blogToEdit, newValue) => {
-  blogToEdit.body = newValue;
-  // update();
-};
-
-let confirmEdit = (blogToEdit) => {
-  console.log(`Confirm edit of ${blogToEdit.title}`);
-  let blog = blogs.find(blog => blog.id === blogToEdit.id);
-  blog.title = blogBeingEdited.title;
-  blog.body = blogBeingEdited.body;
-  blogBeingEdited = null;
-  // update();
-};
-
-let cancelEdit = (blogToEdit) => {
-  console.log(`Cancel edit of ${blogToEdit.title}`);
-  blogBeingEdited = null;
-  // update();
-}
-
-let ConfirmButton = (blog) =>
+let ConfirmButton = ({ blog, confirmEdit }) =>
   h('button', { onClick: () => { confirmEdit(blog) }, className: 'edit-btn' }, [h('i', { className: "material-icons" }, ['check'])]);
 
-let CancelButton = (blog) =>
+let CancelButton = ({ blog, cancelEdit }) =>
   h('button', { onClick: () => { cancelEdit(blog) }, className: 'cncl-btn' }, [h('i', { className: "material-icons" }, ['cancel'])]);
 
-let removeBlog = (blogToDelete) => {
-  console.log(`Requested deletion of ${blogToDelete.title}`);
-  let { id } = blogToDelete;
-  blogs = blogs.filter((blog) => id !== blog.id);
-  // update();
-};
-
-let DeleteButton = (blog) =>
+let DeleteButton = ({ blog, removeBlog }) =>
   h('button', { onClick: () => { removeBlog(blog) }, className: 'big-red' }, [h('i', { className: "material-icons" }, ['delete'])]);
 
 let Credit = ({ author, date }) =>
@@ -78,22 +38,30 @@ let Credit = ({ author, date }) =>
 let Body = ({ body }) =>
   h('div', { className: "body" }, `${body}`);
 
-let TextEdit = (blog) =>
-  [h('input', { className: "textedit", value: blogBeingEdited.title, onChange: ((event) => updateTitle(blogBeingEdited, event.target.value)) }),
-  h('input', { className: "textedit", value: blogBeingEdited.body, onChange: ((event) => updateBody(blogBeingEdited, event.target.value)) })];
+let TextEdit = ({ blog, blogBeingEdited, blogActions }) =>
+  [h('input', { className: "textedit", value: blogBeingEdited.title, onChange: ((event) => blogActions.updateTitle(blogBeingEdited, event.target.value)) }),
+  h('input', { className: "textedit", value: blogBeingEdited.body, onChange: ((event) => blogActions.updateBody(blogBeingEdited, event.target.value)) })];
 
-let BlogPost = (blog, blogBeingEdited) =>
+let BlogPost = ({
+  blog,
+  blogBeingEdited,
+  blogActions
+}) =>
   h('div', { className: "post" }, [
     h(Title, { title: blog.title }, []),
-    (blogBeingEdited && blogBeingEdited.id === blog.id && [h(ConfirmButton, blog), h(CancelButton, blog)])
-    || h(EditButton, blog),
-    h(DeleteButton, blog),
+    (blogBeingEdited && blogBeingEdited.id === blog.id && [
+      h(ConfirmButton, { blog, confirmEdit: blogActions.confirmEdit }),
+      h(CancelButton, { blog, cancelEdit: blogActions.cancelEdit })
+    ]) || h(EditButton, { blog, editBlog: blogActions.editBlog }),
+    h(DeleteButton, { blog, removeBlog: blogActions.removeBlog }),
     h(Credit, { author: blog.author, date: blog.date }, []),
-    blogBeingEdited && blogBeingEdited.id === blog.id && h(TextEdit, blog, []),
+    blogBeingEdited && blogBeingEdited.id === blog.id && h(TextEdit, { blog, blogBeingEdited, blogActions }, []),
     h(Body, { body: blog.body }, [])
   ]);
 
-let BlogList = ({ blogs, blogBeingEdited }) => h('div', { className: "react-list" }, blogs.map(post => h(BlogPost, { post, blogBeingEdited })));
+let BlogList = ({ blogs, blogBeingEdited, blogActions }) =>
+  h('div', { className: "react-list" },
+    blogs.map(blog => h(BlogPost, { blog, blogBeingEdited, blogActions })));
 
 // let Page = ({ blogs }) => h('div', { className: "content" }, [
 //   h(Title, { title: '"Blog" Page' }, []),
@@ -106,21 +74,61 @@ class Page extends React.Component {
   constructor(props) {
     super(props);
     this.state = { blogs: blogs, blogBeingEdited: null }; // Must always be object
-
-    // setTimeout(() => {
-    //   let blogs = this.state.blogs.slice();
-    //   blogs.pop();
-    //   this.setState({ blogs: blogs });
-    // }, 2000);
   }
 
   render() {
     let { blogs, blogBeingEdited } = this.state;
 
+    // this.setState({ blogBeingEdited: null });
+
+    let editBlog = (blogToEdit) => {
+      console.log(`Requested edit of ${blogToEdit.title}`);
+      this.setState({ blogBeingEdited: Object.assign({}, blogToEdit) });
+    };
+
+    let updateTitle = (blogToEdit, newValue) => {
+      blogToEdit.title = newValue;
+      this.setState({ blogBeingEdited: blogToEdit });
+    };
+
+    let updateBody = (blogToEdit, newValue) => {
+      blogToEdit.body = newValue;
+      this.setState({ blogBeingEdited: blogToEdit });
+    };
+
+    let confirmEdit = (blogToEdit) => {
+      console.log(`Confirm edit of ${blogToEdit.title}`);
+      let blog = blogs.find(blog => blog.id === blogToEdit.id);
+      blog.title = blogBeingEdited.title;
+      blog.body = blogBeingEdited.body;
+      this.setState({ blogs: blogs, blogBeingEdited: null });
+    };
+
+    let cancelEdit = (blogToEdit) => {
+      console.log(`Cancel edit of ${blogToEdit.title}`);
+      this.setState({ blogBeingEdited: null });
+    };
+
+    let removeBlog = (blogToDelete) => {
+      console.log(`Requested deletion of ${blogToDelete.title}`);
+      let { id } = blogToDelete;
+      let prunedBlogs = blogs.filter((blog) => blog.id !== id);
+      this.setState({ blogs: prunedBlogs });
+    };
+
+    let blogActions = {
+      editBlog,
+      updateTitle,
+      updateBody,
+      confirmEdit,
+      cancelEdit,
+      removeBlog
+    };
+
     return h('div', { className: "content" }, [
       h(Title, { title: '"Blog" Page' }, []),
       h(Greeting, { person: 'Ben' }, []),
-      h(BlogList, { blogs, blogBeingEdited }, []),
+      h(BlogList, { blogs, blogBeingEdited, blogActions }, []),
       h(Footer, null, [])
     ]);
   }
