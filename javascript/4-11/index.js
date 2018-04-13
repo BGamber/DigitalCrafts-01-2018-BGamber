@@ -3,7 +3,7 @@ const h = React.createElement;
 
 const blogs = [
   { id: '1', title: 'Hello World', author: 'Jonathan', date: "4-11-2018", body: 'Lorem Ipsum Sit Dolor Amet' },
-  { id: '2', title: 'Bacon Ipsum', author: 'Ben', date: "4-11-2018", body: "Loading..." },
+  { id: '2', title: 'Bacon Ipsum', author: 'Ben', date: "4-11-2018", body: "Bacon ipsum dolor amet quis laborum commodo ad mollit esse. Pork loin dolore leberkas, in ball tip cillum consequat." },
   { id: '3', title: 'React Demo', author: 'Ben', date: "4-11-2018", body: 'Building Blog Examples Using React' },
   { id: '4', title: 'Home Stretch', author: 'Ben', date: "4-11-2018", body: '5 1/2 weeks left!' }
 ];
@@ -63,13 +63,6 @@ let BlogList = ({ blogs, blogBeingEdited, blogActions }) =>
   h('div', { className: "react-list" },
     blogs.map(blog => h(BlogPost, { blog, blogBeingEdited, blogActions })));
 
-// let Page = ({ blogs }) => h('div', { className: "content" }, [
-//   h(Title, { title: '"Blog" Page' }, []),
-//   h(Greeting, { person: 'Ben' }, []),
-//   h(BlogList, { blogs }, []),
-//   h(Footer, null, [])
-// ]);
-
 class Page extends React.Component {
   constructor(props) {
     super(props);
@@ -78,8 +71,6 @@ class Page extends React.Component {
 
   render() {
     let { blogs, blogBeingEdited } = this.state;
-
-    // this.setState({ blogBeingEdited: null });
 
     let editBlog = (blogToEdit) => {
       console.log(`Requested edit of ${blogToEdit.title}`);
@@ -134,12 +125,4 @@ class Page extends React.Component {
   }
 }
 
-// let update = () => {
-//   ReactDOM.render(h(Page, { blogs: blogs }, []), root);
-// };
 ReactDOM.render(h(Page), root);
-
-// update();
-
-// let getBacon = fetch('https://baconipsum.com/api/?type=meat-and-filler&paras=1&start-with-lorem=1');
-// getBacon.then(res => res.json()).then(data => blogs[1].body = data[0]).then(() => update());
