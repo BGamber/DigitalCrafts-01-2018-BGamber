@@ -39,29 +39,52 @@ let Body = ({ body }) =>
   h('div', { className: "body" }, `${body}`);
 
 let TextEdit = ({ blog, blogBeingEdited, blogActions }) =>
-  [h('input', { className: "textedit", value: blogBeingEdited.title, onChange: ((event) => blogActions.updateTitle(blogBeingEdited, event.target.value)) }),
-  h('input', { className: "textedit", value: blogBeingEdited.body, onChange: ((event) => blogActions.updateBody(blogBeingEdited, event.target.value)) })];
+  [h('input', { key: "edittitle", className: "textedit", value: blogBeingEdited.title, onChange: ((event) => blogActions.updateTitle(blogBeingEdited, event.target.value)) }),
+  h('input', { key: "editbody", className: "textedit", value: blogBeingEdited.body, onChange: ((event) => blogActions.updateBody(blogBeingEdited, event.target.value)) })];
 
 let BlogPost = ({
   blog,
   blogBeingEdited,
   blogActions
 }) =>
-  h('div', { className: "post" }, [
-    h(Title, { title: blog.title }, []),
-    (blogBeingEdited && blogBeingEdited.id === blog.id && [
-      h(ConfirmButton, { blog, confirmEdit: blogActions.confirmEdit }),
-      h(CancelButton, { blog, cancelEdit: blogActions.cancelEdit })
-    ]) || h(EditButton, { blog, editBlog: blogActions.editBlog }),
-    h(DeleteButton, { blog, removeBlog: blogActions.removeBlog }),
-    h(Credit, { author: blog.author, date: blog.date }, []),
-    blogBeingEdited && blogBeingEdited.id === blog.id && h(TextEdit, { blog, blogBeingEdited, blogActions }, []),
-    h(Body, { body: blog.body }, [])
-  ]);
+  <div className="post">
+    <Title title={blog.title} />
+    {
+      blogBeingEdited && blogBeingEdited.id === blog.id &&
+      <div>
+        <ConfirmButton blog={blog} confirmEdit={blogActions.confirmEdit} />
+        <CancelButton blog={blog} cancelEdit={blogActions.cancelEdit} />
+      </div>
+      ||
+      <EditButton blog={blog} editBlog={blogActions.editBlog} />
+    } 
+    <Credit author={blog.author} />
+    {
+      blogBeingEdited && blogBeingEdited.id === blog.id &&
+      <TextEdit blog={blog} blogBeingEdited={blogBeingEdited} blogActions={blogActions} />
+    }
+    <Body body={blog.body} />
+  </div>
+
+// h('div', { className: "post" }, [
+//   h(Title, { title: blog.title }, []),
+//   (blogBeingEdited && blogBeingEdited.id === blog.id && [
+//     h(ConfirmButton, { blog, confirmEdit: blogActions.confirmEdit }),
+//     h(CancelButton, { blog, cancelEdit: blogActions.cancelEdit })
+//   ]) || h(EditButton, { blog, editBlog: blogActions.editBlog }),
+//   h(DeleteButton, { blog, removeBlog: blogActions.removeBlog }),
+//   h(Credit, { author: blog.author, date: blog.date }, []),
+//   blogBeingEdited && blogBeingEdited.id === blog.id && h(TextEdit, { blog, blogBeingEdited, blogActions }, []),
+//   h(Body, { body: blog.body }, [])
+// ]);
 
 let BlogList = ({ blogs, blogBeingEdited, blogActions }) =>
-  h('div', { className: "react-list" },
-    blogs.map(blog => h(BlogPost, { blog, blogBeingEdited, blogActions })));
+  // h('div', { className: "react-list" },
+  <div className="react-list">
+    {
+      blogs.map(blog => <BlogPost blog={blog} blogBeingEdited={blogBeingEdited} blogActions={blogActions} />)
+    }
+  </div>
 
 class Page extends React.Component {
   constructor(props) {
@@ -116,12 +139,21 @@ class Page extends React.Component {
       removeBlog
     };
 
-    return h('div', { className: "content" }, [
-      h(Title, { title: '"Blog" Page' }, []),
-      h(Greeting, { person: 'Ben' }, []),
-      h(BlogList, { blogs, blogBeingEdited, blogActions }, []),
-      h(Footer, null, [])
-    ]);
+    return (
+      <div className="content">
+        <Title title="'Blog' Page" />
+        <Greeting person="Ben" />
+        <BlogList blogs={blogs} blogBeingEdited={blogBeingEdited} blogActions={blogActions} />
+        <Footer />
+      </div>
+    );
+
+    // return h('div', { className: "content" }, [
+    //   h(Title, { title: '"Blog" Page' }, []),
+    //   h(Greeting, { person: 'Ben' }, []),
+    //   h(BlogList, { blogs, blogBeingEdited, blogActions }, []),
+    //   h(Footer, null, [])
+    // ]);
   }
 }
 
