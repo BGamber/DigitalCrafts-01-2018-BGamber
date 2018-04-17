@@ -31,11 +31,14 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .post {
+  max-width: 30%;
   background-color: lightblue;
   padding: 15px;
+  margin-bottom: 25px;
 }
 
 .title {
