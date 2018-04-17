@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './styles.css';
 
-let h = React.createElement;
-
 const blogs = [
   { id: '1', title: 'Hello World', author: 'Jonathan', date: "4-11-2018", body: 'Lorem Ipsum Sit Dolor Amet' },
   { id: '2', title: 'Bacon Ipsum', author: 'Ben', date: "4-11-2018", body: "Bacon ipsum dolor amet quis laborum commodo ad mollit esse. Pork loin dolore leberkas, in ball tip cillum consequat." },
