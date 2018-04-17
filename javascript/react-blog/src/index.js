@@ -1,14 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import './styles.css';
-
-const blogs = [
-  { id: '1', title: 'Hello World', author: 'Jonathan', date: "4-11-2018", body: 'Lorem Ipsum Sit Dolor Amet' },
-  { id: '2', title: 'Bacon Ipsum', author: 'Ben', date: "4-11-2018", body: "Bacon ipsum dolor amet quis laborum commodo ad mollit esse. Pork loin dolore leberkas, in ball tip cillum consequat." },
-  { id: '3', title: 'React Demo', author: 'Ben', date: "4-11-2018", body: 'Building Blog Examples Using React' },
-  { id: '4', title: 'Home Stretch', author: 'Ben', date: "4-11-2018", body: '5 1/2 weeks left!' }
-];
 
 let Greeting = ({ person }) =>
   <h1 className="header">Hello, {person}!</h1>
@@ -37,9 +29,6 @@ let CancelButton = ({ blog, cancelEdit }) =>
 let DeleteButton = ({ blog, removeBlog }) =>
   <button onClick={() => removeBlog(blog)} className="big-red"><i className="material-icons">delete</i></button>
 
-let Credit = ({ author, date }) =>
-  <div className="credit"><span>{`${author}: ${date}`}</span></div>
-
 let Body = ({ body }) =>
   <div className="body">{body}</div>
 
@@ -65,16 +54,16 @@ let BlogPost = ({
   <div className="post">
     <Title title={blog.title} />
     {
-      blogBeingEdited && blogBeingEdited.id === blog.id &&
-      <div>
-        <ConfirmButton blog={blog} confirmEdit={blogActions.confirmEdit} />
-        <CancelButton blog={blog} cancelEdit={blogActions.cancelEdit} />
-      </div>
-      ||
-      <EditButton blog={blog} editBlog={blogActions.editBlog} />
+      blogBeingEdited && blogBeingEdited.id === blog.id
+        ?
+        <div>
+          <ConfirmButton blog={blog} confirmEdit={blogActions.confirmEdit} />
+          <CancelButton blog={blog} cancelEdit={blogActions.cancelEdit} />
+        </div>
+        :
+        <EditButton blog={blog} editBlog={blogActions.editBlog} />
     }
     <DeleteButton blog={blog} removeBlog={blogActions.removeBlog} />
-    <Credit author={blog.author} date={blog.date} />
     {
       blogBeingEdited && blogBeingEdited.id === blog.id &&
       <TextEdit blog={blog} blogBeingEdited={blogBeingEdited} blogActions={blogActions} />
@@ -85,14 +74,20 @@ let BlogPost = ({
 let BlogList = ({ blogs, blogBeingEdited, blogActions }) =>
   <div className="react-list">
     {
-      blogs.map(blog => <BlogPost blog={blog} blogBeingEdited={blogBeingEdited} blogActions={blogActions} />)
+      blogs.map(blog => <BlogPost key={`blog${blog.id}`} blog={blog} blogBeingEdited={blogBeingEdited} blogActions={blogActions} />)
     }
   </div>
 
 class Page extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { blogs: blogs, blogBeingEdited: null }; // Must always be object
+    this.state = { blogs: [], blogBeingEdited: null }; // Must always be object
+  }
+
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(response => response.json())
+      .then(json => this.setState({ blogs: json }));
   }
 
   render() {
