@@ -4,7 +4,7 @@ import Zup from './Zup';
 let ZupList = ({ author, zups, users }) =>
   <div className="zup-list">
     {
-      author.name !== undefined ?
+      author.id !== undefined ?
       zups.map((zup, index) => author.id === zup.userId ?
         <Zup key={`zup${index}`} zup={zup} author={author} />
         :
