@@ -3,7 +3,7 @@ import { HashRouter as Router, Route, NavLink } from 'react-router-dom';
 import Greeting from './Greeting';
 import ZupView from './ZupView';
 
-let activeUser = "bgamber";
+let activeUser = { name: "bgamber", id: 2 };
 
 let NavBar = () =>
     <ul className="navbar">

@@ -1,16 +1,16 @@
 import React from 'react';
 import Zup from './Zup';
 
-let ZupList = ({ author, zups }) =>
-  <div>
+let ZupList = ({ author, zups, users }) =>
+  <div className="zup-list">
     {
-      author !== undefined ?
-      zups.map((zup, index) => author === zup.author.toLowerCase() ?
-        <Zup key={`zup${index}`} zup={zup} />
+      author.name !== undefined ?
+      zups.map((zup, index) => author.id === zup.userId ?
+        <Zup key={`zup${index}`} zup={zup} author={author} />
         :
-        '')
+        null)
       :
-      zups.map((zup, index) => <Zup key={`zup${index}`} zup={zup} />)
+      zups.map((zup, index) => <Zup key={`zup${index}`} zup={zup} author={author} />)
     }
   </div>
 

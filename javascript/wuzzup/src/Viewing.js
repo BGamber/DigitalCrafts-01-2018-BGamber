@@ -1,7 +1,7 @@
 import React from 'react';
 
 let Viewing = ({ activeUser, author }) => {
-  let target = (activeUser === author ? 'your' : `${author}'s`);
+  let target = (activeUser.name === author ? 'your' : `${author}'s`);
   return (
     <div className="now-viewing">
       Now viewing {author !== undefined ? `${target} posts` : 'all posts'}.
