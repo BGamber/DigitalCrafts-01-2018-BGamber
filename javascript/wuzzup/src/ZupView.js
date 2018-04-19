@@ -21,24 +21,55 @@ class ZupView extends Component {
     this.state = { zups: [] };
   }
 
+  fetchData() {
+    let author = this.props.match.params.author;
+    if (author) {
+      fetch(`https://jsonplaceholder.typicode.com/posts?userId=${users[author]}`)
+        .then(res => res.json())
+        .then(body => this.setState({ zups: body }));
+    } else {
+      fetch(`https://jsonplaceholder.typicode.com/posts`)
+        .then(res => res.json())
+        .then(body => this.setState({ zups: body }));
+    }
+  }
+
   componentDidMount() {
-    let getPosts = fetch(`https://jsonplaceholder.typicode.com/posts`);
-    getPosts
-      .then(res => res.json())
-      .then(body => this.setState({ zups: body }));
+    this.fetchData();
+  }
+
+  componentDidUpdate(prevProps) {
+    let prevUserSearch = prevProps.match.params.author;
+    let currUserSearch = this.props.match.params.author;
+    if (prevUserSearch !== currUserSearch) {
+      this.setState({ zups: [] });
+      this.fetchData();
+    }
   }
 
   render() {
+    let postZup = (zupInput) => {
+      let updatedZups = this.state.zups;
+      let newZup = { userId: "0", title: zupInput, body: "stuff" };
+      updatedZups.push(newZup);
+      this.setState({ zups: updatedZups });
+    }
+
     return (
       <div className="zup-view">
         <Viewing activeUser={this.props.activeUser} author={this.props.match.params.author} />
         {
           this.props.match.params.author === this.props.activeUser.name ?
-            <NewZup />
+            <NewZup postZup={postZup} />
             :
             null
         }
-        <ZupList author={{ name: this.props.match.params.author, id: users[this.props.match.params.author] }} zups={this.state.zups} />
+        {
+          this.state.zups.length === 0 ?
+            <p>Loading...</p>
+            :
+            <ZupList author={{ name: this.props.match.params.author, id: users[this.props.match.params.author] }} zups={this.state.zups} />
+        }
       </div>
     );
   }
