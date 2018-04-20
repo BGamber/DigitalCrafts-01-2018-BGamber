@@ -5,18 +5,70 @@ import ZupList from './ZupList';
 
 import sort from 'lodash/sortBy';
 
+import { connect } from 'react-redux';
+
 let users = {
   "nybblr": 1,
   "bgamber": 2,
   "robby": 3
 };
 
-// let ZupView = ({ match }) =>
-//   <div className="ZupView">
-//     <Viewing author={match.params.author} />
-//     <ZupList author={match.params.author} zups={zups} />
-//   </div>
+let ZupView = (props) => {
+  console.log(props);
+  return (
+  <div className="zup-view">
+    <Viewing activeUser={props.activeUser} author={props.match.params.author} />
+    {
+      // props.match.params.author === props.activeUser.name ?
+      //   <NewZup inputValue={inputValue} zupInput={zupInput} zupSubmit={zupSubmit} />
+      //   :
+      //   null
+    }
+    <select
+      // value={sortBy}
+      // onChange={event => this.setState({ sortBy: event.target.value })}
+      >
+      <option value="date">By Date</option>
+      <option value="name">By Name</option>
+    </select> <select
+      // value={orderBy}
+      // onChange={event => this.setState({ orderBy: event.target.value })}
+      >
+      <option value="asc">Asc</option>
+      <option value="desc">Desc</option>
+    </select>
+    {
+      props.zups.length === 0 ?
+        <p>Loading...</p>
+        :
+        <ZupList author={{ name: props.match.params.author, id: users[props.match.params.author] }} zups={props.zups} />
+    }
+  </div>
+  );
+};
 
+let mapStateToProps = (state) => {
+  return { zups: state.zups, activeUser: state.activeUser };
+};
+
+let mapDispatchToProps = (dispatch) => {
+  return { dispatch: dispatch };
+};
+
+let ZupViewSmart = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ZupView);
+
+//  EXAMPLE OF CONNECTED COMPONENT SETUP
+// let ScreenDumb = ({ zups, dispatch }) => <div><button onClick={() => dispatch({ type: 'CREATE_ZUP', body: "Hi there!" })}>Click me!</button><p>{zups.toString()}</p></div>
+
+// let Screen = connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(ScreenDumb);
+
+/*
 class ZupView extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +90,7 @@ class ZupView extends Component {
       fetch(`https://jsonplaceholder.typicode.com/posts`)
         .then(res => res.json())
         .then(body => this.setState({ zups: body }));
-    }
+    };
   }
 
   componentDidMount() {
@@ -51,7 +103,7 @@ class ZupView extends Component {
     if (prevUserSearch !== currUserSearch) {
       this.setState({ zups: [] });
       this.fetchData();
-    }
+    };
   }
 
   render() {
@@ -61,8 +113,8 @@ class ZupView extends Component {
     if (orderBy === "desc") sortedZups.reverse();
 
     let zupInput = (event) => {
-      this.setState({ inputValue: event.target.value })
-    }
+      this.setState({ inputValue: event.target.value });
+    };
 
     let zupSubmit = (event) => {
       event.preventDefault();
@@ -70,7 +122,7 @@ class ZupView extends Component {
         let newZup = { userId: this.props.activeUser.id, title: inputValue, body: "stuff", date: new Date() };
         this.setState(state => ({ zups: state.zups.concat(newZup), inputValue: '' }));
       };
-    }
+    };
 
     return (
       <div className="zup-view">
@@ -102,5 +154,6 @@ class ZupView extends Component {
     );
   }
 }
+*/
 
-export default ZupView;
+export default ZupViewSmart;
