@@ -5,6 +5,8 @@ import ZupList from './ZupList';
 
 import { connect } from 'react-redux';
 
+import { changeSort, changeOrder } from './actions/sort';
+
 let users = {
   "nybblr": 1,
   "bgamber": 2,
@@ -17,18 +19,18 @@ let ZupView = (props) => {
       <Viewing activeUser={props.activeUser} author={props.match.params.author} />
       {
         props.match.params.author === props.activeUser.name ?
-          <NewZup inputValue={props.inputValue} /*zupInput={zupInput} zupSubmit={zupSubmit}*/ />
+          <NewZup {...props} />
           :
           null
       }
       <select
         value={props.sortBy}
-        onChange={event => props.dispatch({ type: 'CHANGE_SORT', body: event.target.value })}>
+        onChange={event => props.dispatch(changeSort(event.target.value))}>
         <option value="date">By Date</option>
         <option value="name">By Name</option>
       </select> <select
         value={props.orderBy}
-        onChange={event => props.dispatch({ type: 'CHANGE_ORDER', body: event.target.value })}>
+        onChange={event => props.dispatch(changeOrder(event.target.value))}>
         <option value="asc">Asc</option>
         <option value="desc">Desc</option>
       </select>
@@ -53,7 +55,8 @@ let mapStateToProps = (state) => {
     zups: state.zups,
     activeUser: state.activeUser,
     sortBy: state.sortBy,
-    orderBy: state.orderBy
+    orderBy: state.orderBy,
+    inputValue: state.inputValue
   };
 };
 
