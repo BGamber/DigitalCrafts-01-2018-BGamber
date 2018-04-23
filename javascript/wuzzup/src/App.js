@@ -9,16 +9,24 @@ import { Provider } from 'react-redux';
 // All actions have "type"; other keys/values are optional
 // e.g. let action = { type: 'CREATE_ZUP', body: "What's Up" };
 
-let initialState = { zups: [], activeUser: { name: "bgamber", id: 2 } };
+let initialState = {
+  zups: [],
+  activeUser: { name: "bgamber", id: 2 },
+  sortBy: 'date',
+  orderBy: 'desc',
+  inputValue: ''
+};
 
 let reducer = (oldState = initialState, action) => {
   let newState;
   let zups;
   switch (action.type) {
-    case 'GET_ALL_ZUPS':
-      // TODO: fetch all zups
+    case 'FETCH_ALL_ZUPS':
+      console.log('Triggered!');
+      // Async thing to fetch all data
+      console.log(newState);
       break;
-    case 'GET_USER_ZUPS':
+    case 'FETCH_USER_ZUPS':
       // TODO: fetch one user's zups
       break;
     case 'CREATE_ZUP':
@@ -29,6 +37,13 @@ let reducer = (oldState = initialState, action) => {
       zups = oldState.zups.filter(zup => zup.id !== action.body);
       newState = { ...oldState, zups };
       break;
+    case 'CHANGE_SORT':
+      newState = { ...oldState, sortBy: action.body };
+      break;
+    case 'CHANGE_ORDER':
+      newState = { ...oldState, orderBy: action.body };
+      break;
+
     default:
       newState = oldState;
   };
