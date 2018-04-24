@@ -1,0 +1,1 @@
+const FETCH_ALL_ZUPS = 'FETCH_ALL_ZUPS';

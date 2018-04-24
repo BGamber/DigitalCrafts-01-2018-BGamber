@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css?family=Material+Icons');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.navbar {
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+}
+
+.now-viewing {
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+.new-form {
+  display: flex;
+  align-items: center;
+}
+
+.new-input {
+  height: 20px;
+  font-size: 18px;
+  font-style: italic;
+}
+
+.zup-list {
+  margin-left: 25px;
+}
