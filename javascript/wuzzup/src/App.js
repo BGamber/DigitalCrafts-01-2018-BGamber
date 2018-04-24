@@ -7,14 +7,9 @@ import { reducer } from './reducers';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-// All actions have "type"; other keys/values are optional
-// e.g. let action = { type: 'CREATE_ZUP', body: "What's Up" };
-
 // const FETCH_ALL_ZUPS = 'FETCH_ALL_ZUPS',
 //   FETCH_USER_ZUPS = 'FETCH_USER_ZUPS',
-//   DELETE_ZUP = 'DELETE_ZUP',
-//   CHANGE_SORT = 'CHANGE_SORT',
-//   CHANGE_ORDER = 'CHANGE_ORDER';
+//   DELETE_ZUP = 'DELETE_ZUP';
 
 //   let newState;
 //   let zups;
@@ -31,12 +26,6 @@ import { Provider } from 'react-redux';
 //       zups = oldState.zups.filter(zup => zup.id !== action.payload);
 //       newState = { ...oldState, zups };
 //       break;
-
-//     default:
-//       newState = oldState;
-//   };
-//   return newState;
-// };
 
 let store = createStore(reducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());

@@ -11,6 +11,9 @@ import {
   changeOrder,
   changeOrderReducer
 } from './actions/sort';
+import {
+  fetchAllZups
+} from './actions/fetch';
 
 let initialState = {
   zups: [{ title: 'hello', author: { name: 'bgamber', id: 2 }, time: moment('2018-04-23 11:00:00') },

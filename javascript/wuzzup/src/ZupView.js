@@ -18,23 +18,23 @@ let ZupView = (props) => {
     <div className="zup-view">
       <Viewing activeUser={props.activeUser} author={props.match.params.author} />
       {
-        props.match.params.author === props.activeUser.name ?
+        props.match.params.author === props.activeUser.name || props.match.params.author === undefined ?
           <NewZup {...props} />
           :
           null
       }
       <select
         value={props.sortBy}
-        onChange={event => props.dispatch(changeSort(event.target.value))}>
+        onChange={event => props.changeSort(event)}>
         <option value="date">By Date</option>
         <option value="name">By Name</option>
       </select> <select
         value={props.orderBy}
-        onChange={event => props.dispatch(changeOrder(event.target.value))}>
+        onChange={event => props.changeOrder(event)}>
         <option value="asc">Asc</option>
         <option value="desc">Desc</option>
       </select>
-      <button onClick={event => props.dispatch({ type: 'FETCH_ALL_ZUPS' })}>Load</button>
+      <button onClick={event => props.fetchAllZups()}>Load</button>
       {
         props.zups.length === 0 ?
           <p>Loading...</p>
@@ -61,7 +61,18 @@ let mapStateToProps = (state) => {
 };
 
 let mapDispatchToProps = (dispatch) => {
-  return { dispatch: dispatch };
+  return {
+    // dispatch: dispatch
+    fetchAllZups: () => {
+      dispatch({ type: 'FETCH_ALL_ZUPS' });
+    },
+    changeSort: (event) => {
+      dispatch(changeSort(event.target.value));
+    },
+    changeOrder: (event) => {
+      dispatch(changeOrder(event.target.value));
+    }
+  };
 };
 
 let ZupViewSmart = connect(

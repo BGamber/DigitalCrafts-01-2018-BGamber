@@ -18,7 +18,6 @@ export let changeOrder = (order) => ({ type: CHANGE_ORDER, payload: order });
 changeOrder.toString = () => CHANGE_ORDER;
 
 export let changeOrderReducer = (state, action) => {
-  console.log(state.zups);
   return ({
     ...state,
     orderBy: action.payload,
