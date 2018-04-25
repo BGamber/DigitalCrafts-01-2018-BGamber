@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-let Dashboard = () =>
+let Dashboard = (props) =>
   <div className="Dashboard">
-    <h2>Link 1</h2> <h2>Link 2</h2>
+    <Link to="/profile" className="dash-link">Profile</Link>
+    <Link to="/cart" className="dash-link">Cart</Link>
   </div>
 
 export default Dashboard;

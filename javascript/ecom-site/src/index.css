@@ -26,6 +26,17 @@ body {
   border-right: 2px solid black;
 }
 
+.side-menu {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: space-around;
+}
+
+.active {
+  font-weight: bold;
+}
+
 .Logo {
   width: 100%;
   height: 10%;
@@ -47,9 +58,34 @@ body {
 .Dashboard {
   width: 100%;
   height: 10%;
-  font-family: "Roboto", Courier, monospace;
   border-bottom: 2px solid black;
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+.Dashboard > .dash-link {
+  text-decoration: none;
+  font-family: "Roboto", Courier, monospace;
+  font-size: 2rem;
+}
+
+.Dashboard > .dash-link:hover {
+  text-decoration: underline;
+}
+
+.Breadcrumbs {
+  border-bottom: 2px solid black;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.Breadcrumbs > div > span {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.cat-list {
+  font-size: 2rem;
 }

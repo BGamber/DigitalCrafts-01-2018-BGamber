@@ -1,10 +1,13 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import Dashboard from './Dashboard';
+import Breadcrumbs from './Breadcrumbs';
 import Content from './Content';
 
-let Page = (activeUser) => 
+let Page = (props) => 
   <div className="Page">
-    <Dashboard />
+    <Dashboard props={props}/>
+    <Route path='/' component={Breadcrumbs} />
     <Content />
   </div>
 
