@@ -27,3 +27,13 @@ export let storeUserReducer = (state, action) =>
     ...state,
     user: action.payload
   });
+
+const STORE_CART = 'STORE_CART';
+export let storeCart = (cart) => ({ type: STORE_CART, payload: cart });
+storeCart.toString = () => STORE_CART;
+
+export let storeCartReducer = (state, action) =>
+  ({
+    ...state,
+    cart: action.payload
+  });

@@ -6,7 +6,7 @@ import _ from 'lodash';
 let ProductScreen = ({ product, allProducts }) =>
   (product === undefined ? <div className="product-list">
     {_.sortBy(allProducts, ['title']).map(item =>
-      <Link to={'/products/' + item.id}>
+      <Link key={'link-'+item.title} to={'/products/' + item.id}>
         {item.title}
       </Link>)}
   </div> :

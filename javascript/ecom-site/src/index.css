@@ -100,3 +100,33 @@ body {
   font-size: 1.2rem;
   font-weight: bold;
 }
+
+.cart-list {
+  display: grid;
+  grid-template-columns: 25% 1fr 15%;
+}
+
+.cart-list > p {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  display: flex;
+  justify-content: center;
+}
+
+.CartItem {
+  display: grid;
+  grid-template-columns: 25% 1fr 15%;
+  text-align: center;
+  align-items: center;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 5px 0 5px 0;
+}
+
+.CartItem > p {
+  border-left: 2px solid black;
+}
+
+.CartItem > img {
+  justify-self: center;
+}

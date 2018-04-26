@@ -36,11 +36,16 @@ class App extends Component {
       method: 'POST', body: JSON.stringify({
         identifier: "dan@the.man",
         password: "papapapassword"
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json'
       })
     })
       .then(res => res.json())
-      .then(user =>
-        this.props.storeUser(user));
+      .then(user => {
+        localStorage.setItem('token', user.jwt);
+        this.props.storeUser(user.user);
+      });
   }
 
   render() {

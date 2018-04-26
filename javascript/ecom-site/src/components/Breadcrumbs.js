@@ -29,7 +29,7 @@ export default connect(
     let pathList = props.location.pathname.split('/');
     let queryId = pathList[2];
     let queryPath = pathList[1];
-    let query = (state[queryPath] ? state[queryPath].find(query =>
+    let query = (state[queryPath] && (typeof queryPath === typeof Array) ? state[queryPath].find(query =>
       query.id === queryId) : queryPath);
     return { query, pathList, props };
   }

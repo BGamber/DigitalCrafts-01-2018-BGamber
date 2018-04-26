@@ -2,7 +2,11 @@ import {
   storeProducts,
   storeProductsReducer,
   storeCategories,
-  storeCategoriesReducer
+  storeCategoriesReducer,
+  storeUser,
+  storeUserReducer,
+  storeCart,
+  storeCartReducer
 } from '../actions/store';
 
 let initialState = {
@@ -14,7 +18,9 @@ let initialState = {
 
 let reducers = {
   [storeProducts]: storeProductsReducer,
-  [storeCategories]: storeCategoriesReducer
+  [storeCategories]: storeCategoriesReducer,
+  [storeUser]: storeUserReducer,
+  [storeCart]: storeCartReducer
 };
 
 let fallbackReducer = (state) => state;
