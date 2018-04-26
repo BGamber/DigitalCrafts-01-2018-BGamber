@@ -4,6 +4,7 @@ import Home from './Home';
 import Profile from './Profile';
 import Cart from './Cart';
 import CategoryList from './CategoryList';
+import ProductScreen from './ProductScreen';
 
 let Content = () =>
   <div className="Content">
@@ -11,6 +12,7 @@ let Content = () =>
     <Route path="/profile" component={Profile} />
     <Route path="/cart" component={Cart} />
     <Route path="/categories" component={CategoryList} />
+    <Route path="/products/:productId?" component={ProductScreen} />
   </div>
 
 export default Content;

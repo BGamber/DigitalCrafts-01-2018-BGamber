@@ -6,12 +6,12 @@ let CatNav = ({ categories }) =>
   <div className="cat-nav">
     {
       categories.map(cat =>
-        <div key={'catnav' + cat.id}>
+        <div key={'catnav' + cat.title}>
           <Link className="cat-list"
             to={`/categories/${cat.id}`}>
-            {cat.name}
+            {cat.title}
           </Link>
-          <p>{cat.name} and stuff!</p>
+          <p>{cat.description}</p>
         </div>
       )
     }

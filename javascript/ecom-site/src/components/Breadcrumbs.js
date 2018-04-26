@@ -2,18 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-let Breadcrumbs = ({ category, props }) =>
+let Breadcrumbs = ({ query, pathList, props }) =>
   <div className="Breadcrumbs">
     <Link to="/">Home</Link>
     {
-      props.location.pathname.split('/').slice(1).map((path, index) =>
+      pathList.slice(1).map((path, index) =>
         <div key={'path' + path}>
           <span className="arrow">=></span>
           {
-            index === props.location.pathname.split('/').slice(1).length - 1 &&
-              category !== undefined ?
-              category.name
-              : <Link to={'/' + path}>
+            query &&
+              index === pathList.slice(1).length - 1
+              ?
+              query.title
+              : <Link to={'/' + pathList.slice(1, index + 2).join('/')}>
                 {path}
               </Link>
 
@@ -25,9 +26,11 @@ let Breadcrumbs = ({ category, props }) =>
 
 export default connect(
   (state, props) => {
-    let categoryId = Number(props.location.pathname.split('/')[2]);
-    let category = state.categories.find(category =>
-      category.id === categoryId);
-    return { category, props };
+    let pathList = props.location.pathname.split('/');
+    let queryId = pathList[2];
+    let queryPath = pathList[1];
+    let query = (state[queryPath] ? state[queryPath].find(query =>
+      query.id === queryId) : queryPath);
+    return { query, pathList, props };
   }
 )(Breadcrumbs);

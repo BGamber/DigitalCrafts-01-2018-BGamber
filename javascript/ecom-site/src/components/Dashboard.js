@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 let Dashboard = (props) =>
   <div className="Dashboard">
-    <Link to="/profile" className="dash-link">Profile</Link>
-    <Link to="/cart" className="dash-link">Cart</Link>
+    <NavLink to="/profile" activeClassName="active" className="dash-link">Profile</NavLink>
+    <NavLink to="/cart" activeClassName="active" className="dash-link">Cart</NavLink>
   </div>
 
 export default Dashboard;

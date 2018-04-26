@@ -1,10 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Logo from './Logo';
-import categories from '../json/categories.json';
 
-let Sidebar = () =>
-  <div className="Sidebar">
+let Sidebar = ({ categories }) => {
+  return (<div className="Sidebar">
     <Logo />
     <nav className="side-menu">
       <ul>
@@ -12,17 +12,22 @@ let Sidebar = () =>
         <li><NavLink to="/categories" activeClassName="active" className="listed">Categories</NavLink></li>
         <ul>
           {categories.map((cat) =>
-            <li key={'sidebar'+cat.id}>
-              <NavLink exact to={'/categories/' + cat.id}
+            <li key={'sidebar' + cat.id}>
+              <NavLink exact to={'/categories/' + cat._id}
                 activeClassName="active"
                 className="sublisted">
-                {cat.name}
+                {cat.title}
               </NavLink>
             </li>)
           }
         </ul>
+        <li><NavLink exact to="/products" activeClassName="active" className="listed">All Products</NavLink></li>
       </ul>
     </nav>
-  </div>
+  </div>);
+};
 
-export default Sidebar;
+export default connect(
+  (store, props) =>
+    ({ categories: store.categories })
+)(Sidebar);

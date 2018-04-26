@@ -1,16 +1,21 @@
-import categories from '../json/categories';
-import products from '../json/products';
-import users from '../json/users';
+import {
+  storeProducts,
+  storeProductsReducer,
+  storeCategories,
+  storeCategoriesReducer
+} from '../actions/store';
 
 let initialState = {
-  categories,
-  products,
-  users
+  categories: [],
+  products: [],
+  user: {},
+  cart: []
 };
 
-let reducers = [
-
-];
+let reducers = {
+  [storeProducts]: storeProductsReducer,
+  [storeCategories]: storeCategoriesReducer
+};
 
 let fallbackReducer = (state) => state;
 
