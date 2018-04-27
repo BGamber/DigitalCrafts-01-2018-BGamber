@@ -8,6 +8,10 @@ import {
   storeCart,
   storeCartReducer
 } from '../actions/store';
+import {
+  addToCart,
+  addToCartReducer
+} from '../actions/cart';
 
 let initialState = {
   categories: [],
@@ -20,7 +24,8 @@ let reducers = {
   [storeProducts]: storeProductsReducer,
   [storeCategories]: storeCategoriesReducer,
   [storeUser]: storeUserReducer,
-  [storeCart]: storeCartReducer
+  [storeCart]: storeCartReducer,
+  [addToCart]: addToCartReducer
 };
 
 let fallbackReducer = (state) => state;
