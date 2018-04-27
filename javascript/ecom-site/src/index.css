@@ -1,5 +1,132 @@
+@import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Roboto');
+
 body {
+  width: 100vw;
+  height: 100vh;
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.App {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.Sidebar {
+  width: 20%;
+  height: 100%;
+  border-right: 2px solid black;
+}
+
+.side-menu {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: space-around;
+}
+
+.Logo {
+  width: 100%;
+  height: 10%;
+  border-bottom: 2px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-text {
+  font-size: 2rem;
+  font-family: "Abril Fatface", serif;
+}
+
+.Page {
+  flex-grow: 1;
+}
+
+.Dashboard {
+  width: 100%;
+  height: 10%;
+  border-bottom: 2px solid black;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.Dashboard > .dash-link {
+  text-decoration: none;
+  font-family: "Roboto", Courier, monospace;
+  font-size: 2rem;
+}
+
+.Dashboard > .dash-link:hover {
+  text-decoration: underline;
+}
+
+.Breadcrumbs {
+  border-bottom: 2px solid black;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.Breadcrumbs > div > span {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.cat-list {
+  font-size: 2rem;
+}
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5rem;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.big {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.cart-list {
+  display: grid;
+  grid-template-columns: 25% 1fr 15%;
+}
+
+.cart-list > p {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  display: flex;
+  justify-content: center;
+}
+
+.CartItem {
+  display: grid;
+  grid-template-columns: 25% 1fr 15%;
+  text-align: center;
+  align-items: center;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 5px 0 5px 0;
+}
+
+.CartItem > p {
+  border-left: 2px solid black;
+}
+
+.CartItem > img {
+  justify-self: center;
 }
