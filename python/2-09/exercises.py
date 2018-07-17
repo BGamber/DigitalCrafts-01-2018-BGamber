@@ -1,4 +1,4 @@
-## Smallest divisible by 1-20
+# # Smallest divisible by 1-20
 # def testDiv(number):
 #     for i in range(1,21):
 #         if number % i != 0:
@@ -9,11 +9,20 @@
 # while not testDiv(num):
 #     num += 20
 # print num
-## Result: 232792560
+# # Result: 232792560
 
-assert testDiv(2) == False, "Test failed for 2 == False"
-assert testDiv(10) == False, "Test failed for 10 == False"
-assert testDiv(20) == False, "test failed for 20 == False"
+# assert testDiv(2) == False, "Test failed for 2 == False"
+# assert testDiv(10) == False, "Test failed for 10 == False"
+# assert testDiv(20) == False, "test failed for 20 == False"
+
+def smallestDiv(number):
+    test = 1
+    for i in range(2, number):
+        if test % i != 0:
+            test *= i
+    return test
+
+print smallestDiv(10)
 
 ## Largest plaindromic num from 3-digit-based products
 def testPalin(num1, num2):
@@ -42,44 +51,44 @@ assert testPalin(1, 11) == True, "Test failed for (1, 11) == True"
 assert testPalin(91, 99) == True, "Test failed for (91, 99) == True"
 assert testPalin(2, 5) == False, "Test failed for (2, 5) == False"
 
-## 99 Bottles of beer/Miller/Miller Lite
-def whatBeer(number):
+## 99 cans of Cola/soda/soda pop
+def whatSoda(number):
     if number % 7 == 0 and number % 5 == 0:
-        return 'Miller Lite'
+        return 'soda pop'
     elif number % 7 == 0:
-        return 'Miller'
+        return 'soda'
     elif number % 5 == 0:
-        return 'Lite beer'
+        return 'pop'
     else:
-        return "beer"
+        return "Cola"
 
-def whatBeer2(number):
+def whatSoda2(number):
     while number % 7 == 0 and number % 5 == 0:
-        return 'Miller Lite'
+        return 'soda pop'
 
     while number % 7 == 0:
-        return 'Miller'
+        return 'soda'
 
     while number % 5 == 0:
-        return 'Lite beer'
+        return 'pop'
 
-    return 'beer'
+    return 'Cola'
 
-def whatBeer3(number):
+def whatSoda3(number):
     return ((number % 7 == 0), (number % 5 == 0))
 
 i = 99
-booze = {
-    (True, True): 'Miller Lite',
-    (True, False): 'Miller',
-    (False, True): 'Lite beer',
-    (False, False): 'beer'
+drink = {
+    (True, True): 'soda pop',
+    (True, False): 'soda',
+    (False, True): 'pop',
+    (False, False): 'Cola'
 }
 while i >= 0:
-    check = whatBeer3(i)
-    print "%s bottles of %s, take one down, pass it around, %s bottles of %s on the wall." % (i, booze[check], i, booze[check])
+    check = whatSoda3(i)
+    print "%s cans of %s, take one down, pass it around, %s cans of %s on the wall." % (i, drink[check], i, drink[check])
     i -= 1
 
-assert whatBeer(7) == 'Miller', "Test failed for 7 == Miller"
-assert whatBeer(5) == 'Lite beer', "Test failed for 5 == Lite beer"
-assert whatBeer(35) == 'Miller Lite', "Test failed for 35 == Miller Lite"
+assert drink[whatSoda3(7)] == 'soda', "Test failed for 7 == soda"
+assert drink[whatSoda3(5)] == 'pop', "Test failed for 5 == pop"
+assert drink[whatSoda3(35)] == 'soda pop', "Test failed for 35 == soda pop"
