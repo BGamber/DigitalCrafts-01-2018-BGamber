@@ -1,198 +1,199 @@
-@import url('https://fonts.googleapis.com/css?family=Josefin+Sans|Quicksand|Material+Icons');
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans|Quicksand|Material+Icons");
 
 body {
-    margin: 0;
-    height: 100vh;
+  margin: 0;
+  height: 100vh;
 }
 
 .page-layout {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 
 .little-text {
-    font-family: 'Arial', sans-serif;
-    font-size: 13px;
-    color: #666666;
+  font-family: "Arial", sans-serif;
+  font-size: 13px;
+  color: #666666;
 }
 
 #center {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 100px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 100px;
 }
 
 #center form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 #center-text img {
-    width: 272px;
-    padding-bottom: 30px;
+  width: 272px;
+  padding-bottom: 30px;
 }
 
 #center-bar {
-    position: relative;
+  position: relative;
 }
 
 #search-bar {
-    width: 514px;
-    height: 34px;
-    font-size: 18px;
-    border: 1px solid lightgray;
-    border-radius: 2px;
-    box-shadow: 0 2px 2px lightgray;
-    padding-left: 10px;
+  width: 565px;
+  height: 38px;
+  font-size: 18px;
+  border: 1px solid lightgray;
+  border-radius: 2px;
+  box-shadow: 0 1px 1px lightgray;
+  padding-left: 10px;
 }
 
-#search-bar:hover {
-    box-shadow: 0 3px 4px lightgray;
+#search-bar:hover,
+#search-bar:focus {
+  box-shadow: 0 2px 4px lightgray;
 }
 
 #search-bar:focus {
-    outline: none;
+  outline: none;
 }
 
 .fake-mic img {
-    width: 16px;
-    position: absolute;
-    right: 8px;
-    top: 8px;
+  width: 16px;
+  position: absolute;
+  right: 8px;
+  top: 8px;
 }
 
 #search-buttons {
-    padding-top: 60px;
-    display: flex;
-    flex-direction: row;
+  padding-top: 25px;
+  display: flex;
+  flex-direction: row;
 }
 
 .srch-btn {
-    padding: 10px 20px 10px 20px;
-    font-size: 14px;
-    background-color: #F3F3F3;
-    border: 1px solid white;
-    font-weight: bold;
-    color: #757575;
-    margin: 5px;
+  padding: 10px 20px 10px 20px;
+  font-size: 12px;
+  background-color: #f3f3f3;
+  border: 1px solid white;
+  font-weight: bold;
+  color: #757575;
+  margin: 5px;
 }
 
 .srch-btn:hover {
-    border: 1px solid gray;
-    box-shadow: 0 1px 1px lightgray;
-    color: black;
+  border: 1px solid gray;
+  box-shadow: 0 1px 1px lightgray;
+  color: black;
 }
 
 .srch-btn:focus {
-    outline: none;
-    border: 1px solid cornflowerblue;
+  outline: none;
+  border: 1px solid cornflowerblue;
 }
 
 #header-bar {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .head-left {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    margin-top: 9px;
-    margin-left: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 9px;
+  margin-left: 16px;
 }
 
 .head-right {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    padding-top: 0.9em;
-    padding-right: 21px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 0.9em;
+  padding-right: 21px;
 }
 
 .usr-img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url("filip.png");
-    margin-left: 9px;
-    margin-right: 9px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url("filip.png");
+  margin-left: 9px;
+  margin-right: 9px;
 }
 
 .usr-img:hover {
-    box-shadow: 0 1px 0 lightgray;
+  box-shadow: 0 1px 0 lightgray;
 }
 
 #footer-bar {
-    display: flex;
-    width: 100%;
-    height: 40px;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: #F2F2F2;
-    border-top: 1px solid #E4E4E4;
+  display: flex;
+  width: 100%;
+  height: 40px;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #f2f2f2;
+  border-top: 1px solid #e4e4e4;
 }
 
 .foot-left {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    padding-left: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 1em;
 }
 
 .foot-right {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    padding-right: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 1em;
 }
 
 a.nice-link {
-    text-decoration: none;
-    color: #404040;
-    margin-right: 9px;
-    margin-left: 9px;
+  text-decoration: none;
+  color: #404040;
+  margin-right: 9px;
+  margin-left: 9px;
 }
 
 a.nice-link-b {
-    text-decoration: none;
-    color: #212121;
-    margin-right: 9px;
-    margin-left: 9px;
+  text-decoration: none;
+  color: #212121;
+  margin-right: 9px;
+  margin-left: 9px;
 }
 
 a.nice-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 a.nice-link-b:hover {
-    color: #404040;
-    text-decoration: underline;
+  color: #404040;
+  text-decoration: underline;
 }
 
 a.nice-link i {
-    color: #737373;
+  color: #737373;
 }
 
 a.nice-link i:hover {
-    color: darkslategray;
+  color: darkslategray;
 }
 
 a.nice-link img:hover {
-    box-shadow: 0 1px 0 lightgray;
+  box-shadow: 0 1px 0 lightgray;
 }
