@@ -149,7 +149,7 @@ var imageList = [
 ];
 
 var $previewbox = $('#preview');
-var $lightbox = $('#lightbox');
+var $lightbox = $('.lightbox');
 
 $lightbox.on('click', function(event) {
     event.preventDefault();
@@ -160,7 +160,7 @@ $lightbox.on('click', function(event) {
 
 $('.left-arrow').click(function(event) {
     event.preventDefault();
-    var $currentImage = $('#lightbox img');
+    var $currentImage = $('.lightbox img');
     var nextImage;
     if ($currentImage.attr('data-item-id') === '0') {
         nextImage = imageList[(imageList.length-1)];
@@ -174,7 +174,7 @@ $('.left-arrow').click(function(event) {
 
 $('.right-arrow').click(function(event) {
     event.preventDefault();
-    var $currentImage = $('#lightbox img');
+    var $currentImage = $('.lightbox img');
     var nextImage;
     if (Number($currentImage.attr('data-item-id')) === (imageList.length-1)) {
         nextImage = imageList[0];
@@ -198,10 +198,10 @@ imageList.forEach(function(image, i) {
 
 $('.preview-image').click(function(event) {
     event.preventDefault();
-    var $pic = $('#lightbox img');
+    var $pic = $('.lightbox img');
     $pic.attr('src', $(this).prop('src'));
     $pic.attr('alt', $(this).prop('alt'));
-    $pic.attr('data-item-id', $(this).prop('id'));
+    $pic.attr('data-item-id', $(this).attr('data-item-id'));
     $lightbox.toggleClass('inactive');
 });
 

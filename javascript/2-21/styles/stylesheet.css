@@ -78,7 +78,7 @@ body {
     border-left: 2px solid gainsboro;
 }
 
-#lightbox {
+.lightbox {
     transition: all 0.5s ease-in-out;
     position: fixed;
     top: 0;
