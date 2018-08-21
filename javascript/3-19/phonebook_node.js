@@ -1,93 +1,147 @@
-var readline = require('readline');
-var fs = require('fs');
-var promisify = require('util').promisify;
-var EventEmitter = require('events');
+let readline = require("readline");
+let fs = require("fs");
+let promisify = require("util").promisify;
+let EventEmitter = require("events");
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-var question = function (question) {
-  return new Promise(function (resolve) {
+let question = question =>
+  new Promise(resolve => {
     rl.question(question, resolve);
   });
-};
-var readFile = promisify(fs.readFile);
-var writeFile = promisify(fs.writeFile);
+let readFile = promisify(fs.readFile);
+let writeFile = promisify(fs.writeFile);
 
-var phonebookMaker = function (events) {
-  var phonebookList = {};
+let phonebookMaker = events => {
+  let phonebookList = {};
   return {
-    optionsMenu: function () {
-      console.log('==========\nPhonebook Menu');
-      console.log('1. Look Up Contact');
-      console.log('2. View Contact List');
-      console.log('3. Add New Contact');
-      console.log('4. Delete Contact');
-      console.log('5. Exit Phonebook');
-      question('Select an option: ')
-        .then(function (option) {
-          console.log('\033c');
-          if (option === '1') {
-            // 1 stuff
-            events.emit('menu');
-          } else if (option === '2') {
-            console.log(Object.values(phonebookList));
-            events.emit('menu');
-          } else if (option === '3') {
-            var contactName;
-            var contactNumber;
-            question('Enter contact name: ')
-              .then(function (name) {
-                contactName = name;
-                return question('Enter contact phone: ');
+    optionsMenu: () => {
+      console.log("==========\nPhonebook Menu");
+      console.log("1. Look Up Contact");
+      console.log("2. View Contact List");
+      console.log("3. Add/Edit Contact");
+      console.log("4. Delete Contact");
+      console.log("5. Save and Exit");
+      question("Select an option: ").then(option => {
+        console.log("\033c");
+        menuOptions = {
+          "1": () => {
+            question("Enter contact name: ")
+              .then(name => {
+                let findCount = 0;
+                Object.keys(phonebookList).forEach(key => {
+                  if (key.indexOf(name) !== -1) {
+                    findCount++;
+                    console.log(`${key}: ${Object.values(phonebookList[key])}`);
+                  }
+                });
+                if (findCount === 0) {
+                  console.log("Contact not found.");
+                }
+                events.emit("menu");
               })
-              .then(function (number) {
-                contactNumber = number;
-                phonebook.addContact(contactName, contactNumber);
-                events.emit('menu');
-              })
-              .catch(function(err) {
+              .catch(err => {
                 rl.close();
                 throw err;
               });
-          } else if (option === '4') {
-            // 4 stuff
-            events.emit('menu');
-          } else if (option === '5') {
+          },
+          "2": () => {
+            if (Object.keys(phonebookList).length > 0) {
+              Object.keys(phonebookList)
+                .sort()
+                .forEach(key => {
+                  console.log(`${key}: ${Object.values(phonebookList[key])}`);
+                });
+            } else {
+              console.log("Contact List empty.");
+            }
+            events.emit("menu");
+          },
+          "3": () => {
+            let contactName;
+            let contactNumber;
+            question("Enter contact name: ")
+              .then(name => {
+                contactName = name;
+                return question("Enter contact phone: ");
+              })
+              .then(number => {
+                contactNumber = number;
+                phonebook.addContact(contactName, contactNumber);
+                events.emit("menu");
+              })
+              .catch(err => {
+                rl.close();
+                throw err;
+              });
+          },
+          "4": () => {
+            question("Enter contact name: ")
+              .then(name => {
+                if (Object.keys(phonebookList).includes(name)) {
+                  delete phonebookList[name];
+                  console.log("Contact deleted.");
+                }
+                events.emit("menu");
+              })
+              .catch(err => {
+                rl.close();
+                throw err;
+              });
+          },
+          "5": () => {
             rl.close();
-          };
-        });
+            phonebook.saveList("phonebook.txt");
+          }
+        };
+        if (Object.keys(menuOptions).includes(option)) {
+          menuOptions[option]();
+        } else {
+          console.log("Invalid input.");
+          events.emit("menu");
+        }
+      });
     },
-    loadList: function (file) {
+    loadList: file => {
       readFile(file)
-        .then(function(data) {
+        .then(data => {
           return JSON.parse(data);
         })
-        .then(function(parsedData) {
-          phonebook.phonebookList = parsedData;
+        .then(parsedData => {
+          phonebookList = parsedData;
         })
-        .catch(function(err) {
-          writeFile('phonebook.txt','');
+        .catch(err => {
+          writeFile("phonebook.txt", "");
         });
     },
-    addContact: function (contactName, contactNumber) {
+    saveList: file => {
+      writeFile(file, JSON.stringify(phonebookList))
+        .then(() => {
+          console.log("Contact list saved.");
+        })
+        .catch(err => {
+          throw err;
+        });
+    },
+    addContact: (contactName, contactNumber) => {
       if (!(contactName in phonebookList)) {
         phonebookList[contactName] = {};
-      };
+      }
       phonebookList[contactName].phone = contactNumber;
-    },
+    }
   };
 };
 
-var events = new EventEmitter();
-var phonebook = phonebookMaker(events);
+let events = new EventEmitter();
+let phonebook = phonebookMaker(events);
 
-events.on('menu', function() {
+events.on("menu", () => {
   phonebook.optionsMenu();
 });
 
-console.log('\033c');
-phonebook.loadList('phonebook.txt');
+console.log("\033c");
+phonebook.loadList("phonebook.txt");
 phonebook.optionsMenu();

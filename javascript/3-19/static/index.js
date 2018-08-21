@@ -21,7 +21,7 @@ let removeContact = async (contact, row) => {
 };
 
 (async () => {
-  let contacts = await(await fetch('/contacts')).json();
+  let contacts = await (await fetch('/contacts')).json();
   let contactRows = contacts.map(contact => renderContact(contact));
   for (let row of contactRows) {
     container.appendChild(row);
