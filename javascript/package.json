@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "express": "^4.16.3"
+    "batchassert": "^1.1.1",
+    "express": "^4.16.3",
+    "moment": "^2.22.2",
+    "pg-promise": "^8.4.5",
+    "uuid": "^3.3.2",
+    "ws": "^6.0.0"
   }
 }
